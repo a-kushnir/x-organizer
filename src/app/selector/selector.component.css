@@ -3,3 +3,8 @@ fa-icon {
   width: 64px;
   cursor: pointer;
 }
+
+span {
+  display: inline-block;
+  width: 200px;
+}
