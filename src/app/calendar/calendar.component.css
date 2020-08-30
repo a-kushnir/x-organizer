@@ -23,5 +23,5 @@ td {
   background-color: #4F772D;
 }
 .disabled div {
-  color: #dee2e6;
+  opacity: 33%;
 }

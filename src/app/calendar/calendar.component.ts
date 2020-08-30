@@ -43,7 +43,7 @@ export class CalendarComponent implements OnInit {
         days: Array(7).fill(0).map(() => {
           const date = current.add(1, 'day').clone();
           const active = current.isSame(today, 'day');
-          const selected = active;
+          const selected = current.isSame(this.date, 'day');
           const disabled = !current.isSame(value, 'month');
 
           return {
