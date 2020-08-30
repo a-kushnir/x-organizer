@@ -1,0 +1,27 @@
+table {
+  max-width: 600px;
+}
+td {
+  width: 14%;
+  padding: 3px;
+}
+.dow {
+  color: #31572C;
+}
+.date {
+  cursor: pointer;
+}
+.date div {
+  padding: 8px;
+}
+.active div {
+  color: white;
+  background-color: #90A955;
+}
+.selected div {
+  color: white;
+  background-color: #4F772D;
+}
+.disabled div {
+  color: #dee2e6;
+}

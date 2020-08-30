@@ -1,1 +1,17 @@
-<p>calendar works!</p>
+<table class="table table-bordered mx-auto">
+  <tr>
+    <td *ngFor="let day of weeks[0].days" class="dow">
+      {{ day.date | date :'EEE' }}
+    </td>
+  </tr>
+  <tr *ngFor="let week of weeks">
+    <td *ngFor="let day of week.days" [ngClass]="{
+      date: true,
+      active: day.active,
+      selected: day.selected,
+      disabled: day.disabled
+    }" (click)="selectDate(day)">
+      <div>{{ day.date | date :'d' }}</div>
+    </td>
+  </tr>
+</table>
