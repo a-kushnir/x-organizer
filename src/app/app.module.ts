@@ -10,7 +10,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { OrganizerComponent } from './organizer/organizer.component';
 import { SelectorComponent } from './selector/selector.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MomentPipe } from './shared/moment.pipe';
+import { MonthPipe } from './shared/month.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { MomentPipe } from './shared/moment.pipe';
     CalendarComponent,
     OrganizerComponent,
     SelectorComponent,
-    MomentPipe
+    MonthPipe
   ],
   imports: [
     BrowserModule,
