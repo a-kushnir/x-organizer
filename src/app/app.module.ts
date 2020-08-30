@@ -9,6 +9,8 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { OrganizerComponent } from './organizer/organizer.component';
 import { SelectorComponent } from './selector/selector.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MomentPipe } from './shared/moment.pipe';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,13 @@ import { SelectorComponent } from './selector/selector.component';
     NavigationComponent,
     CalendarComponent,
     OrganizerComponent,
-    SelectorComponent
+    SelectorComponent,
+    MomentPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
