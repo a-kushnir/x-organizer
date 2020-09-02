@@ -1,0 +1,35 @@
+section {
+  max-width: 600px;
+}
+strong {
+  display: inline-block;
+  padding: 2px 7px 5px 7px;
+}
+
+form {
+  width: 100%;
+  flex-wrap: nowrap;
+
+  input {
+    margin-top: 8px;
+    flex-grow: 1;
+  }
+  button {
+  }
+}
+
+ul {
+  width: 100%;
+  li {
+    padding-left: 12px;
+    input[type=checkbox] {
+      margin-right: 4px;
+    }
+
+    &.new-item {
+      padding-left: 21px;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}

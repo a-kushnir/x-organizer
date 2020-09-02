@@ -1,1 +1,30 @@
-<p>organizer works!</p>
+<section class="mx-auto">
+  <div class="row">
+    <div class="col-6 text-left">
+      <strong>{{ this.dateService.date | async | date:'longDate' }}</strong>
+    </div>
+    <div class="col-6 text-right">
+      <strong>{{ this.dateService.date | async | date:'EEEE' }}</strong>
+    </div>
+  </div>
+  <ul class="list-group text-left">
+    <li class="list-group-item">
+      <input type="checkbox" aria-label="Checkbox for following text input">
+      Porta ac consectetur ac
+      <button type="submit" class="btn btn-danger btn-sm float-right"><fa-icon [icon]="faTrash"></fa-icon></button>
+    </li>
+    <li class="list-group-item">
+      <input type="checkbox" aria-label="Checkbox for following text input">
+      Vestibulum at eros
+      <button type="submit" class="btn btn-danger btn-sm float-right"><fa-icon [icon]="faTrash"></fa-icon></button>
+    </li>
+
+    <li class="list-group-item new-item">
+      <form class="form-inline">
+        <label class="sr-only" for="inlineFormInputName2">Name</label>
+        <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="New Note">
+        <button type="submit" class="btn btn-success btn-sm"><fa-icon [icon]="faPlusCircle"></fa-icon></button>
+      </form>
+    </li>
+  </ul>
+</section>
