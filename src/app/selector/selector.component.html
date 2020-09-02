@@ -1,7 +1,7 @@
 <p>
   <fa-icon [icon]="faCaretLeft" (click)="addMonths(-1)"></fa-icon>
   <span>
-    {{ dateService.date | async | month }}
+    {{ dateService.month | async | month }}
   </span>
   <fa-icon [icon]="faCaretRight" (click)="addMonths(1)"></fa-icon>
 </p>

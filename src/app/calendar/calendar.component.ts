@@ -21,19 +21,20 @@ class Week {
 export class CalendarComponent implements OnInit {
 
   weeks: Week[];
-  date: moment.Moment;
 
   constructor(private dateService: DateService) {
+    dateService.month.subscribe(this.generateCalendar.bind(this));
     dateService.date.subscribe(this.generateCalendar.bind(this));
   }
 
   ngOnInit(): void {
   }
 
-  generateCalendar(value): void {
+  generateCalendar(): void {
     const today = moment();
-    const startDate = value.clone().startOf('month').startOf('week');
-    const endDate = value.clone().endOf('month').endOf('week');
+    const month = this.dateService.month.value;
+    const startDate = month.clone().startOf('month').startOf('week');
+    const endDate = month.clone().endOf('month').endOf('week');
 
     this.weeks = [];
 
@@ -43,8 +44,8 @@ export class CalendarComponent implements OnInit {
         days: Array(7).fill(0).map(() => {
           const date = current.add(1, 'day').clone();
           const active = current.isSame(today, 'day');
-          const selected = current.isSame(this.date, 'day');
-          const disabled = !current.isSame(value, 'month');
+          const selected = current.isSame(this.dateService.date.value, 'day');
+          const disabled = !current.isSame(month, 'month');
 
           return {
             date, active, selected, disabled
@@ -57,11 +58,6 @@ export class CalendarComponent implements OnInit {
   }
 
   selectDate(value): void {
-    this.weeks.forEach((week) => {
-      week.days.forEach((day) => {
-        day.selected = day === value;
-      });
-    });
-    this.date = value.date;
+    this.dateService.setDate(value.date);
   }
 }

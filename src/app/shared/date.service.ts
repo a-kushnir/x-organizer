@@ -6,10 +6,21 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DateService {
-  public date: BehaviorSubject<moment.Moment> = new BehaviorSubject<moment.Moment>(moment());
+  public month: BehaviorSubject<moment.Moment>;
+  public date: BehaviorSubject<moment.Moment>;
+
+  constructor() {
+    const now = moment();
+    this.month = new BehaviorSubject<moment.Moment>(now.startOf('month'));
+    this.date = new BehaviorSubject<moment.Moment>(now.startOf('day'));
+  }
+
+  setDate(date: moment.Moment): void {
+    this.date.next(date);
+  }
 
   addMonths(amount: number): void {
-    const value = this.date.value.add(amount, 'month');
-    this.date.next(value);
+    const value = this.month.value.add(amount, 'month');
+    this.month.next(value);
   }
 }
