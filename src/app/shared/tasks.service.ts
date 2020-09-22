@@ -40,6 +40,11 @@ export class TasksService {
       }));
   }
 
-  remove(task: Task): void {
+  remove(task: Task): Observable<Task> {
+    return this.http
+      .delete<any>(`${TasksService.url}/${task.date}/${task.id}.json`)
+      .pipe(map(_ => {
+        return {...task, id: null };
+      }));
   }
 }
