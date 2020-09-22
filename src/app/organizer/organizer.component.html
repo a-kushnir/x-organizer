@@ -20,9 +20,9 @@
     </li>
 
     <li class="list-group-item new-item">
-      <form class="form-inline">
-        <label class="sr-only" for="inlineFormInputName2">Name</label>
-        <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="New Note">
+      <form class="form-inline" (ngSubmit)="submit()" [formGroup]="form">
+        <label class="sr-only" for="new-note">Name</label>
+        <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-note" placeholder="New Note">
         <button type="submit" class="btn btn-success btn-sm"><fa-icon [icon]="faPlusCircle"></fa-icon></button>
       </form>
     </li>

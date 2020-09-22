@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { faTrash, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import {DateService} from '../shared/date.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateService } from '../shared/date.service';
+import { TasksService, Task } from '../shared/tasks.service';
 
 @Component({
   selector: 'app-organizer',
@@ -8,14 +10,33 @@ import {DateService} from '../shared/date.service';
   styleUrls: ['./organizer.component.scss']
 })
 export class OrganizerComponent implements OnInit {
-  faTrash = faTrash;
-  faPlusCircle = faPlusCircle;
+  readonly faTrash = faTrash;
+  readonly faPlusCircle = faPlusCircle;
 
-  constructor(public dateService: DateService) {
+  form: FormGroup;
+
+  constructor(public dateService: DateService,
+              public tasksService: TasksService) {
     dateService.date.subscribe(this.getNotes.bind(this));
   }
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      note: new FormControl('', Validators.required)
+    });
+  }
+
+  submit(): void {
+    const {note} = this.form.value;
+
+    const task: Task = {
+      note,
+      date: this.dateService.date.value.format('YYYY-MM-DD')
+    };
+
+    this.tasksService.create(task).subscribe(newTask => {
+      this.form.reset();
+    }, err => console.error(err));
   }
 
   getNotes(): void {
