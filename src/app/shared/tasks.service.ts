@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 export interface Task {
   id?: string;
-  date?: string;
+  date?: moment.Moment;
   note: string;
 }
 
@@ -23,28 +23,30 @@ export class TasksService {
 
   load(date: moment.Moment): Observable<Task[]> {
     return this.http
-      .get<Task[]>(`${TasksService.url}/${date.format('YYYY-MM-DD')}.json`)
+      .get<Task[]>(`${TasksService.url}/${this.db_date(date)}.json`)
       .pipe(map(tasks => {
         if (!tasks) {
           return [];
         }
-        return Object.keys(tasks).map(key => ({...tasks[key], id: key}));
+        return Object.keys(tasks).map(key => ({...tasks[key], id: key, date}));
       }));
   }
 
   create(task: Task): Observable<Task> {
+    const { note } = task;
     return this.http
-      .post<CreateResponse>(`${TasksService.url}/${task.date}.json`, task)
+      .post<CreateResponse>(`${TasksService.url}/${this.db_date(task.date)}.json`, { note })
       .pipe(map(response => {
         return {...task, id: response.name };
       }));
   }
 
-  remove(task: Task): Observable<Task> {
+  remove(task: Task): Observable<void> {
     return this.http
-      .delete<any>(`${TasksService.url}/${task.date}/${task.id}.json`)
-      .pipe(map(_ => {
-        return {...task, id: null };
-      }));
+      .delete<void>(`${TasksService.url}/${this.db_date(task.date)}/${task.id}.json`);
+  }
+
+  db_date(date: moment.Moment): string {
+    return date.format('YYYY-MM-DD');
   }
 }

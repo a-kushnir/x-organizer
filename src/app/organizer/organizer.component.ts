@@ -35,7 +35,7 @@ export class OrganizerComponent implements OnInit {
 
   remove(task: Task): void {
     this.tasksService.remove(task).subscribe(_ => {
-      this.reload();
+      this.tasks = this.tasks.filter(t => t.id !== task.id);
     }, err => console.error(err));
   }
 
@@ -43,21 +43,13 @@ export class OrganizerComponent implements OnInit {
     const {note} = this.form.value;
 
     const task: Task = {
-      note,
-      date: this.dateService.date.value.format('YYYY-MM-DD')
+      date: this.dateService.date.value,
+      note
     };
 
-    this.tasksService.create(task).subscribe(_ => {
+    this.tasksService.create(task).subscribe(newTask => {
       this.form.reset();
-      this.reload();
+      this.tasks.push(newTask);
     }, err => console.error(err));
-  }
-
-  reload(): void {
-    this.tasksService.load(this.dateService.date.value).pipe(
-      switchMap(value => this.tasksService.load(this.dateService.date.value))
-    ).subscribe(tasks => {
-      this.tasks = tasks;
-    });
   }
 }
