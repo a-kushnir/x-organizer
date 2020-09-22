@@ -16,14 +16,15 @@ interface CreateResponse {
 
 @Injectable({providedIn: 'root'})
 export class TasksService {
-  static url = 'https://x-organizer.firebaseio.com/tasks';
+  static BASE_URL = 'https://x-organizer.firebaseio.com/tasks';
+  static DB_DATE_FORMAT = 'YYYY-MM-DD';
 
   constructor(private http: HttpClient) {
   }
 
   load(date: moment.Moment): Observable<Task[]> {
     return this.http
-      .get<Task[]>(`${TasksService.url}/${this.db_date(date)}.json`)
+      .get<Task[]>(`${TasksService.BASE_URL}/${this.to_db_date(date)}.json`)
       .pipe(map(tasks => {
         if (!tasks) {
           return [];
@@ -35,7 +36,7 @@ export class TasksService {
   create(task: Task): Observable<Task> {
     const { note } = task;
     return this.http
-      .post<CreateResponse>(`${TasksService.url}/${this.db_date(task.date)}.json`, { note })
+      .post<CreateResponse>(`${TasksService.BASE_URL}/${this.to_db_date(task.date)}.json`, { note })
       .pipe(map(response => {
         return {...task, id: response.name };
       }));
@@ -43,10 +44,21 @@ export class TasksService {
 
   remove(task: Task): Observable<void> {
     return this.http
-      .delete<void>(`${TasksService.url}/${this.db_date(task.date)}/${task.id}.json`);
+      .delete<void>(`${TasksService.BASE_URL}/${this.to_db_date(task.date)}/${task.id}.json`);
   }
 
-  db_date(date: moment.Moment): string {
-    return date.format('YYYY-MM-DD');
+  hasTasks(): Observable<object> {
+    return this.http
+      .get<object>(`${TasksService.BASE_URL}.json?shallow=true`)
+      .pipe(map(dates => {
+        if (!dates) {
+          return {};
+        }
+        return dates;
+      }));
+  }
+
+  to_db_date(date: moment.Moment): string {
+    return date.format(TasksService.DB_DATE_FORMAT);
   }
 }

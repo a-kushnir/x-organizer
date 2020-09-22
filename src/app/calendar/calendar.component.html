@@ -9,9 +9,13 @@
       date: true,
       active: day.active,
       selected: day.selected,
-      disabled: day.disabled
+      disabled: day.disabled,
+      tasks: day.hasTasks
     }" (click)="selectDate(day)">
-      <div>{{ day.date | date :'d' }}</div>
+      <div>
+        {{ day.date | date :'d' }}
+        <span class="dot"></span>
+      </div>
     </td>
   </tr>
 </table>

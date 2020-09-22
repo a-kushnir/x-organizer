@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { DateService } from '../shared/date.service';
+import {TasksService} from '../shared/tasks.service';
+import {switchMap} from 'rxjs/operators';
 
 class Day {
   date: moment.Moment;
   active: boolean;
   selected: boolean;
   disabled: boolean;
+  hasTasks: boolean;
 }
 
 class Week {
@@ -21,13 +24,21 @@ class Week {
 export class CalendarComponent implements OnInit {
 
   weeks: Week[];
+  hasTasks: object = {};
 
-  constructor(private dateService: DateService) {
+  constructor(private dateService: DateService,
+              public tasksService: TasksService) {
     dateService.month.subscribe(this.generateCalendar.bind(this));
     dateService.date.subscribe(this.generateCalendar.bind(this));
   }
 
   ngOnInit(): void {
+    this.dateService.month.pipe(
+      switchMap(_ => this.tasksService.hasTasks())
+    ).subscribe(hasTasks => {
+      this.hasTasks = hasTasks;
+      this.generateCalendar();
+    });
   }
 
   generateCalendar(): void {
@@ -46,9 +57,10 @@ export class CalendarComponent implements OnInit {
           const active = current.isSame(today, 'day');
           const selected = current.isSame(this.dateService.date.value, 'day');
           const disabled = !current.isSame(month, 'month');
+          const hasTasks = this.hasTasks[current.format('YYYY-MM-DD')];
 
           return {
-            date, active, selected, disabled
+            date, active, selected, disabled, hasTasks
           };
         })
       });

@@ -26,3 +26,16 @@ td {
 .disabled div {
   opacity: 33%;
 }
+
+.dot {
+  margin-left: -8px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  float: right;
+}
+
+.tasks .dot {
+  background-color: #DC3545;
+}
