@@ -8,6 +8,10 @@
     </div>
   </div>
   <ul class="list-group text-left">
+    <li class="list-group-item text-center" *ngIf="tasks.length == 0">
+      <i class="text-muted">No Tasks</i>
+    </li>
+
     <li class="list-group-item" *ngFor="let task of tasks">
       <input type="checkbox" aria-label="Checkbox for following text input">
       {{ task.note }}
@@ -17,7 +21,7 @@
     <li class="list-group-item new-item">
       <form class="form-inline" (ngSubmit)="submit()" [formGroup]="form">
         <label class="sr-only" for="new-note">Name</label>
-        <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-note" placeholder="New Note">
+        <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-note" placeholder="New Task">
         <button type="submit" class="btn btn-success btn-sm"><fa-icon [icon]="faPlusCircle"></fa-icon></button>
       </form>
     </li>
