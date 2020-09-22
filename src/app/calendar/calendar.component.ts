@@ -53,8 +53,6 @@ export class CalendarComponent implements OnInit {
         })
       });
     }
-
-    console.log(this.weeks);
   }
 
   selectDate(value): void {

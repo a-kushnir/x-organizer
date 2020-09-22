@@ -11,8 +11,8 @@ export class DateService {
 
   constructor() {
     const now = moment();
-    this.month = new BehaviorSubject<moment.Moment>(now.startOf('month'));
-    this.date = new BehaviorSubject<moment.Moment>(now.startOf('day'));
+    this.month = new BehaviorSubject<moment.Moment>(now.clone().startOf('month'));
+    this.date = new BehaviorSubject<moment.Moment>(now.clone().startOf('day'));
   }
 
   setDate(date: moment.Moment): void {

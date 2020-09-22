@@ -7,6 +7,7 @@ td {
 }
 .dow {
   color: #31572C;
+  background-color: #eeeeee;
 }
 .date {
   cursor: pointer;
