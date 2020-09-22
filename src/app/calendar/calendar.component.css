@@ -6,8 +6,8 @@ td {
   padding: 3px;
 }
 .dow {
-  color: #31572C;
   background-color: #eeeeee;
+  font-weight: bold;
 }
 .date {
   cursor: pointer;
@@ -16,12 +16,11 @@ td {
   padding: 8px;
 }
 .active div {
-  color: white;
-  background-color: #90A955;
+  background-color: #E0E0E0;
 }
 .selected div {
   color: white;
-  background-color: #4F772D;
+  background-color: #3D82F8;
 }
 .disabled div {
   opacity: 33%;
@@ -37,5 +36,5 @@ td {
 }
 
 .tasks .dot {
-  background-color: #DC3545;
+  background-color: #DB462E;
 }
