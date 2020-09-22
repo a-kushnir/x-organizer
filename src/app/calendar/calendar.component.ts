@@ -30,6 +30,7 @@ export class CalendarComponent implements OnInit {
               public tasksService: TasksService) {
     dateService.month.subscribe(this.generateCalendar.bind(this));
     dateService.date.subscribe(this.generateCalendar.bind(this));
+    dateService.hasTasks.subscribe(this.reloadCalendar.bind(this));
   }
 
   ngOnInit(): void {
@@ -41,11 +42,17 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  reloadCalendar(): void {
+    this.ngOnInit();
+    this.generateCalendar();
+  }
+
   generateCalendar(): void {
     const today = moment();
     const month = this.dateService.month.value;
     const startDate = month.clone().startOf('month').startOf('week');
     const endDate = month.clone().endOf('month').endOf('week');
+    let hasTasksNext = null;
 
     this.weeks = [];
 
@@ -59,11 +66,19 @@ export class CalendarComponent implements OnInit {
           const disabled = !current.isSame(month, 'month');
           const hasTasks = this.hasTasks[current.format('YYYY-MM-DD')];
 
+          if (selected) {
+            hasTasksNext = hasTasks;
+          }
+
           return {
             date, active, selected, disabled, hasTasks
           };
         })
       });
+    }
+
+    if (hasTasksNext !== this.dateService.hasTasks.value) {
+      this.dateService.hasTasks.next(hasTasksNext);
     }
   }
 

@@ -36,6 +36,10 @@ export class OrganizerComponent implements OnInit {
   remove(task: Task): void {
     this.tasksService.remove(task).subscribe(_ => {
       this.tasks = this.tasks.filter(t => t.id !== task.id);
+
+      if (this.tasks.length === 0) {
+        this.dateService.hasTasks.next(false);
+      }
     }, err => console.error(err));
   }
 
@@ -50,6 +54,10 @@ export class OrganizerComponent implements OnInit {
     this.tasksService.create(task).subscribe(newTask => {
       this.form.reset();
       this.tasks.push(newTask);
+
+      if (this.tasks.length === 1) {
+        this.dateService.hasTasks.next(true);
+      }
     }, err => console.error(err));
   }
 }

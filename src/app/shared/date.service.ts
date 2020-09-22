@@ -8,19 +8,23 @@ import { BehaviorSubject } from 'rxjs';
 export class DateService {
   public month: BehaviorSubject<moment.Moment>;
   public date: BehaviorSubject<moment.Moment>;
+  public hasTasks: BehaviorSubject<boolean>;
 
   constructor() {
     const now = moment();
     this.month = new BehaviorSubject<moment.Moment>(now.clone().startOf('month'));
     this.date = new BehaviorSubject<moment.Moment>(now.clone().startOf('day'));
+    this.hasTasks = new BehaviorSubject<boolean>(null);
   }
 
   setDate(date: moment.Moment): void {
     this.date.next(date);
+    this.hasTasks.next(null);
   }
 
   addMonths(amount: number): void {
     const value = this.month.value.add(amount, 'month');
     this.month.next(value);
+    this.hasTasks.next(null);
   }
 }
