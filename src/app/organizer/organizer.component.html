@@ -8,15 +8,10 @@
     </div>
   </div>
   <ul class="list-group text-left">
-    <li class="list-group-item">
+    <li class="list-group-item" *ngFor="let task of tasks">
       <input type="checkbox" aria-label="Checkbox for following text input">
-      Porta ac consectetur ac
-      <button type="submit" class="btn btn-danger btn-sm float-right"><fa-icon [icon]="faTrash"></fa-icon></button>
-    </li>
-    <li class="list-group-item">
-      <input type="checkbox" aria-label="Checkbox for following text input">
-      Vestibulum at eros
-      <button type="submit" class="btn btn-danger btn-sm float-right"><fa-icon [icon]="faTrash"></fa-icon></button>
+      {{ task.note }}
+      <button type="submit" class="btn btn-danger btn-sm float-right" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></button>
     </li>
 
     <li class="list-group-item new-item">
