@@ -23,7 +23,7 @@ td {
   background-color: #3D82F8;
 }
 .disabled div {
-  opacity: 33%;
+  opacity: 0.33;
 }
 
 .dot {
