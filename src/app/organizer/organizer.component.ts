@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faTrash, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlusCircle, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateService } from '../shared/date.service';
 import { TasksService, Task } from '../shared/tasks.service';
@@ -11,11 +11,16 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./organizer.component.scss']
 })
 export class OrganizerComponent implements OnInit {
+  readonly faEdit = faEdit;
   readonly faTrash = faTrash;
   readonly faPlusCircle = faPlusCircle;
+  readonly faCheck = faCheck;
+  readonly faTimes = faTimes;
 
-  form: FormGroup;
+  formNew: FormGroup;
+  formEdit: FormGroup;
   tasks: Task[] = [];
+  editTask: Task = null;
 
   constructor(public dateService: DateService,
               public tasksService: TasksService) {
@@ -26,16 +31,52 @@ export class OrganizerComponent implements OnInit {
       switchMap(value => this.tasksService.load(value))
     ).subscribe(tasks => {
       this.tasks = tasks;
+      this.editTask = null;
     });
 
-    this.form = new FormGroup({
+    this.formNew = new FormGroup({
+      note: new FormControl('', Validators.required)
+    });
+    this.formEdit = new FormGroup({
       note: new FormControl('', Validators.required)
     });
   }
 
   toggle(task: Task): void {
     task.done = !task.done;
-    this.tasksService.update(task).subscribe(_ => {
+    this.save(task);
+  }
+
+  edit(task: Task): void {
+    this.editTask = task;
+    this.formEdit.reset();
+    if (task) {
+      this.formEdit.setValue({note: task.note});
+    }
+  }
+
+  update(task: Task): void {
+    const {note} = this.formEdit.value;
+    task.note = note;
+    this.save(task);
+    this.edit(null);
+  }
+
+  create(): void {
+    const {note} = this.formNew.value;
+
+    const task: Task = {
+      date: this.dateService.date.value,
+      note
+    };
+
+    this.tasksService.create(task).subscribe(newTask => {
+      this.formNew.reset();
+      this.tasks.push(newTask);
+
+      if (this.tasks.length === 1) {
+        this.dateService.hasTasks.next(true);
+      }
     }, err => console.error(err));
   }
 
@@ -49,21 +90,8 @@ export class OrganizerComponent implements OnInit {
     }, err => console.error(err));
   }
 
-  submit(): void {
-    const {note} = this.form.value;
-
-    const task: Task = {
-      date: this.dateService.date.value,
-      note
-    };
-
-    this.tasksService.create(task).subscribe(newTask => {
-      this.form.reset();
-      this.tasks.push(newTask);
-
-      if (this.tasks.length === 1) {
-        this.dateService.hasTasks.next(true);
-      }
+  private save(task: Task): void {
+    this.tasksService.update(task).subscribe(_ => {
     }, err => console.error(err));
   }
 }

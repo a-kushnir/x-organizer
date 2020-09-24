@@ -26,7 +26,7 @@ ul {
       margin-right: 4px;
     }
 
-    &.new-item {
+    &.new-item, &.edit-item {
       padding-left: 21px;
       padding-top: 0;
       padding-bottom: 0;
@@ -34,13 +34,32 @@ ul {
   }
 }
 
-.btn-primary {
-  background-color: #3D82F8;
-  border-color: #3D82F8;
+.link {
+  margin-left: 10px;
+  display: inline-block;
+  cursor: pointer;
+  width: 18px;
 }
-.btn-danger {
-  background-color: #DB462E;
-  border-color: #DB462E;
+.link-add {
+  margin-left: 38px;
+}
+.link-add, .link-save {
+  color: #3D82F8;
+  &:hover {
+    color: #053a95;
+  }
+}
+.link-edit, .link-cancel {
+  color: #aaaaaa;
+  &:hover {
+    color: #555555;
+  }
+}
+.link-delete {
+  color: #DB462E;
+  &:hover {
+    color: #712013;
+  }
 }
 
 ul li span.done {

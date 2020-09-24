@@ -12,17 +12,28 @@
       <i class="text-muted">No Tasks</i>
     </li>
 
-    <li class="list-group-item" *ngFor="let task of tasks">
-      <input type="checkbox" aria-label="Checkbox for following text input" [checked]="task.done === true ? 'checked' : null" (click)="toggle(task)">
-      <span [class]="task.done === true ? 'done' : null">{{ task.note }}</span>
-      <button type="submit" class="btn btn-danger btn-sm float-right" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></button>
+    <li [class]="{ 'list-group-item': true, 'edit-item': editTask === task }" *ngFor="let task of tasks">
+      <div *ngIf="editTask !== task">
+        <input type="checkbox" aria-label="Checkbox for following text input" [checked]="task.done === true ? 'checked' : null" (click)="toggle(task)">
+        <span [class]="task.done === true ? 'done' : null">{{ task.note }}</span>
+        <a class="link link-delete float-right" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></a>
+        <a class="link link-edit float-right" (click)="edit(task)"><fa-icon [icon]="faEdit"></fa-icon></a>
+      </div>
+      <div *ngIf="editTask === task">
+        <form class="form-inline" (ngSubmit)="update(task)" [formGroup]="formEdit">
+          <label class="sr-only" for="edit-task">Edit Task</label>
+          <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="edit-task" placeholder="Edit Task">
+          <a class="link link-cancel float-right" (click)="edit(null)"><fa-icon [icon]="faTimes"></fa-icon></a>
+          <a class="link link-save float-right" (click)="update(task)"><fa-icon [icon]="faCheck"></fa-icon></a>
+        </form>
+      </div>
     </li>
 
     <li class="list-group-item new-item">
-      <form class="form-inline" (ngSubmit)="submit()" [formGroup]="form">
-        <label class="sr-only" for="new-note">Name</label>
-        <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-note" placeholder="New Task">
-        <button type="submit" class="btn btn-primary btn-sm"><fa-icon [icon]="faPlusCircle"></fa-icon></button>
+      <form class="form-inline" (ngSubmit)="create()" [formGroup]="formNew">
+        <label class="sr-only" for="new-task">New Task</label>
+        <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task">
+        <a class="link link-add"><fa-icon [icon]="faPlusCircle" (click)="create()"></fa-icon></a>
       </form>
     </li>
   </ul>
