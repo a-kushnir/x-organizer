@@ -42,3 +42,7 @@ ul {
   background-color: #DB462E;
   border-color: #DB462E;
 }
+
+ul li span.done {
+  text-decoration: line-through;
+}

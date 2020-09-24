@@ -8,6 +8,7 @@ export interface Task {
   id?: string;
   date?: moment.Moment;
   note: string;
+  done?: boolean;
 }
 
 interface CreateResponse {
@@ -34,12 +35,18 @@ export class TasksService {
   }
 
   create(task: Task): Observable<Task> {
-    const { note } = task;
+    const { note, done } = task;
     return this.http
       .post<CreateResponse>(`${TasksService.BASE_URL}/${this.to_db_date(task.date)}.json`, { note })
       .pipe(map(response => {
         return {...task, id: response.name };
       }));
+  }
+
+  update(task: Task): Observable<void> {
+    const { note, done } = task;
+    return this.http
+      .patch<void>(`${TasksService.BASE_URL}/${this.to_db_date(task.date)}/${task.id}.json`, { note, done });
   }
 
   remove(task: Task): Observable<void> {

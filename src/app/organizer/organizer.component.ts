@@ -33,6 +33,12 @@ export class OrganizerComponent implements OnInit {
     });
   }
 
+  toggle(task: Task): void {
+    task.done = !task.done;
+    this.tasksService.update(task).subscribe(_ => {
+    }, err => console.error(err));
+  }
+
   remove(task: Task): void {
     this.tasksService.remove(task).subscribe(_ => {
       this.tasks = this.tasks.filter(t => t.id !== task.id);
