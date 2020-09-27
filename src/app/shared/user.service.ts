@@ -40,7 +40,10 @@ export class UserService {
     return this.http
       .get<User[]>(`${UserService.BASE_URL}/${this.encode(user.email)}.json`)
       .pipe(map(users => {
-        return users ? Object.values(users)[0] : null;
+        if (!users) {
+          return null;
+        }
+        return Object.keys(users).map(key => ({...users[key], id: key}))[0];
       }));
   }
 
