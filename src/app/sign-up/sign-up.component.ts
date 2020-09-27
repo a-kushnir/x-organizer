@@ -32,6 +32,7 @@ export class SignUpComponent implements OnInit {
           this.userService.create(user).subscribe(newUser => {
             this.form.reset();
             this.userService.user.next(newUser);
+            this.userService.page.next('sign-in');
           }, error => console.error(error));
         }
       }, error => console.error(error));
