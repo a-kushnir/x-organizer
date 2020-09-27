@@ -9,6 +9,7 @@ export interface Task {
   id?: string;
   date?: moment.Moment;
   note: string;
+  deleted?: boolean;
   done?: boolean;
 }
 
@@ -48,9 +49,9 @@ export class TasksService {
   }
 
   update(task: Task): Observable<void> {
-    const { note, done } = task;
+    const { note, done, deleted } = task;
     return this.http
-      .patch<void>(`${this.base_url()}/${this.to_db_date(task.date)}/${task.id}.json`, { note, done });
+      .patch<void>(`${this.base_url()}/${this.to_db_date(task.date)}/${task.id}.json`, { note, done, deleted });
   }
 
   remove(task: Task): Observable<void> {

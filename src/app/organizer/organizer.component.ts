@@ -22,14 +22,21 @@ export class OrganizerComponent implements OnInit {
   tasks: Task[] = [];
   editTask: Task = null;
 
-  constructor(public dateService: DateService,
-              public tasksService: TasksService) {
+  constructor(private dateService: DateService,
+              private tasksService: TasksService) {
   }
 
   ngOnInit(): void {
     this.dateService.date.pipe(
       switchMap(value => this.tasksService.load(value))
     ).subscribe(tasks => {
+
+      this.tasks.map(task => {
+        if (task.deleted) {
+          this.remove_forever(task);
+        }
+      });
+
       this.tasks = tasks;
       this.editTask = null;
     });
@@ -71,22 +78,42 @@ export class OrganizerComponent implements OnInit {
     };
 
     this.tasksService.create(task).subscribe(newTask => {
-      this.formNew.reset();
-      this.tasks.push(newTask);
-
-      if (this.tasks.length === 1) {
+      if (!this.hasTasks()) {
         this.dateService.hasTasks.next(true);
       }
+
+      this.formNew.reset();
+      this.tasks.push(newTask);
     }, error => console.error(error));
   }
 
   remove(task: Task): void {
-    this.tasksService.remove(task).subscribe(_ => {
-      this.tasks = this.tasks.filter(t => t.id !== task.id);
+    task.deleted = true;
+    this.save(task);
 
-      if (this.tasks.length === 0) {
-        this.dateService.hasTasks.next(false);
+    if (!this.hasTasks()) {
+      this.dateService.hasTasks.next(false);
+    }
+  }
+
+  undo(task: Task): void {
+    task.deleted = null;
+    this.save(task);
+  }
+
+  private hasTasks(): boolean {
+    let result = false;
+    this.tasks.map(task => {
+      if (!task.deleted) {
+        result = true;
+        return true;
       }
+    });
+    return result;
+  }
+
+  private remove_forever(task): void {
+    this.tasksService.remove(task).subscribe(_ => {
     }, error => console.error(error));
   }
 
