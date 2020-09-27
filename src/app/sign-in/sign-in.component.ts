@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User, UserService} from '../shared/user.service';
+import {PasswordService} from '../shared/password.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -24,7 +25,7 @@ export class SignInComponent implements OnInit {
     const {email, password} = this.form.value;
     const user: User = {email, password};
     this.userService.load(user).subscribe(newUser => {
-      if (newUser && newUser.password === password) {
+      if (newUser && new PasswordService().compare(password, newUser.password)) {
         this.userService.user.next(newUser);
         this.form.reset();
       }

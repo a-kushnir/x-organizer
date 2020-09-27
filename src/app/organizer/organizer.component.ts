@@ -22,7 +22,7 @@ export class OrganizerComponent implements OnInit {
   tasks: Task[] = [];
   editTask: Task = null;
 
-  constructor(private dateService: DateService,
+  constructor(public dateService: DateService,
               private tasksService: TasksService) {
   }
 

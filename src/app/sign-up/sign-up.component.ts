@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User, UserService } from '../shared/user.service';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User, UserService} from '../shared/user.service';
+import {PasswordService} from '../shared/password.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -25,7 +26,7 @@ export class SignUpComponent implements OnInit {
   submit(): void {
     const {name, email, password, confirmation} = this.form.value;
     if (password === confirmation) {
-      const user: User = {name, email, password};
+      const user: User = {name, email, password: new PasswordService().hash(password)};
       this.userService.create(user).subscribe(newUser => {
         this.form.reset();
         this.userService.user.next(newUser);
