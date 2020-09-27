@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {  BehaviorSubject, Observable } from 'rxjs';
+import {Task} from './tasks.service';
 
 export class User {
   id?: string;
   name?: string;
   email: string;
   password: string;
+  theme?: string;
 }
 
 interface CreateResponse {
@@ -45,6 +47,11 @@ export class UserService {
         }
         return Object.keys(users).map(key => ({...users[key], id: key}))[0];
       }));
+  }
+
+  update(user: User): Observable<void> {
+    return this.http
+      .patch<void>(`${UserService.BASE_URL}/${this.encode(user.email)}.json`, user);
   }
 
   encode(value: string): string {

@@ -26,6 +26,7 @@ export class SignInComponent implements OnInit {
     const user: User = {email, password};
     this.userService.load(user).subscribe(newUser => {
       if (newUser && new PasswordService().compare(password, newUser.password)) {
+        this.updateProfile(newUser);
         this.userService.user.next(newUser);
         this.form.reset();
       }
@@ -35,5 +36,12 @@ export class SignInComponent implements OnInit {
   switch(): void {
     this.userService.page.next('sign-up');
   }
-}
 
+  private updateProfile(user: User): void {
+    if (!user.theme) {
+      user.theme = 'light';
+      this.userService.update(user).subscribe(_ => {
+        }, error => console.error(error));
+    }
+  }
+}

@@ -26,7 +26,7 @@ export class SignUpComponent implements OnInit {
   submit(): void {
     const {name, email, password, confirmation} = this.form.value;
     if (password === confirmation) {
-      const user: User = {name, email, password: new PasswordService().hash(password)};
+      const user: User = {name, email, password: new PasswordService().hash(password), theme: 'light'};
       this.userService.load(user).subscribe(existingUser => {
         if (!existingUser) {
           this.userService.create(user).subscribe(newUser => {
