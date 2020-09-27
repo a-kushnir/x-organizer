@@ -43,28 +43,12 @@ export class OrganizerComponent implements OnInit {
     });
   }
 
-  toggle(task: Task): void {
-    task.done = !task.done;
-    this.save(task);
-  }
-
-  edit(task: Task): void {
-    this.editTask = task;
-    this.formEdit.reset();
-    if (task) {
-      this.formEdit.setValue({note: task.note});
-    }
-  }
-
-  update(task: Task): void {
-    const {note} = this.formEdit.value;
-    task.note = note;
-    this.save(task);
-    this.edit(null);
-  }
-
   create(): void {
     const {note} = this.formNew.value;
+
+    if (!note || note.trim() === '') {
+      return;
+    }
 
     const task: Task = {
       date: this.dateService.date.value,
@@ -79,6 +63,31 @@ export class OrganizerComponent implements OnInit {
       this.formNew.reset();
       this.tasks.push(newTask);
     }, error => console.error(error));
+  }
+
+  edit(task: Task): void {
+    this.editTask = task;
+    this.formEdit.reset();
+    if (task) {
+      this.formEdit.setValue({note: task.note});
+    }
+  }
+
+  toggle(task: Task): void {
+    task.done = !task.done;
+    this.save(task);
+  }
+
+  update(task: Task): void {
+    const {note} = this.formEdit.value;
+
+    if (!note || note.trim() === '') {
+      return;
+    }
+
+    task.note = note;
+    this.save(task);
+    this.edit(null);
   }
 
   remove(task: Task): void {
