@@ -1,15 +1,23 @@
 <app-navigation></app-navigation>
 <app-header></app-header>
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-12" *ngIf="!user">
+  <div class="row" *ngIf="!user">
+    <div class="col-12">
       <app-sign-in *ngIf="page === 'sign-in'"></app-sign-in>
       <app-sign-up *ngIf="page === 'sign-up'"></app-sign-up>
     </div>
-    <div class="col-12" *ngIf="user">
-      <app-selector></app-selector>
-      <app-calendar></app-calendar>
-      <app-organizer></app-organizer>
+  </div>
+  <div class="row" *ngIf="user">
+    <div class="col-sm-12 col-lg-6">
+      <div class="max-width-limit mx-sm-auto ml-lg-auto mr-lg-0">
+        <app-selector></app-selector>
+        <app-calendar></app-calendar>
+      </div>
+    </div>
+    <div class="col-sm-12 col-lg-6 mr-lg-auto">
+      <div class="max-width-limit mx-sm-auto mr-lg-auto ml-lg-0">
+        <app-organizer></app-organizer>
+      </div>
     </div>
   </div>
 </div>
