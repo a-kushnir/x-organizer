@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { User, UserService } from './shared/user.service';
+import {Component, OnInit} from '@angular/core';
+import {User, UserService} from './shared/user.service';
+import {DateService} from './shared/date.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +9,34 @@ import { User, UserService } from './shared/user.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'x-organizer';
   user: User;
   page: string;
 
-  constructor(public userService: UserService) {
+  constructor(private userService: UserService,
+              private dateService: DateService) {
   }
 
   ngOnInit(): void {
+    this.handlePageRefresh();
     this.userService.user.subscribe(user => {
       this.user = user;
     });
     this.userService.page.subscribe(page => {
       this.page = page;
+    });
+  }
+
+  private handlePageRefresh(): void {
+    this.userService.user.next(JSON.parse(localStorage.getItem('user')));
+    this.userService.user.subscribe(value => {
+      localStorage.removeItem('user');
+      localStorage.setItem('user', JSON.stringify(value));
+    });
+
+    this.dateService.date.next(moment(localStorage.getItem('date'), 'YYYY-MM-DD'));
+    this.dateService.date.subscribe(value => {
+      localStorage.removeItem('date');
+      localStorage.setItem('date', value.format('YYYY-MM-DD'));
     });
   }
 }
