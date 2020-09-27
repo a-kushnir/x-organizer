@@ -1,0 +1,25 @@
+<form class="mx-auto" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="text-center">
+    <img src="/favicon.svg" width="64" height="64" class="d-inline-block align-top" alt="">
+  </div>
+  <h2 class="text-center">
+    Create you account
+  </h2>
+  <div class="form-group">
+    <label for="sign-up-name">Name</label>
+    <input type="text" formControlName="name" class="form-control" id="sign-up-name">
+  </div>
+  <div class="form-group">
+    <label for="sign-up-email">Email</label>
+    <input type="text" formControlName="email" class="form-control" id="sign-up-email">
+  </div>
+  <div class="form-group">
+    <label for="sign-up-password">Password</label>
+    <input type="password" formControlName="password" class="form-control" id="sign-up-password">
+  </div>
+  <div class="form-group">
+    <label for="sign-up-confirmation">Confirmation</label>
+    <input type="password" formControlName="confirmation" class="form-control" id="sign-up-confirmation">
+  </div>
+  <button type="button" class="btn btn-primary" (click)="submit()">Sign Up</button> or <a href="#" (click)="switch()">Sign In</a>
+</form>

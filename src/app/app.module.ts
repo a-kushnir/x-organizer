@@ -13,6 +13,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MonthPipe } from './shared/month.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { HttpClientModule } from '@angular/common/http';
     CalendarComponent,
     OrganizerComponent,
     SelectorComponent,
-    MonthPipe
+    MonthPipe,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
