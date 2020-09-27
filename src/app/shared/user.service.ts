@@ -48,6 +48,6 @@ export class UserService {
   }
 
   encode(value: string): string {
-    return encodeURIComponent(value.replace('.', '&'));
+    return encodeURIComponent(value.replace(/\./gi, '&'));
   }
 }
