@@ -15,7 +15,9 @@ interface CreateResponse {
   name: string;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({
+  providedIn: 'root'
+})
 export class TasksService {
   static BASE_URL = 'https://x-organizer.firebaseio.com/tasks';
   static DB_DATE_FORMAT = 'YYYY-MM-DD';
@@ -37,7 +39,7 @@ export class TasksService {
   create(task: Task): Observable<Task> {
     const { note, done } = task;
     return this.http
-      .post<CreateResponse>(`${TasksService.BASE_URL}/${this.to_db_date(task.date)}.json`, { note })
+      .post<CreateResponse>(`${TasksService.BASE_URL}/${this.to_db_date(task.date)}.json`, { note, done })
       .pipe(map(response => {
         return {...task, id: response.name };
       }));

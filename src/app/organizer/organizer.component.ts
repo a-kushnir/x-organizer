@@ -77,7 +77,7 @@ export class OrganizerComponent implements OnInit {
       if (this.tasks.length === 1) {
         this.dateService.hasTasks.next(true);
       }
-    }, err => console.error(err));
+    }, error => console.error(error));
   }
 
   remove(task: Task): void {
@@ -87,11 +87,11 @@ export class OrganizerComponent implements OnInit {
       if (this.tasks.length === 0) {
         this.dateService.hasTasks.next(false);
       }
-    }, err => console.error(err));
+    }, error => console.error(error));
   }
 
   private save(task: Task): void {
     this.tasksService.update(task).subscribe(_ => {
-    }, err => console.error(err));
+    }, error => console.error(error));
   }
 }

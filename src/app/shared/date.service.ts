@@ -6,9 +6,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DateService {
-  public month: BehaviorSubject<moment.Moment>;
-  public date: BehaviorSubject<moment.Moment>;
-  public hasTasks: BehaviorSubject<boolean>;
+  month: BehaviorSubject<moment.Moment>;
+  date: BehaviorSubject<moment.Moment>;
+  hasTasks: BehaviorSubject<boolean>;
 
   constructor() {
     const now = moment();
