@@ -27,9 +27,13 @@ export class SignUpComponent implements OnInit {
     const {name, email, password, confirmation} = this.form.value;
     if (password === confirmation) {
       const user: User = {name, email, password: new PasswordService().hash(password)};
-      this.userService.create(user).subscribe(newUser => {
-        this.form.reset();
-        this.userService.user.next(newUser);
+      this.userService.load(user).subscribe(existingUser => {
+        if (!existingUser) {
+          this.userService.create(user).subscribe(newUser => {
+            this.form.reset();
+            this.userService.user.next(newUser);
+          }, error => console.error(error));
+        }
       }, error => console.error(error));
     }
   }

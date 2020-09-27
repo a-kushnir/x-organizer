@@ -30,14 +30,8 @@ export class OrganizerComponent implements OnInit {
     this.dateService.date.pipe(
       switchMap(value => this.tasksService.load(value))
     ).subscribe(tasks => {
-
-      this.tasks.map(task => {
-        if (task.deleted) {
-          this.remove_forever(task);
-        }
-      });
-
-      this.tasks = tasks;
+      this.clean_deleted(this.tasks);
+      this.tasks = this.clean_deleted(tasks);
       this.editTask = null;
     });
 
@@ -110,6 +104,15 @@ export class OrganizerComponent implements OnInit {
       }
     });
     return result;
+  }
+
+  private clean_deleted(tasks): Task[] {
+    tasks.map(task => {
+      if (task.deleted) {
+        this.remove_forever(task);
+      }
+    });
+    return tasks.filter(task => !task.deleted);
   }
 
   private remove_forever(task): void {
