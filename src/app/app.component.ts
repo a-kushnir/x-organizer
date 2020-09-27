@@ -27,13 +27,19 @@ export class AppComponent implements OnInit {
   }
 
   private handlePageRefresh(): void {
-    this.userService.user.next(JSON.parse(localStorage.getItem('user')));
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.userService.user.next(JSON.parse(user));
+    }
     this.userService.user.subscribe(value => {
       localStorage.removeItem('user');
       localStorage.setItem('user', JSON.stringify(value));
     });
 
-    this.dateService.date.next(moment(localStorage.getItem('date'), 'YYYY-MM-DD'));
+    const date = localStorage.getItem('date');
+    if (date) {
+      this.dateService.date.next(moment(date, 'YYYY-MM-DD'));
+    }
     this.dateService.date.subscribe(value => {
       localStorage.removeItem('date');
       localStorage.setItem('date', value.format('YYYY-MM-DD'));
