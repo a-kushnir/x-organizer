@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {  BehaviorSubject, Observable } from 'rxjs';
-import {Task} from './tasks.service';
 
 export class User {
   id?: string;
@@ -75,8 +74,10 @@ export class UserService {
   }
 
   update(user: User): Observable<void> {
+    const {name, email, password, theme} = user; // DELETE ID
+    const obj = {name, email, password, theme};
     return this.http
-      .patch<void>(`${UserService.BASE_URL}/${this.encode(user.email)}.json`, user);
+      .patch<void>(`${UserService.BASE_URL}/${this.encode(user.email)}/${this.encode(user.id)}.json`, obj);
   }
 
   encode(value: string): string {
