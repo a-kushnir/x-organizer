@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User, UserService} from '../shared/user.service';
 import {PasswordService} from '../shared/password.service';
+import {ProfileService} from '../shared/profile.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,7 +12,8 @@ import {PasswordService} from '../shared/password.service';
 export class SignUpComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private profileService: ProfileService) {
   }
 
   ngOnInit(): void {
@@ -24,9 +26,14 @@ export class SignUpComponent implements OnInit {
   }
 
   submit(): void {
-    const {name, email, password, confirmation} = this.form.value;
+    const {name, email, confirmation} = this.form.value;
+    let {password} = this.form.value;
+
     if (password === confirmation) {
-      const user: User = {name, email, password: new PasswordService().hash(password), theme: 'light'};
+      const theme = this.profileService.theme.value;
+      password = new PasswordService().hash(password);
+      const user: User = {name, email, password, theme};
+
       this.userService.load(user).subscribe(existingUser => {
         if (!existingUser) {
           this.userService.create(user).subscribe(newUser => {
