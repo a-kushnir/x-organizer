@@ -35,13 +35,10 @@ export class ProfileService {
   }
 
   loadThemeSync(): void {
+    require.include(`src/styles/light-theme.scss`);
+    require.include(`src/styles/dark-theme.scss`);
     const theme = this.theme.value;
-    // Heroku doesn't allow using of require(`src/styles/{theme}-theme.scss`);
-    if (theme === 'light') {
-      require('src/styles/light-theme.scss');
-    } else if (theme === 'dark') {
-      require('src/styles/dark-theme.scss');
-    }
+    import(`src/styles/${theme}-theme.scss`);
   }
 
   switchTheme(): void {
