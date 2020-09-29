@@ -25,6 +25,12 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  enterSubmit(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.submit();
+    }
+  }
+
   submit(): void {
     const {name, email, confirmation} = this.form.value;
     let {password} = this.form.value;
