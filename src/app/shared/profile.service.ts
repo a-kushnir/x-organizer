@@ -35,9 +35,9 @@ export class ProfileService {
   }
 
   loadThemeSync(): void {
-    delete require.cache[require.resolve('src/styles/light-theme.scss')];
-    delete require.cache[require.resolve('src/styles/dark-theme.scss')];
-    return require(`src/styles/${this.theme.value}-theme.scss`);
+    require.resolve(`src/styles/light-theme.scss`);
+    require.resolve(`src/styles/dark-theme.scss`);
+    import(`src/styles/${this.theme.value}-theme.scss`);
   }
 
   switchTheme(): void {
