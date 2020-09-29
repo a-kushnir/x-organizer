@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User, UserService} from './shared/user.service';
 import {DateService} from './shared/date.service';
-import * as moment from 'moment';
 import {ProfileService} from './shared/profile.service';
 
 @Component({

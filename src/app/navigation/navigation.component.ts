@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {User, UserService} from '../shared/user.service';
+import {ProfileService} from '../shared/profile.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,16 +8,24 @@ import {User, UserService} from '../shared/user.service';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-
   user: User;
+  theme: string;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private profileService: ProfileService) {
   }
 
   ngOnInit(): void {
     this.userService.user.subscribe(user => {
       this.user = user;
     });
+    this.profileService.theme.subscribe(theme => {
+      this.theme = theme;
+    });
+  }
+
+  switchTheme(): void {
+    this.profileService.switchTheme();
   }
 
   sign_out(): void {
