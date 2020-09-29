@@ -25,3 +25,6 @@ app-calendar .dow,
 app-calendar .date.active div {
   background-color: #e8e9ea;
 }
+app-calendar .date.weekend div {
+  background-color: rgba(#000, .05);
+}

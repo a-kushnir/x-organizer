@@ -9,6 +9,7 @@ class Day {
   active: boolean;
   selected: boolean;
   disabled: boolean;
+  weekend: boolean;
   hasTasks: boolean;
 }
 
@@ -64,15 +65,14 @@ export class CalendarComponent implements OnInit {
           const active = current.isSame(today, 'day');
           const selected = current.isSame(this.dateService.date.value, 'day');
           const disabled = !current.isSame(month, 'month');
+          const weekend = current.day() === 0 || current.day() === 6;
           const hasTasks = this.hasTasks[current.format('YYYY-MM-DD')];
 
           if (selected) {
             hasTasksNext = hasTasks;
           }
 
-          return {
-            date, active, selected, disabled, hasTasks
-          };
+          return { date, active, selected, disabled, weekend, hasTasks };
         })
       });
     }
