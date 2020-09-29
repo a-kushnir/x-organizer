@@ -11,8 +11,8 @@ export class ProfileService {
 
   constructor(private userService: UserService) {
     this.theme = new BehaviorSubject<string>(ProfileService.loadTheme());
-    alert(`src/styles/${this.theme.value}-theme.scss`); // debug problem in heroku
-    require(`src/styles/${this.theme.value}-theme.scss`);
+    // alert(`src/styles/${this.theme.value}-theme.scss`); // debug problem in heroku
+    // require(`src/styles/${this.theme.value}-theme.scss`);
 
     this.theme.subscribe(theme => {
       ProfileService.saveTheme(theme);
