@@ -11,7 +11,7 @@ export class ProfileService {
 
   constructor(private userService: UserService) {
     this.theme = new BehaviorSubject<string>(ProfileService.loadTheme());
-    import(`src/styles/${this.theme.value}-theme.scss`);
+    this.loadThemeSync();
 
     this.theme.subscribe(theme => {
       ProfileService.saveTheme(theme);
@@ -25,13 +25,23 @@ export class ProfileService {
     });
   }
 
-  private static loadTheme(): string {
+  static loadTheme(): string {
     const theme = localStorage.getItem('theme');
     return theme ?? 'light';
   }
   private static saveTheme(theme: string): void {
     localStorage.removeItem('theme');
     localStorage.setItem('theme', theme);
+  }
+
+  loadThemeSync(): void {
+    const theme = this.theme.value;
+    // Heroku doesn't allow using of require(`src/styles/{theme}-theme.scss`);
+    if (theme === 'light') {
+      require('src/styles/light-theme.scss');
+    } else if (theme === 'dark') {
+      require('src/styles/dark-theme.scss');
+    }
   }
 
   switchTheme(): void {
