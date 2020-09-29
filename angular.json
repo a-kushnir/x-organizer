@@ -26,8 +26,17 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "src/styles.scss"
+              "src/styles/application.scss",
+              {
+                "input": "src/styles/light-theme.scss",
+                "bundleName": "light-theme",
+                "inject": false
+              },
+              {
+                "input": "src/styles/dark-theme.scss",
+                "bundleName": "dark-theme",
+                "inject": false
+              }
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.js",

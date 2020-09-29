@@ -6,7 +6,6 @@ td {
   padding: 3px;
 }
 .dow {
-  background-color: #eeeeee;
   font-weight: bold;
 }
 .date {
@@ -14,9 +13,6 @@ td {
 }
 .date div {
   padding: 8px;
-}
-.active div {
-  background-color: #E0E0E0;
 }
 .selected div {
   color: white;

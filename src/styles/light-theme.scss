@@ -1,0 +1,27 @@
+// Body
+$body-color: #212529;
+$body-bg: #fff;
+$list-group-bg: #fff;
+
+// Forms
+$input-color: #495057;
+$input-bg: #fff;
+
+// List Group
+//$list-group-bg: #303030;
+//$list-group-border-color: #dee2e6;
+
+// Navigation
+$light:                              #e8e9ea;
+//$navbar-light-color:                 rgba(#fff, .5);
+//$navbar-light-hover-color:           rgba(#fff, .75);
+//$navbar-light-active-color:          #fff;
+//$navbar-light-disabled-color:        rgba(#fff, .25);
+//$navbar-light-toggler-border-color:  rgba(#fff, .1);
+
+@import "~bootstrap/scss/bootstrap";
+
+app-calendar .dow,
+app-calendar .date.active div {
+  background-color: #e8e9ea;
+}

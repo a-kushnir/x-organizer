@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {UserService} from './user.service';
+declare var require: any;
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,16 @@ export class ProfileService {
 
   constructor(private userService: UserService) {
     this.theme = new BehaviorSubject<string>(ProfileService.loadTheme());
+    require(`src/styles/${this.theme.value}-theme.scss`);
 
     this.theme.subscribe(theme => {
-      ProfileService.saveTheme(this.theme.value);
+      ProfileService.saveTheme(theme);
     });
 
     userService.user.subscribe(user => {
       if (user && user.theme !== this.theme.value) {
         this.theme.next(user.theme);
+        location.reload();
       }
     });
   }
