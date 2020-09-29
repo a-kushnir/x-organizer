@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import {  BehaviorSubject, Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {Session} from './session';
 
 export class User {
   id?: string;
@@ -25,33 +26,19 @@ export class UserService {
   page: BehaviorSubject<string>;
 
   constructor(private http: HttpClient) {
-    this.user = new BehaviorSubject<User>(UserService.loadUser());
+    this.user = new BehaviorSubject<User>(
+      Session.getObject('user')
+    );
     this.user.subscribe(user => {
-      UserService.saveUser(user);
+      Session.setObject('user', user);
     });
 
-    this.page = new BehaviorSubject<string>(UserService.loadPage());
+    this.page = new BehaviorSubject<string>(
+      Session.getString('page')
+    );
     this.page.subscribe(page => {
-      UserService.savePage(page);
+      Session.setString('page', page);
     });
-  }
-
-  private static loadUser(): User {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  }
-  private static saveUser(user: User): void {
-    localStorage.removeItem('user');
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-
-  private static loadPage(): string {
-    const page = localStorage.getItem('page');
-    return page ?? 'sign-in';
-  }
-  private static savePage(page: string): void {
-    localStorage.removeItem('page');
-    localStorage.setItem('page', page);
   }
 
   create(user: User): Observable<User> {

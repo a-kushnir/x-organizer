@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as moment from 'moment';
-import { BehaviorSubject } from 'rxjs';
-import {User} from './user.service';
+import {BehaviorSubject} from 'rxjs';
+import {Session} from './session';
 
 @Injectable({
   providedIn: 'root'
@@ -12,34 +12,23 @@ export class DateService {
   hasTasks: BehaviorSubject<boolean>;
 
   constructor() {
-    this.month = new BehaviorSubject<moment.Moment>(DateService.loadMonth());
+    const now = moment();
+
+    this.month = new BehaviorSubject<moment.Moment>(
+      Session.getDate('month') ?? now.clone().startOf('month')
+    );
     this.month.subscribe(month => {
-      DateService.saveMonth(month);
+      Session.setDate('month', month);
     });
 
-    this.date = new BehaviorSubject<moment.Moment>(DateService.loadDate());
+    this.date = new BehaviorSubject<moment.Moment>(
+      Session.getDate('date') ?? now.clone().startOf('day')
+    );
     this.date.subscribe(date => {
-      DateService.saveDate(date);
+      Session.setDate('date', date);
     });
 
     this.hasTasks = new BehaviorSubject<boolean>(null);
-  }
-
-  private static loadMonth(): moment.Moment {
-    const value = localStorage.getItem('month');
-    return value ? moment(value, 'YYYY-MM-DD') : moment().clone().startOf('month');
-  }
-  private static saveMonth(month: moment.Moment): void {
-    localStorage.removeItem('month');
-    localStorage.setItem('month', month.format('YYYY-MM-DD'));
-  }
-  private static loadDate(): moment.Moment {
-    const date = localStorage.getItem('date');
-    return date ? moment(date, 'YYYY-MM-DD') : moment().clone().startOf('day');
-  }
-  private static saveDate(date: moment.Moment): void {
-    localStorage.removeItem('date');
-    localStorage.setItem('date', date.format('YYYY-MM-DD'));
   }
 
   setDate(date: moment.Moment): void {
