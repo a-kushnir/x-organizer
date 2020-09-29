@@ -35,8 +35,6 @@ export class ProfileService {
   }
 
   loadThemeSync(): void {
-    require.resolve(`src/styles/light-theme.scss`);
-    require.resolve(`src/styles/dark-theme.scss`);
     import(`src/styles/${this.theme.value}-theme.scss`);
   }
 

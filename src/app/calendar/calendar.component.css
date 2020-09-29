@@ -3,7 +3,7 @@ table {
 }
 td {
   width: 14%;
-  padding: 3px;
+  padding: 3px !important;
 }
 .dow {
   font-weight: bold;
