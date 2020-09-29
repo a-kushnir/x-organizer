@@ -11,7 +11,6 @@ export class ProfileService {
 
   constructor(private userService: UserService) {
     this.theme = new BehaviorSubject<string>(ProfileService.loadTheme());
-    this.loadThemeSync();
 
     this.theme.subscribe(theme => {
       ProfileService.saveTheme(theme);
@@ -32,10 +31,6 @@ export class ProfileService {
   private static saveTheme(theme: string): void {
     localStorage.removeItem('theme');
     localStorage.setItem('theme', theme);
-  }
-
-  loadThemeSync(): void {
-    import(`src/styles/${this.theme.value}-theme.scss`);
   }
 
   switchTheme(): void {
