@@ -10,6 +10,7 @@ import {PasswordService} from '../shared/password.service';
 })
 export class SignInComponent implements OnInit {
   form: FormGroup;
+  submitted = false;
 
   constructor(private userService: UserService) {
   }
@@ -30,13 +31,20 @@ export class SignInComponent implements OnInit {
   submit(): void {
     const {email, password} = this.form.value;
     const user: User = {email, password};
+    this.submitted = true;
+
     this.userService.load(user).subscribe(newUser => {
+      this.submitted = false;
+
       if (newUser && new PasswordService().compare(password, newUser.password)) {
         this.updateProfile(newUser);
         this.userService.user.next(newUser);
         this.form.reset();
       }
-    }, error => console.error(error));
+    }, error => {
+      this.submitted = false;
+      console.error(error);
+    });
   }
 
   switch(): void {

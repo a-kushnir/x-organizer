@@ -11,6 +11,7 @@ import {ProfileService} from '../shared/profile.service';
 })
 export class SignUpComponent implements OnInit {
   form: FormGroup;
+  submitted = false;
 
   constructor(private userService: UserService,
               private profileService: ProfileService) {
@@ -39,16 +40,27 @@ export class SignUpComponent implements OnInit {
       const theme = this.profileService.theme.value;
       password = new PasswordService().hash(password);
       const user: User = {name, email, password, theme};
+      this.submitted = true;
 
       this.userService.load(user).subscribe(existingUser => {
         if (!existingUser) {
           this.userService.create(user).subscribe(newUser => {
+            this.submitted = false;
+
             this.form.reset();
             this.userService.user.next(newUser);
             this.userService.page.next('sign-in');
-          }, error => console.error(error));
+          }, error => {
+            this.submitted = false;
+            console.error(error);
+          });
+        } else {
+          this.submitted = false;
         }
-      }, error => console.error(error));
+      }, error => {
+        this.submitted = false;
+        console.error(error);
+      });
     }
   }
 

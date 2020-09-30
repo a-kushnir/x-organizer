@@ -21,5 +21,7 @@
     <label for="sign-up-confirmation">Confirmation</label>
     <input type="password" formControlName="confirmation" class="form-control" id="sign-up-confirmation">
   </div>
-  <button type="button" class="btn btn-primary" (click)="submit()">Sign Up</button> or <a href="#" (click)="switch()">Sign In</a>
+  <button type="button" class="btn btn-primary" [disabled]="submitted" (click)="submit()">
+    {{submitted ? 'Signing Up' : 'Sign Up'}}
+  </button> or <a href="#" (click)="switch()">Sign In</a>
 </form>

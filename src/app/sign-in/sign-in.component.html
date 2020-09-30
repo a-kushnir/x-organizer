@@ -13,5 +13,7 @@
     <label for="sign-in-password">Password</label>
     <input type="password" formControlName="password" class="form-control" id="sign-in-password">
   </div>
-  <button type="button" class="btn btn-primary" (click)="submit()">Sign In</button> or <a href="#" (click)="switch()">Sign Up</a>
+  <button type="button" class="btn btn-primary" [disabled]="submitted" (click)="submit()">
+    {{submitted ? 'Signing in' : 'Sign In'}}
+  </button> or <a href="#" (click)="switch()">Sign Up</a>
 </form>
