@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as moment from 'moment';
 import {BehaviorSubject} from 'rxjs';
-import {Session} from './session';
+import {LocalStorage} from './local-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +15,17 @@ export class DateService {
     const now = moment();
 
     this.month = new BehaviorSubject<moment.Moment>(
-      Session.getDate('month') ?? now.clone().startOf('month')
+      LocalStorage.getDate('month') ?? now.clone().startOf('month')
     );
     this.month.subscribe(month => {
-      Session.setDate('month', month);
+      LocalStorage.setDate('month', month);
     });
 
     this.date = new BehaviorSubject<moment.Moment>(
-      Session.getDate('date') ?? now.clone().startOf('day')
+      LocalStorage.getDate('date') ?? now.clone().startOf('day')
     );
     this.date.subscribe(date => {
-      Session.setDate('date', date);
+      LocalStorage.setDate('date', date);
     });
 
     this.hasTasks = new BehaviorSubject<boolean>(null);

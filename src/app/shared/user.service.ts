@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Session} from './session';
+import {LocalStorage} from './local-storage';
 
 export class User {
   id?: string;
@@ -27,17 +27,17 @@ export class UserService {
 
   constructor(private http: HttpClient) {
     this.user = new BehaviorSubject<User>(
-      Session.getObject('user')
+      LocalStorage.getObject('user')
     );
     this.user.subscribe(user => {
-      Session.setObject('user', user);
+      LocalStorage.setObject('user', user);
     });
 
     this.page = new BehaviorSubject<string>(
-      Session.getString('page')
+      LocalStorage.getString('page')
     );
     this.page.subscribe(page => {
-      Session.setString('page', page);
+      LocalStorage.setString('page', page);
     });
   }
 

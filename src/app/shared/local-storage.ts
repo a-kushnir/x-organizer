@@ -4,7 +4,7 @@ import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
-export class Session {
+export class LocalStorage {
 
   static getString(key: string): string {
     return localStorage.getItem(key);
