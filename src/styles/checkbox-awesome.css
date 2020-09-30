@@ -33,7 +33,6 @@ icon-beat {  0% {
 }
 
 label {
-  display: block;
   position: relative;
   font-weight: normal;
   cursor: pointer;
