@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User, UserService} from '../shared/user.service';
 import {ProfileService} from '../shared/profile.service';
+import {Pages, PageService} from '../shared/page.service';
 
 @Component({
   selector: 'app-navigation',
@@ -12,6 +13,7 @@ export class NavigationComponent implements OnInit {
   theme: string;
 
   constructor(private userService: UserService,
+              private pageService: PageService,
               private profileService: ProfileService) {
   }
 
@@ -30,5 +32,6 @@ export class NavigationComponent implements OnInit {
 
   sign_out(): void {
     this.userService.user.next(null);
+    this.pageService.page.next(Pages.SignIn);
   }
 }

@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User, UserService} from '../shared/user.service';
 import {PasswordService} from '../shared/password.service';
 import {ProfileService} from '../shared/profile.service';
+import {Pages, PageService} from '../shared/page.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,6 +15,7 @@ export class SignUpComponent implements OnInit {
   submitted = false;
 
   constructor(private userService: UserService,
+              private pageService: PageService,
               private profileService: ProfileService) {
   }
 
@@ -49,7 +51,7 @@ export class SignUpComponent implements OnInit {
 
             this.form.reset();
             this.userService.user.next(newUser);
-            this.userService.page.next('sign-in');
+            this.pageService.page.next(Pages.Home);
           }, error => {
             this.submitted = false;
             console.error(error);
@@ -65,6 +67,6 @@ export class SignUpComponent implements OnInit {
   }
 
   switch(): void {
-    this.userService.page.next('sign-in');
+    this.pageService.page.next(Pages.SignIn);
   }
 }

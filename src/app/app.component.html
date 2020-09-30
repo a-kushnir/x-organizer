@@ -3,8 +3,8 @@
 <div class="container-fluid">
   <div class="row" *ngIf="!user">
     <div class="col-12">
-      <app-sign-in *ngIf="page === 'sign-in'"></app-sign-in>
-      <app-sign-up *ngIf="page === 'sign-up'"></app-sign-up>
+      <app-sign-in *ngIf="page === pages.SignIn"></app-sign-in>
+      <app-sign-up *ngIf="page === pages.SignUp"></app-sign-up>
     </div>
   </div>
   <div class="row" *ngIf="user">

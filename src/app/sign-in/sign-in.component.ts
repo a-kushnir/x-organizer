@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User, UserService} from '../shared/user.service';
+import {Pages, PageService} from '../shared/page.service';
 import {PasswordService} from '../shared/password.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class SignInComponent implements OnInit {
   form: FormGroup;
   submitted = false;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private pageService: PageService) {
   }
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class SignInComponent implements OnInit {
   }
 
   switch(): void {
-    this.userService.page.next('sign-up');
+    this.pageService.page.next(Pages.SignUp);
   }
 
   private updateProfile(user: User): void {

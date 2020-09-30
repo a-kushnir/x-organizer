@@ -23,7 +23,6 @@ export class UserService {
   static BASE_URL = 'https://x-organizer.firebaseio.com/users';
 
   user: BehaviorSubject<User>;
-  page: BehaviorSubject<string>;
 
   constructor(private http: HttpClient) {
     this.user = new BehaviorSubject<User>(
@@ -31,13 +30,6 @@ export class UserService {
     );
     this.user.subscribe(user => {
       LocalStorage.setObject('user', user);
-    });
-
-    this.page = new BehaviorSubject<string>(
-      LocalStorage.getString('page')
-    );
-    this.page.subscribe(page => {
-      LocalStorage.setString('page', page);
     });
   }
 

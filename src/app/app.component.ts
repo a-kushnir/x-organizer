@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User, UserService} from './shared/user.service';
 import {DateService} from './shared/date.service';
 import {ProfileService} from './shared/profile.service';
+import {Pages, PageService} from './shared/page.service';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +11,12 @@ import {ProfileService} from './shared/profile.service';
 })
 export class AppComponent implements OnInit {
   user: User;
-  page: string;
+  page: Pages;
+  pages = Pages;
   theme: string;
 
   constructor(private userService: UserService,
+              private pageService: PageService,
               private dateService: DateService,
               private profileService: ProfileService) {
   }
@@ -22,7 +25,7 @@ export class AppComponent implements OnInit {
     this.userService.user.subscribe(user => {
       this.user = user;
     });
-    this.userService.page.subscribe(page => {
+    this.pageService.page.subscribe(page => {
       this.page = page;
     });
     this.profileService.theme.subscribe(theme => {
