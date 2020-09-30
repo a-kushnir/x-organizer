@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { faEdit, faTrash, faPlusCircle, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateService } from '../shared/date.service';
-import { TasksService, Task } from '../shared/tasks.service';
+import { DateService } from '../../../shared/date.service';
+import { TasksService, Task } from '../../../shared/tasks.service';
 import { switchMap } from 'rxjs/operators';
 
 @Component({

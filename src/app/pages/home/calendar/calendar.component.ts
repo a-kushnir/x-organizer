@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { DateService } from '../shared/date.service';
-import {TasksService} from '../shared/tasks.service';
+import { DateService } from '../../../shared/date.service';
+import {TasksService} from '../../../shared/tasks.service';
 import {switchMap} from 'rxjs/operators';
 
 class Day {

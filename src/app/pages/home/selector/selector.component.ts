@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import { DateService } from '../shared/date.service';
+import { DateService } from '../../../shared/date.service';
 
 @Component({
   selector: 'app-selector',

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {User, UserService} from '../shared/user.service';
-import {Pages, PageService} from '../shared/page.service';
-import {PasswordService} from '../shared/password.service';
+import {User, UserService} from '../../shared/user.service';
+import {Pages, PageService} from '../../shared/page.service';
+import {PasswordService} from '../../shared/password.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -41,6 +41,7 @@ export class SignInComponent implements OnInit {
       if (newUser && new PasswordService().compare(password, newUser.password)) {
         this.updateProfile(newUser);
         this.userService.user.next(newUser);
+        this.pageService.page.next(Pages.Home);
         this.form.reset();
       }
     }, error => {
