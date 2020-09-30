@@ -10,6 +10,8 @@ import {Pages, PageService} from '../shared/page.service';
 })
 export class NavigationComponent implements OnInit {
   user: User;
+  page: Pages;
+  pages = Pages;
   theme: string;
 
   constructor(private userService: UserService,
@@ -21,9 +23,19 @@ export class NavigationComponent implements OnInit {
     this.userService.user.subscribe(user => {
       this.user = user;
     });
+    this.pageService.page.subscribe(page => {
+      this.page = page;
+      if (!this.user && (this.page !== Pages.SignIn && this.page !== Pages.SignUp)) {
+        this.pageService.page.next(Pages.SignIn);
+      }
+    });
     this.profileService.theme.subscribe(theme => {
       this.theme = theme;
     });
+  }
+
+  open(page: Pages): void {
+    this.pageService.page.next(page);
   }
 
   switchTheme(): void {
@@ -32,6 +44,6 @@ export class NavigationComponent implements OnInit {
 
   sign_out(): void {
     this.userService.user.next(null);
-    this.pageService.page.next(Pages.SignIn);
+    this.open(Pages.SignIn);
   }
 }

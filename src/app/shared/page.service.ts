@@ -4,6 +4,7 @@ import {LocalStorage} from './local-storage';
 
 export enum Pages {
   Home = 'Home',
+  Profile = 'Profile',
   SignIn = 'SignIn',
   SignUp = 'SignUp',
 }
