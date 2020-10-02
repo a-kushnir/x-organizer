@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {LocalStorage} from './local-storage';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 export class User {
   id?: string;
@@ -24,7 +25,8 @@ export class UserService {
 
   user: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private firestore: AngularFirestore) {
     this.user = new BehaviorSubject<User>(
       LocalStorage.getObject('user')
     );
@@ -33,30 +35,37 @@ export class UserService {
     });
   }
 
-  create(user: User): Observable<User> {
-    return this.http
-      .post<CreateResponse>(`${UserService.BASE_URL}/${this.encode(user.email)}.json`, user)
-      .pipe(map(response => {
-        return {...user, id: response.name};
-      }));
+  create(user: User): Promise<User> {
+    return this.firestore
+      .collection('users')
+      .add(user)
+      .then(record => {
+        return {...user, id: record.id};
+      });
   }
 
-  load(user: User): Observable<User> {
-    return this.http
-      .get<User[]>(`${UserService.BASE_URL}/${this.encode(user.email)}.json`)
-      .pipe(map(users => {
-        if (!users) {
-          return null;
+  load(user: User): Promise<User> {
+    return this.firestore
+      .collection('users', ref => ref
+        .where('email', '==', user.email)
+        .limit(1))
+      .get()
+      .pipe(map(records => {
+        if (records.size === 1) {
+          const record = records.docs[0];
+          return {...record.data(), id: record.id} as User;
         }
-        return Object.keys(users).map(key => ({...users[key], id: key}))[0];
-      }));
+        return null;
+      }))
+      .toPromise();
   }
 
-  update(user: User): Observable<void> {
-    const {name, email, password, theme} = user; // DELETE ID
-    const obj = {name, email, password, theme};
-    return this.http
-      .patch<void>(`${UserService.BASE_URL}/${this.encode(user.email)}/${this.encode(user.id)}.json`, obj);
+  update(user: User): Promise<void> {
+    const {id, ...record} = user;
+    return this.firestore
+      .collection('users')
+      .doc(id)
+      .update(record);
   }
 
   encode(value: string): string {

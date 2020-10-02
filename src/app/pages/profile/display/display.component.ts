@@ -41,13 +41,13 @@ export class DisplayComponent implements OnInit {
     const user = {...this.userService.user.value, theme};
 
     this.submitted = true;
-    this.userService.update(user).subscribe(_ => {
+    this.userService.update(user).then(_ => {
       this.submitted = false;
 
       this.userService.user.next(user);
       this.pageService.page.next(Pages.Home);
       this.profileService.theme.next(user.theme);
-    }, error => {
+    }).catch(error => {
       this.submitted = false;
       console.error(error);
     });

@@ -44,22 +44,22 @@ export class SignUpComponent implements OnInit {
       const user: User = {name, email, password, theme};
       this.submitted = true;
 
-      this.userService.load(user).subscribe(existingUser => {
+      this.userService.load(user).then(existingUser => {
         if (!existingUser) {
-          this.userService.create(user).subscribe(newUser => {
+          this.userService.create(user).then(newUser => {
             this.submitted = false;
 
             this.form.reset();
             this.userService.user.next(newUser);
             this.pageService.page.next(Pages.Home);
-          }, error => {
+          }).catch(error => {
             this.submitted = false;
             console.error(error);
           });
         } else {
           this.submitted = false;
         }
-      }, error => {
+      }).catch(error => {
         this.submitted = false;
         console.error(error);
       });

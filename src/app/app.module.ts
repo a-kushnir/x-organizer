@@ -21,6 +21,10 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { AccountComponent } from './pages/profile/account/account.component';
 import { PasswordComponent } from './pages/profile/password/password.component';
 import { DisplayComponent } from './pages/profile/display/display.component';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -47,8 +51,10 @@ import { DisplayComponent } from './pages/profile/display/display.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule
   ],
-  providers: [],
+  providers: [AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

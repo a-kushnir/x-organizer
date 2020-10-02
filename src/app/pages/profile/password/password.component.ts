@@ -42,12 +42,12 @@ export class PasswordComponent implements OnInit {
     const user = {...this.userService.user.value, password};
 
     this.submitted = true;
-    this.userService.update(user).subscribe(_ => {
+    this.userService.update(user).then(_ => {
       this.submitted = false;
 
       this.userService.user.next(user);
       this.pageService.page.next(Pages.Home);
-    }, error => {
+    }).catch(error => {
       this.submitted = false;
       console.error(error);
     });
