@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {LocalStorage} from './local-storage';
 import {AngularFirestore} from '@angular/fire/firestore';
 
@@ -27,15 +27,6 @@ export class UserService {
     });
   }
 
-  create(user: User): Promise<User> {
-    return this.firestore
-      .collection('users')
-      .add(user)
-      .then(record => {
-        return {...user, id: record.id};
-      });
-  }
-
   first(user: User): Promise<User> {
     return this.firestore
       .collection('users', ref => ref
@@ -50,6 +41,15 @@ export class UserService {
         return null;
       }))
       .toPromise();
+  }
+
+  create(user: User): Promise<User> {
+    return this.firestore
+      .collection('users')
+      .add(user)
+      .then(record => {
+        return {...user, id: record.id};
+      });
   }
 
   update(user: User): Promise<void> {
