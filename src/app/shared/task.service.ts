@@ -5,8 +5,7 @@ import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 
 export interface Day {
-  tasks: boolean;
-  done: boolean;
+  mark: string;
 }
 
 export interface Task {
@@ -69,7 +68,7 @@ export class TaskService {
       .pipe(map(records => {
         const result = {};
         records.forEach(record => {
-          result[record.id] = record.data().tasks ? 'tasks' : 'done';
+          result[record.id] = record.data().mark;
         });
         return result;
       }))
@@ -77,16 +76,17 @@ export class TaskService {
   }
 
   updateCalendar(date: moment.Moment, tasks: Task[]): Promise<any> {
-    const day: Day = {tasks: false, done: false};
+    let active = false;
+    let done = false;
     tasks.forEach(task => {
       if (task.done) {
-        day.done = true;
+        done = true;
       } else {
-        day.tasks = true;
+        active = true;
       }
     });
-
-    if (day.tasks || day.done) {
+    const day: Day = {mark: (active ? 'active' : (done ? 'done' : null))};
+    if (day.mark) {
       return this.calendar()
         .doc(this.to_db_date(date))
         .set(day);

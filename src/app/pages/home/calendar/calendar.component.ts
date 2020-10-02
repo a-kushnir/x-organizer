@@ -10,7 +10,7 @@ class Day {
   selected: boolean;
   disabled: boolean;
   weekend: boolean;
-  hasTasks: string;
+  mark: string;
 }
 
 class Week {
@@ -66,13 +66,13 @@ export class CalendarComponent implements OnInit {
           const selected = current.isSame(this.dateService.date.value, 'day');
           const disabled = !current.isSame(month, 'month');
           const weekend = current.day() === 0 || current.day() === 6;
-          const hasTasks = this.hasTasks[current.format('YYYY-MM-DD')];
+          const mark = this.hasTasks[current.format('YYYY-MM-DD')];
 
           if (selected) {
-            hasTasksNext = hasTasks;
+            hasTasksNext = mark;
           }
 
-          return { date, active, selected, disabled, weekend, hasTasks };
+          return { date, active, selected, disabled, weekend, mark };
         })
       });
     }
