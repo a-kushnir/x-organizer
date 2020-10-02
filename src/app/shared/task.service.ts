@@ -1,10 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
 import * as moment from 'moment';
 import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+
+export interface Day {
+  tasks: boolean;
+  done: boolean;
+}
 
 export interface Task {
   id?: string;
@@ -19,11 +22,9 @@ export interface Task {
   providedIn: 'root'
 })
 export class TaskService {
-  static BASE_URL = 'https://x-organizer.firebaseio.com/tasks';
   static DB_DATE_FORMAT = 'YYYY-MM-DD';
 
-  constructor(private http: HttpClient,
-              private firestore: AngularFirestore,
+  constructor(private firestore: AngularFirestore,
               private userService: UserService) {
   }
 
@@ -62,32 +63,55 @@ export class TaskService {
       .delete();
   }
 
-  hasTasks(): Observable<object> {
-    return this.http
-      .get<object>(`${this.base_url()}.json?shallow=true`)
-      .pipe(map(dates => {
-        if (!dates) {
-          return {};
-        }
-        return dates;
-      }));
+  hasTasks(): Promise<object> {
+    return this.calendar()
+      .get()
+      .pipe(map(records => {
+        const result = {};
+        records.forEach(record => {
+          result[record.id] = true;
+        });
+        return result;
+      }))
+      .toPromise();
+  }
+
+  updateCalendar(date: moment.Moment, tasks: Task[]): Promise<any> {
+    const day: Day = {tasks: false, done: false};
+    tasks.forEach(task => {
+      if (task.done) {
+        day.done = true;
+      } else {
+        day.tasks = true;
+      }
+    });
+
+    if (day.tasks || day.done) {
+      return this.calendar()
+        .doc(this.to_db_date(date))
+        .set(day);
+    } else {
+      return this.calendar()
+        .doc(this.to_db_date(date))
+        .delete();
+    }
+  }
+
+  private calendar(): AngularFirestoreCollection<Task> {
+    const user = this.userService.user.value;
+    return this.firestore
+      .collection('users')
+      .doc(user.id)
+      .collection('calendar');
   }
 
   private tasks(date: moment.Moment): AngularFirestoreCollection<Task> {
-    return this.firestore
-      .collection('users')
-      .doc(this.userService.user.value.id)
-      .collection('calendar')
+    return this.calendar()
       .doc(this.to_db_date(date))
       .collection('tasks');
   }
 
   to_db_date(date: moment.Moment): string {
     return date.format(TaskService.DB_DATE_FORMAT);
-  }
-
-  base_url(): string {
-    const user = this.userService.user.value;
-    return user ? `${TaskService.BASE_URL}/${user.id}` : null;
   }
 }

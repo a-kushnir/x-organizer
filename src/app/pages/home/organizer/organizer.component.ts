@@ -23,12 +23,12 @@ export class OrganizerComponent implements OnInit {
   editTask: Task = null;
 
   constructor(public dateService: DateService,
-              private tasksService: TaskService) {
+              private taskService: TaskService) {
   }
 
   ngOnInit(): void {
     this.dateService.date.pipe(
-      switchMap(value => this.tasksService.all(value))
+      switchMap(value => this.taskService.all(value))
     ).subscribe(tasks => {
       this.clean_deleted(this.tasks);
       this.tasks = this.clean_deleted(tasks);
@@ -55,13 +55,14 @@ export class OrganizerComponent implements OnInit {
       note
     };
 
-    this.tasksService.create(task).then(newTask => {
+    this.taskService.create(task).then(newTask => {
       if (!this.hasTasks()) {
         this.dateService.hasTasks.next(true);
       }
 
       this.formNew.reset();
       this.tasks.push(newTask);
+      this.taskService.updateCalendar(task.date, this.tasks).then();
     }).catch(error => console.error(error));
   }
 
@@ -104,6 +105,7 @@ export class OrganizerComponent implements OnInit {
     if (!this.hasTasks()) {
       this.dateService.hasTasks.next(false);
     }
+    this.taskService.updateCalendar(task.date, this.tasks).then();
   }
 
   undo(event: Event, task: Task): void {
@@ -133,12 +135,14 @@ export class OrganizerComponent implements OnInit {
   }
 
   private remove_forever(task): void {
-    this.tasksService.remove(task).then(_ => {
+    this.taskService.remove(task).then(_ => {
+      this.taskService.updateCalendar(task.date, this.tasks).then();
     }).catch(error => console.error(error));
   }
 
   private save(task: Task): void {
-    this.tasksService.update(task).then(_ => {
+    this.taskService.update(task).then(_ => {
+      this.taskService.updateCalendar(task.date, this.tasks).then();
     }).catch(error => console.error(error));
   }
 }
