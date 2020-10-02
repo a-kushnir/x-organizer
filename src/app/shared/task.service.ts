@@ -34,7 +34,7 @@ export class TaskService {
       .pipe(map(records => {
         const result: Task[] = [];
         records.forEach(record => {
-          result.push({...record.data(), id: record.id, date} as Task)
+          result.push({...record.data(), id: record.id, date} as Task);
         });
         return result;
       }))
@@ -69,7 +69,7 @@ export class TaskService {
       .pipe(map(records => {
         const result = {};
         records.forEach(record => {
-          result[record.id] = true;
+          result[record.id] = record.data().tasks ? 'tasks' : 'done';
         });
         return result;
       }))

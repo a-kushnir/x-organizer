@@ -10,7 +10,7 @@ class Day {
   selected: boolean;
   disabled: boolean;
   weekend: boolean;
-  hasTasks: boolean;
+  hasTasks: string;
 }
 
 class Week {
