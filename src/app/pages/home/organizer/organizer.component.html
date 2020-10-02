@@ -21,8 +21,8 @@
           </label>
         </div>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">
-          <a class="link link-delete" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></a>
           <a class="link link-edit" (click)="edit(task)"><fa-icon [icon]="faEdit"></fa-icon></a>
+          <a class="link link-delete" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></a>
         </div>
         <span *ngIf="task.deleted" class="flex-end ml-auto">
           Deleted. <a class="link link-undo" (click)="undo(task)">Undo</a>
