@@ -12,28 +12,28 @@
       <i class="text-muted">No Tasks</i>
     </li>
 
-    <li class="list-group-item" [class.edit-item]="editTask === task" *ngFor="let task of tasks">
+    <li class="list-group-item" [class.edit-item]="editTask === task" [class.selected-item]="task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)">
       <div class="d-flex flex-row" *ngIf="editTask !== task">
         <div *ngIf="!task.deleted" class="flex-fill">
           <label for="check{{task.id}}">
-            <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.done === true ? 'checked' : null" (click)="toggle(task)" />
+            <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.done === true ? 'checked' : null" (click)="toggleDone(task)" />
             <i></i> <span [class]="task.done === true ? 'done' : null">{{ task.note }}</span>
           </label>
         </div>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">
-          <a class="link link-edit" (click)="edit(task)"><fa-icon [icon]="faEdit"></fa-icon></a>
-          <a class="link link-delete" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></a>
+          <a class="link link-edit" (click)="edit($event, task)"><fa-icon [icon]="faEdit"></fa-icon></a>
+          <a class="link link-delete" (click)="remove($event, task)"><fa-icon [icon]="faTrash"></fa-icon></a>
         </div>
         <span *ngIf="task.deleted" class="flex-end ml-auto">
-          Deleted. <a class="link link-undo" (click)="undo(task)">Undo</a>
+          Deleted. <a class="link link-undo" (click)="undo($event, task)">Undo</a>
         </span>
       </div>
       <div *ngIf="editTask === task">
-        <form class="form-inline" (ngSubmit)="update(task)" [formGroup]="formEdit">
+        <form class="form-inline" (ngSubmit)="update($event, task)" [formGroup]="formEdit">
           <label class="sr-only" for="edit-task">Edit Task</label>
           <input type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="edit-task" placeholder="Edit Task">
-          <a class="link link-cancel float-right" (click)="edit(null)"><fa-icon [icon]="faTimes"></fa-icon></a>
-          <a class="link link-save float-right" (click)="update(task)"><fa-icon [icon]="faCheck"></fa-icon></a>
+          <a class="link link-cancel float-right" (click)="edit($event, null)"><fa-icon [icon]="faTimes"></fa-icon></a>
+          <a class="link link-save float-right" (click)="update($event, task)"><fa-icon [icon]="faCheck"></fa-icon></a>
         </form>
       </div>
     </li>

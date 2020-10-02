@@ -65,7 +65,8 @@ export class OrganizerComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  edit(task: Task): void {
+  edit(event: Event, task: Task): void {
+    event.stopPropagation();
     this.editTask = task;
     this.formEdit.reset();
     if (task) {
@@ -73,12 +74,17 @@ export class OrganizerComponent implements OnInit {
     }
   }
 
-  toggle(task: Task): void {
+  toggleDone(task: Task): void {
     task.done = !task.done;
     this.save(task);
   }
 
-  update(task: Task): void {
+  toggleSelect(task: Task): void {
+    task.selected = !task.selected;
+  }
+
+  update(event: Event, task: Task): void {
+    event.stopPropagation();
     const {note} = this.formEdit.value;
 
     if (!note || note.trim() === '') {
@@ -87,10 +93,11 @@ export class OrganizerComponent implements OnInit {
 
     task.note = note;
     this.save(task);
-    this.edit(null);
+    this.edit(event, null);
   }
 
-  remove(task: Task): void {
+  remove(event: Event, task: Task): void {
+    event.stopPropagation();
     task.deleted = true;
     this.save(task);
 
@@ -99,7 +106,8 @@ export class OrganizerComponent implements OnInit {
     }
   }
 
-  undo(task: Task): void {
+  undo(event: Event, task: Task): void {
+    event.stopPropagation();
     task.deleted = null;
     this.save(task);
   }

@@ -32,3 +32,6 @@ app-calendar .date.active div {
 app-calendar .date.weekend div {
   background-color: rgba(#fff, .08);
 }
+ul li.selected-item {
+  background-color: rgba(#fff, .25);
+}
