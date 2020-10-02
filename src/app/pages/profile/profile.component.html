@@ -1,50 +1,50 @@
 <div class="row">
   <div class="col-12">
-    <form class="mx-auto" [formGroup]="form" (ngSubmit)="submit()" (keydown)="enterSubmit($event)">
 
+    <div class="accordion mx-auto" id="profileAccordion">
       <div class="card">
-        <div class="card-header">
-          Profile
+        <div class="card-header" id="accountHeader">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#accountContent" aria-expanded="true" aria-controls="accountContent">
+              Account
+            </button>
+          </h2>
         </div>
-        <div class="card-body">
-
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" formControlName="name" class="form-control" id="name">
+        <div id="accountContent" class="collapse show" aria-labelledby="accountHeader" data-parent="#profileAccordion">
+          <div class="card-body">
+            <app-profile-account></app-profile-account>
           </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" formControlName="email" class="form-control" id="email" disabled="disabled">
-          </div>
-
         </div>
       </div>
-
       <div class="card">
-        <div class="card-header">
-          Change Password
+        <div class="card-header" id="passwordHeader">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#passwordContent" aria-expanded="false" aria-controls="passwordContent">
+              Password
+            </button>
+          </h2>
         </div>
-        <div class="card-body">
-          <div class="form-group">
-
-            <label for="old-password">Old Password</label>
-            <input type="password" formControlName="old_password" class="form-control" id="old-password">
+        <div id="passwordContent" class="collapse" aria-labelledby="passwordHeader" data-parent="#profileAccordion">
+          <div class="card-body">
+            <app-profile-password></app-profile-password>
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" formControlName="password" class="form-control" id="password">
-          </div>
-          <div class="form-group">
-            <label for="confirmation">Confirmation</label>
-            <input type="password" formControlName="confirmation" class="form-control" id="confirmation">
-          </div>
-
         </div>
       </div>
+      <!--div class="card">
+        <div class="card-header" id="displayHeader">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#displayContent" aria-expanded="false" aria-controls="displayContent">
+              Display
+            </button>
+          </h2>
+        </div>
+        <div id="displayContent" class="collapse" aria-labelledby="displayHeader" data-parent="#profileAccordion">
+          <div class="card-body">
+            <app-profile-display></app-profile-display>
+          </div>
+        </div>
+      </div-->
+    </div>
 
-      <button type="button" class="btn btn-primary" [disabled]="submitted" (click)="submit()">
-        {{submitted ? 'Saving' : 'Save'}}
-      </button>
-    </form>
   </div>
 </div>

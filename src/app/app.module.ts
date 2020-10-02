@@ -18,6 +18,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { AccountComponent } from './pages/profile/account/account.component';
+import { PasswordComponent } from './pages/profile/password/password.component';
+import { DisplayComponent } from './pages/profile/display/display.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
     HomeComponent,
     ProfileComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    AccountComponent,
+    PasswordComponent,
+    DisplayComponent
   ],
   imports: [
     BrowserModule,
