@@ -10,7 +10,7 @@
   <link rel="preload" href="light-theme.js" as="script">
   <link rel="preload" href="dark-theme.js" as="script">
   <script>
-    const theme = localStorage.getItem('theme')  ?? 'light';
+    const theme = localStorage.getItem('theme') ?? 'light';
     const script = document.createElement('script');
     script.src = `${theme}-theme.js`;
     document.getElementsByTagName('head')[0].appendChild(script);

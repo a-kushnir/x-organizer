@@ -12,7 +12,9 @@ export class LocalStorage {
 
   static setString(key: string, value: string): void {
     localStorage.removeItem(key);
-    localStorage.setItem(key, value);
+    if (value) {
+      localStorage.setItem(key, value);
+    }
   }
 
   static getObject(key: string): any {

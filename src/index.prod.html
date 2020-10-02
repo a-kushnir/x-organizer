@@ -10,7 +10,7 @@
   <link rel="preload" href="light-theme.css" as="style">
   <link rel="preload" href="dark-theme.css" as="style">
   <script>
-    const theme = localStorage.getItem('theme')  ?? 'light';
+    const theme = localStorage.getItem('theme') ?? 'light';
     const link = document.createElement('link');
     link.href = `${theme}-theme.css`;
     link.rel = 'stylesheet';
