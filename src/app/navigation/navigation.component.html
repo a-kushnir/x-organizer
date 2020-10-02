@@ -25,9 +25,6 @@
         <a class="nav-link" (click)="open(pages.Profile)" href="#">Profile</a>
       </li>
       <li class="nav-item" *ngIf="user">
-        <a class="nav-link" (click)="switchTheme()" href="#">{{theme | titlecase}}</a>
-      </li>
-      <li class="nav-item" *ngIf="user">
         <a class="nav-link" rel="nofollow" href="#" (click)="sign_out()">Sign out</a>
       </li>
     </ul>

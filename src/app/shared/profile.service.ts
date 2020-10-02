@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {UserService} from './user.service';
+import {LocalStorage} from './local-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,12 @@ export class ProfileService {
   theme: BehaviorSubject<string>;
 
   constructor(private userService: UserService) {
-    this.theme = new BehaviorSubject<string>(ProfileService.loadTheme());
+    this.theme = new BehaviorSubject<string>(
+      LocalStorage.getString('theme') ?? 'light'
+    );
 
     this.theme.subscribe(theme => {
-      ProfileService.saveTheme(theme);
+      LocalStorage.setString('theme', theme);
     });
 
     userService.user.subscribe(user => {
@@ -21,29 +24,5 @@ export class ProfileService {
         location.reload();
       }
     });
-  }
-
-  static loadTheme(): string {
-    const theme = localStorage.getItem('theme');
-    return theme ?? 'light';
-  }
-  private static saveTheme(theme: string): void {
-    localStorage.removeItem('theme');
-    localStorage.setItem('theme', theme);
-  }
-
-  switchTheme(): void {
-    const theme = this.theme.value === 'light' ? 'dark' : 'light';
-    const user = this.userService.user.value;
-
-    if (user && user.theme !== theme) {
-      user.theme = theme;
-
-      this.userService.update(user).subscribe(_ => {
-      }, error => console.error(error));
-      this.userService.user.next(user);
-    }
-
-    this.theme.next(theme);
   }
 }

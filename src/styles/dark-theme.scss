@@ -18,6 +18,11 @@ $navbar-light-active-color:          #fff;
 $navbar-light-disabled-color:        rgba(#fff, .25);
 $navbar-light-toggler-border-color:  rgba(#fff, .1);
 
+// Cards
+$card-bg: $body-bg;
+$card-cap-bg: rgba(#fff, .08);
+$input-disabled-bg: #343a40;
+
 @import "~bootstrap/scss/bootstrap";
 
 app-calendar .dow,

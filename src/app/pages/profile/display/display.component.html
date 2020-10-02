@@ -1,1 +1,20 @@
-<p>TODO</p>
+<form class="mx-auto" [formGroup]="form" (ngSubmit)="submit()" (keydown)="enterSubmit($event)">
+
+  Theme
+  <div class="form-check">
+    <label for="radio-one">
+      <input type="radio" formControlName="theme" name="theme" id="radio-one" value="light"/>
+      <i></i> <span>Light</span>
+    </label>
+  </div>
+  <div class="form-check">
+    <label for="radio-two">
+      <input type="radio" formControlName="theme" name="theme" id="radio-two" value="dark"/>
+      <i></i> <span>Dark</span>
+    </label>
+  </div>
+
+  <button type="button" class="btn btn-primary" [disabled]="submitted" (click)="submit()">
+    {{submitted ? 'Saving' : 'Save'}}
+  </button>
+</form>

@@ -38,10 +38,6 @@ export class NavigationComponent implements OnInit {
     this.pageService.page.next(page);
   }
 
-  switchTheme(): void {
-    this.profileService.switchTheme();
-  }
-
   sign_out(): void {
     this.userService.user.next(null);
     this.open(Pages.SignIn);
