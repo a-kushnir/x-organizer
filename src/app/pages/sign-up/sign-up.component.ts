@@ -44,7 +44,7 @@ export class SignUpComponent implements OnInit {
       const user: User = {name, email, password, theme};
       this.submitted = true;
 
-      this.userService.load(user).then(existingUser => {
+      this.userService.first(user).then(existingUser => {
         if (!existingUser) {
           this.userService.create(user).then(newUser => {
             this.submitted = false;

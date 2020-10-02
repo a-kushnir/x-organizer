@@ -35,7 +35,7 @@ export class SignInComponent implements OnInit {
     const user: User = {email, password};
     this.submitted = true;
 
-    this.userService.load(user).then(newUser => {
+    this.userService.first(user).then(newUser => {
       this.submitted = false;
 
       if (newUser && new PasswordService().compare(password, newUser.password)) {

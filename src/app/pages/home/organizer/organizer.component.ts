@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faEdit, faTrash, faPlusCircle, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateService } from '../../../shared/date.service';
-import { TasksService, Task } from '../../../shared/tasks.service';
+import { TaskService, Task } from '../../../shared/task.service';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -23,12 +23,12 @@ export class OrganizerComponent implements OnInit {
   editTask: Task = null;
 
   constructor(public dateService: DateService,
-              private tasksService: TasksService) {
+              private tasksService: TaskService) {
   }
 
   ngOnInit(): void {
     this.dateService.date.pipe(
-      switchMap(value => this.tasksService.load(value))
+      switchMap(value => this.tasksService.all(value))
     ).subscribe(tasks => {
       this.clean_deleted(this.tasks);
       this.tasks = this.clean_deleted(tasks);
@@ -55,14 +55,14 @@ export class OrganizerComponent implements OnInit {
       note
     };
 
-    this.tasksService.create(task).subscribe(newTask => {
+    this.tasksService.create(task).then(newTask => {
       if (!this.hasTasks()) {
         this.dateService.hasTasks.next(true);
       }
 
       this.formNew.reset();
       this.tasks.push(newTask);
-    }, error => console.error(error));
+    }).catch(error => console.error(error));
   }
 
   edit(event: Event, task: Task): void {
@@ -133,12 +133,12 @@ export class OrganizerComponent implements OnInit {
   }
 
   private remove_forever(task): void {
-    this.tasksService.remove(task).subscribe(_ => {
-    }, error => console.error(error));
+    this.tasksService.remove(task).then(_ => {
+    }).catch(error => console.error(error));
   }
 
   private save(task: Task): void {
-    this.tasksService.update(task).subscribe(_ => {
-    }, error => console.error(error));
+    this.tasksService.update(task).then(_ => {
+    }).catch(error => console.error(error));
   }
 }

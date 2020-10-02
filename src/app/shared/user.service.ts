@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {LocalStorage} from './local-storage';
@@ -13,20 +12,13 @@ export class User {
   theme?: string;
 }
 
-interface CreateResponse {
-  name: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  static BASE_URL = 'https://x-organizer.firebaseio.com/users';
-
   user: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient,
-              private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore) {
     this.user = new BehaviorSubject<User>(
       LocalStorage.getObject('user')
     );
@@ -44,7 +36,7 @@ export class UserService {
       });
   }
 
-  load(user: User): Promise<User> {
+  first(user: User): Promise<User> {
     return this.firestore
       .collection('users', ref => ref
         .where('email', '==', user.email)
@@ -66,9 +58,5 @@ export class UserService {
       .collection('users')
       .doc(id)
       .update(record);
-  }
-
-  encode(value: string): string {
-    return encodeURIComponent(value.replace(/\./gi, '&'));
   }
 }

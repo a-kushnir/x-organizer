@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { DateService } from '../../../shared/date.service';
-import {TasksService} from '../../../shared/tasks.service';
+import {TaskService} from '../../../shared/task.service';
 import {switchMap} from 'rxjs/operators';
 
 class Day {
@@ -28,7 +28,7 @@ export class CalendarComponent implements OnInit {
   hasTasks: object = {};
 
   constructor(private dateService: DateService,
-              public tasksService: TasksService) {
+              public tasksService: TaskService) {
     dateService.month.subscribe(this.generateCalendar.bind(this));
     dateService.date.subscribe(this.generateCalendar.bind(this));
     dateService.hasTasks.subscribe(this.reloadCalendar.bind(this));
