@@ -12,15 +12,21 @@
       <i class="text-muted">No Tasks</i>
     </li>
 
-    <li [class]="{ 'list-group-item': true, 'edit-item': editTask === task }" *ngFor="let task of tasks">
-      <div *ngIf="editTask !== task">
-        <label for="check{{task.id}}" *ngIf="!task.deleted">
-          <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.done === true ? 'checked' : null" (click)="toggle(task)" />
-          <i></i> <span [class]="task.done === true ? 'done' : null" *ngIf="!task.deleted">{{ task.note }}</span>
-        </label>
-        <a class="link link-delete float-right" (click)="remove(task)" *ngIf="!task.deleted"><fa-icon [icon]="faTrash"></fa-icon></a>
-        <a class="link link-edit float-right" (click)="edit(task)" *ngIf="!task.deleted"><fa-icon [icon]="faEdit"></fa-icon></a>
-        <span *ngIf="task.deleted" class="float-right">Deleted. <a class="link link-undo" (click)="undo(task)">Undo</a></span>
+    <li class="list-group-item" [class.edit-item]="editTask === task" *ngFor="let task of tasks">
+      <div class="d-flex flex-row" *ngIf="editTask !== task">
+        <div *ngIf="!task.deleted" class="flex-fill">
+          <label for="check{{task.id}}">
+            <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.done === true ? 'checked' : null" (click)="toggle(task)" />
+            <i></i> <span [class]="task.done === true ? 'done' : null">{{ task.note }}</span>
+          </label>
+        </div>
+        <div *ngIf="!task.deleted" class="flex-end text-nowrap">
+          <a class="link link-delete" (click)="remove(task)"><fa-icon [icon]="faTrash"></fa-icon></a>
+          <a class="link link-edit" (click)="edit(task)"><fa-icon [icon]="faEdit"></fa-icon></a>
+        </div>
+        <span *ngIf="task.deleted" class="flex-end ml-auto">
+          Deleted. <a class="link link-undo" (click)="undo(task)">Undo</a>
+        </span>
       </div>
       <div *ngIf="editTask === task">
         <form class="form-inline" (ngSubmit)="update(task)" [formGroup]="formEdit">
