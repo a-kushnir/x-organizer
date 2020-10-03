@@ -42,11 +42,11 @@ export class SignUpComponent implements OnInit {
     if (password === confirmation) {
       const theme = this.profileService.theme.value;
       password = new PasswordService().hash(password);
-      const user: User = {name, email, password, theme};
       this.submitted = true;
 
-      this.userService.first(user).then(existingUser => {
+      this.userService.findByEmail(email).then(existingUser => {
         if (!existingUser) {
+          const user: User = {name, email, password, theme};
           this.userService.create(user).then(newUser => {
             this.submitted = false;
 

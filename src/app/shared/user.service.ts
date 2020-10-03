@@ -1,17 +1,19 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {LocalStorage} from './local-storage';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {RealTimeUpdate} from './real-time-update';
 import {User} from './models/user.model';
+import {QueryFn} from '@angular/fire/firestore/interfaces';
+import {AngularFirestoreCollection} from '@angular/fire/firestore/collection/collection';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   user: BehaviorSubject<User>;
-  rtu: RealTimeUpdate;
+  private rtu: RealTimeUpdate;
 
   constructor(private firestore: AngularFirestore) {
     this.rtu = new RealTimeUpdate((key) => {
@@ -31,17 +33,22 @@ export class UserService {
     });
   }
 
-  valueChanges(id: string): any {
+  private valueChanges(id: string): Observable<any> {
     return this.firestore
       .collection('users')
       .doc(id)
       .valueChanges();
   }
 
-  first(user: User): Promise<User> {
+  private collection(queryFn?: QueryFn): AngularFirestoreCollection<any> {
     return this.firestore
-      .collection('users', ref => ref
-        .where('email', '==', user.email)
+      .collection('users', queryFn);
+  }
+
+  findByEmail(email: string): Promise<User> {
+    return this
+      .collection(ref => ref
+        .where('email', '==', email)
         .limit(1))
       .get()
       .pipe(map(records => {
@@ -55,8 +62,8 @@ export class UserService {
   }
 
   create(user: User): Promise<User> {
-    return this.firestore
-      .collection('users')
+    return this
+      .collection()
       .add(user)
       .then(record => {
         return {...user, id: record.id};
@@ -65,8 +72,8 @@ export class UserService {
 
   update(user: User): Promise<void> {
     const {id, ...record} = user;
-    return this.firestore
-      .collection('users')
+    return this
+      .collection()
       .doc(id)
       .update(record);
   }
