@@ -31,6 +31,12 @@ export class DateService {
     this.hasTasks = new BehaviorSubject<boolean>(null);
   }
 
+  reset(): void {
+    const now = moment();
+    this.month.next(now.clone().startOf('month'));
+    this.date.next(now.clone().startOf('day'));
+  }
+
   setDate(date: moment.Moment): void {
     this.date.next(date);
     this.hasTasks.next(null);

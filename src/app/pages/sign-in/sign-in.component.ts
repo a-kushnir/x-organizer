@@ -4,6 +4,7 @@ import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
 import {User} from 'src/app/shared/models/user.model';
+import {DateService} from '../../shared/date.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,7 +16,8 @@ export class SignInComponent implements OnInit {
   submitted = false;
 
   constructor(private userService: UserService,
-              private pageService: PageService) {
+              private pageService: PageService,
+              private dateService: DateService) {
   }
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class SignInComponent implements OnInit {
         this.updateProfile(newUser);
         this.userService.user.next(newUser);
         this.pageService.page.next(Pages.Home);
+        this.dateService.reset();
         this.form.reset();
       }
     }).catch(error => {
