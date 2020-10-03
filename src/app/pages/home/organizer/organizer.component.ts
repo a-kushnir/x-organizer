@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { faEdit, faTrash, faPlusCircle, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateService } from '../../../shared/date.service';
-import { TaskService, Task } from '../../../shared/task.service';
-import { switchMap } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {faEdit, faTrash, faPlusCircle, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {DateService} from 'src/app/shared/date.service';
+import {TaskService} from 'src/app/shared/task.service';
+import {switchMap} from 'rxjs/operators';
+import {Task} from 'src/app/shared/models/task.model';
 
 @Component({
   selector: 'app-organizer',

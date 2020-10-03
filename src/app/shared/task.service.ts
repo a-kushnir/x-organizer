@@ -3,18 +3,10 @@ import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {Task} from './models/task.model';
 
 export interface Day {
   mark: string;
-}
-
-export interface Task {
-  id?: string;
-  date?: moment.Moment;
-  note: string;
-  deleted?: boolean;
-  done?: boolean;
-  selected?: boolean;
 }
 
 @Injectable({

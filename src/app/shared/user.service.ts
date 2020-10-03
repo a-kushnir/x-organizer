@@ -4,14 +4,7 @@ import {BehaviorSubject} from 'rxjs';
 import {LocalStorage} from './local-storage';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {RealTimeUpdate} from './real-time-update';
-
-export class User {
-  id?: string;
-  name?: string;
-  email: string;
-  password: string;
-  theme?: string;
-}
+import {User} from './models/user.model';
 
 @Injectable({
   providedIn: 'root'

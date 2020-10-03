@@ -6,9 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './shared/layout/header/header.component';
+import { NavigationComponent } from './shared/layout/navigation/navigation.component';
+import { FooterComponent } from './shared/layout/footer/footer.component';
 import { CalendarComponent } from './pages/home/calendar/calendar.component';
 import { OrganizerComponent } from './pages/home/organizer/organizer.component';
 import { SelectorComponent } from './pages/home/selector/selector.component';

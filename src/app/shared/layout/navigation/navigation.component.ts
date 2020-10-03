@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {User, UserService} from '../shared/user.service';
-import {ProfileService} from '../shared/profile.service';
-import {Pages, PageService} from '../shared/page.service';
+import {UserService} from '../../user.service';
+import {ProfileService} from '../../profile.service';
+import {Pages, PageService} from '../../page.service';
+import {User} from '../../models/user.model';
 
 @Component({
-  selector: 'app-navigation',
+  selector: 'app-layout-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css']
 })

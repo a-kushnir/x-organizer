@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {User, UserService} from '../../shared/user.service';
+import {UserService} from '../../shared/user.service';
 import {PasswordService} from '../../shared/password.service';
 import {ProfileService} from '../../shared/profile.service';
 import {Pages, PageService} from '../../shared/page.service';
+import { User } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-sign-up',
