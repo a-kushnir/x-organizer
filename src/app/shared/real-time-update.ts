@@ -15,11 +15,15 @@ export class RealTimeUpdate implements OnDestroy {
   }
 
   subscribe(key: any): void {
-    this.unsubscribe();
-    if (key !== null && key !== undefined) {
-      this.key = key;
-      this.sub = this.onKeyChange(key);
-      this.sub.subscribe(this.onValueChange);
+    if (this.key !== key) {
+      this.unsubscribe();
+      if (key !== null && key !== undefined) {
+        this.key = key;
+        this.sub = this.onKeyChange(key);
+        if (this.sub) {
+          this.sub = this.sub.subscribe(this.onValueChange);
+        }
+      }
     }
   }
 

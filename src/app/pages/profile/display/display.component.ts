@@ -14,8 +14,7 @@ export class DisplayComponent implements OnInit {
   submitted = false;
 
   constructor(private userService: UserService,
-              private pageService: PageService,
-              private profileService: ProfileService) {
+              private pageService: PageService) {
   }
 
   ngOnInit(): void {
@@ -46,7 +45,6 @@ export class DisplayComponent implements OnInit {
 
       this.userService.user.next(user);
       this.pageService.page.next(Pages.Home);
-      this.profileService.theme.next(user.theme);
     }).catch(error => {
       this.submitted = false;
       console.error(error);
