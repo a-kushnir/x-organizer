@@ -33,16 +33,16 @@ export class UserService {
     });
   }
 
-  private valueChanges(id: string): Observable<any> {
-    return this.firestore
-      .collection('users')
-      .doc(id)
-      .valueChanges();
-  }
-
   private collection(queryFn?: QueryFn): AngularFirestoreCollection<any> {
     return this.firestore
       .collection('users', queryFn);
+  }
+
+  private valueChanges(id: string): Observable<any> {
+    return this
+      .collection()
+      .doc(id)
+      .valueChanges();
   }
 
   findByEmail(email: string): Promise<User> {
