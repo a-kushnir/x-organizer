@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../shared/user.service';
 import {Pages, PageService} from '../../../shared/page.service';
-import {ProfileService} from '../../../shared/profile.service';
 
 @Component({
   selector: 'app-profile-display',

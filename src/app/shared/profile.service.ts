@@ -21,7 +21,7 @@ export class ProfileService {
     userService.user.subscribe(user => {
       if (user && user.theme !== this.theme.value) {
         this.theme.next(user.theme);
-        location.reload();
+        setTimeout(location.reload.bind(location), 100);
       }
     });
   }
