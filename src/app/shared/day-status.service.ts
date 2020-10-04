@@ -103,9 +103,10 @@ export class DayStatusService {
           delete data[key];
         }
 
-        if (record.exists && Object.keys(data).length === 0) {
+        const hasData = Object.keys(data).length > 0;
+        if (record.exists && !hasData) {
           doc.delete().catch(error => console.error(error));
-        } else {
+        } else if (hasData) {
           doc.set(data).catch(error => console.error(error));
         }
       });
