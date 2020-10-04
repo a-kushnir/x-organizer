@@ -15,7 +15,7 @@ export class ProfileService {
     userService.user.subscribe(user => {
       if (user?.theme && user.theme !== this.theme) {
         LocalStorage.setString('theme', user.theme);
-        location.reload();
+        setTimeout(location.reload.bind(location), 100);
       }
     });
   }
