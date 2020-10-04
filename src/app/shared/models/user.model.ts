@@ -4,5 +4,6 @@ export class User {
   name: string;
   email: string;
   password: string;
+  syncTheme: boolean;
   theme: string;
 }

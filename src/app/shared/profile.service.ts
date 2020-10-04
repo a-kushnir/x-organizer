@@ -11,11 +11,15 @@ export class ProfileService {
     return LocalStorage.getString('theme') ?? 'light';
   }
 
+  set theme(value) {
+    LocalStorage.setString('theme', value);
+    setTimeout(location.reload.bind(location), 100);
+  }
+
   constructor(private userService: UserService) {
     userService.user.subscribe(user => {
-      if (user?.theme && user.theme !== this.theme) {
-        LocalStorage.setString('theme', user.theme);
-        setTimeout(location.reload.bind(location), 100);
+      if (user && user.syncTheme && user.theme && user.theme !== this.theme) {
+        this.theme = user.theme;
       }
     });
   }
