@@ -46,7 +46,7 @@ export class SignUpComponent implements OnInit {
 
       this.userService.findByEmail(email).then(existingUser => {
         if (!existingUser) {
-          const user: User = {name, email, password, theme};
+          const user: User = {name, email, password, syncTheme: true, theme};
           this.userService.create(user).then(newUser => {
             this.submitted = false;
 
