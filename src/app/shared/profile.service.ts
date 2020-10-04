@@ -20,8 +20,11 @@ export class ProfileService {
 
     userService.user.subscribe(user => {
       if (user && user.theme !== this.theme.value) {
-        this.theme.next(user.theme);
-        setTimeout(location.reload.bind(location), 1000);
+        const theme = user.theme ?? 'light';
+        if (theme !== this.theme.value) {
+          this.theme.next(user.theme);
+          setTimeout(location.reload.bind(location), 100);
+        }
       }
     });
   }
