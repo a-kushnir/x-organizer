@@ -1,31 +1,41 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
 import {UserService} from './user.service';
 import {LocalStorage} from './local-storage';
+import {environment} from '../../environments/environment';
+declare var require: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-  theme: BehaviorSubject<string>;
+  private applied: boolean;
+
+  get theme(): string {
+    return LocalStorage.getString('theme') ?? 'light';
+  }
 
   constructor(private userService: UserService) {
-    this.theme = new BehaviorSubject<string>(
-      LocalStorage.getString('theme') ?? 'light'
-    );
-
-    this.theme.subscribe(theme => {
-      LocalStorage.setString('theme', theme);
-    });
-
+    this.changeTheme();
     userService.user.subscribe(user => {
-      if (user && user.theme !== this.theme.value) {
-        const theme = user.theme ?? 'light';
-        if (theme !== this.theme.value) {
-          this.theme.next(user.theme);
-          setTimeout(location.reload.bind(location), 100);
-        }
+      if (user?.theme && user.theme !== this.theme) {
+        LocalStorage.setString('theme', user.theme);
+        this.changeTheme();
       }
     });
   }
+
+  private changeTheme(): void {
+    if (environment.production) {
+      // @ts-ignore
+      document.getElementById('themeLink').href = `${this.theme}-theme.css`;
+    } else {
+      if (!this.applied) {
+        require(`src/styles/${this.theme}-theme.scss`);
+        this.applied = true;
+      } else {
+        setTimeout(location.reload.bind(location), 100);
+      }
+    }
+  }
+
 }

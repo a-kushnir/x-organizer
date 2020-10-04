@@ -40,7 +40,7 @@ export class SignUpComponent implements OnInit {
     let {password} = this.form.value;
 
     if (password === confirmation) {
-      const theme = this.profileService.theme.value;
+      const theme = this.profileService.theme;
       password = new PasswordService().hash(password);
       this.submitted = true;
 

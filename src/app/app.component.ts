@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   user: User;
   page: Pages;
   pages = Pages;
-  theme: string;
 
   constructor(private userService: UserService,
               private pageService: PageService,
@@ -28,9 +27,6 @@ export class AppComponent implements OnInit {
     });
     this.pageService.page.subscribe(page => {
       this.page = page;
-    });
-    this.profileService.theme.subscribe(theme => {
-      this.theme = theme;
     });
   }
 }

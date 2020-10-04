@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../user.service';
-import {ProfileService} from '../../profile.service';
 import {Pages, PageService} from '../../page.service';
 import {User} from '../../models/user.model';
 
@@ -13,11 +12,9 @@ export class NavigationComponent implements OnInit {
   user: User;
   page: Pages;
   pages = Pages;
-  theme: string;
 
   constructor(private userService: UserService,
-              private pageService: PageService,
-              private profileService: ProfileService) {
+              private pageService: PageService) {
   }
 
   ngOnInit(): void {
@@ -29,9 +26,6 @@ export class NavigationComponent implements OnInit {
       if (!this.user && (this.page !== Pages.SignIn && this.page !== Pages.SignUp)) {
         this.pageService.page.next(Pages.SignIn);
       }
-    });
-    this.profileService.theme.subscribe(theme => {
-      this.theme = theme;
     });
   }
 

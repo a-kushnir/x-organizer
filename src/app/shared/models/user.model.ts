@@ -1,8 +1,8 @@
 
 export class User {
   id?: string;
-  name?: string;
+  name: string;
   email: string;
   password: string;
-  theme?: string;
+  theme: string;
 }
