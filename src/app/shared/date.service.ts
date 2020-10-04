@@ -9,7 +9,6 @@ import {LocalStorage} from './local-storage';
 export class DateService {
   month: BehaviorSubject<moment.Moment>;
   date: BehaviorSubject<moment.Moment>;
-  hasTasks: BehaviorSubject<boolean>;
 
   constructor() {
     const now = moment();
@@ -27,8 +26,6 @@ export class DateService {
     this.date.subscribe(date => {
       LocalStorage.setDate('date', date);
     });
-
-    this.hasTasks = new BehaviorSubject<boolean>(null);
   }
 
   reset(): void {
@@ -39,12 +36,10 @@ export class DateService {
 
   setDate(date: moment.Moment): void {
     this.date.next(date);
-    this.hasTasks.next(null);
   }
 
   addMonths(amount: number): void {
     const value = this.month.value.add(amount, 'month');
     this.month.next(value);
-    this.hasTasks.next(null);
   }
 }

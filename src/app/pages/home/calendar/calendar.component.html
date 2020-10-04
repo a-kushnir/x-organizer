@@ -11,8 +11,8 @@
       selected: day.selected,
       disabled: day.disabled,
       weekend: day.weekend,
-      tasks: day.mark === 'active',
-      done: day.mark === 'done'
+      tasks: day.status === 'Active',
+      done: day.status === 'Done'
     }" (click)="selectDate(day)">
       <div>
         {{ day.date | date :'d' }}

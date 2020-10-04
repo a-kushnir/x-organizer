@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import { DateService } from '../../../shared/date.service';
+import {DateService} from '../../../shared/date.service';
 import {TaskService} from '../../../shared/task.service';
-import {switchMap} from 'rxjs/operators';
+import {DayStatusService} from '../../../shared/day-status.service';
 
 class Day {
   date: moment.Moment;
@@ -10,7 +10,7 @@ class Day {
   selected: boolean;
   disabled: boolean;
   weekend: boolean;
-  mark: string;
+  status: string;
 }
 
 class Week {
@@ -25,27 +25,16 @@ class Week {
 export class CalendarComponent implements OnInit {
 
   weeks: Week[];
-  hasTasks: object = {};
 
   constructor(private dateService: DateService,
-              public tasksService: TaskService) {
+              private tasksService: TaskService,
+              private dayStatusService: DayStatusService) {
     dateService.month.subscribe(this.generateCalendar.bind(this));
     dateService.date.subscribe(this.generateCalendar.bind(this));
-    dateService.hasTasks.subscribe(this.reloadCalendar.bind(this));
+    dayStatusService.days.subscribe(this.generateCalendar.bind(this));
   }
 
   ngOnInit(): void {
-    this.dateService.month.pipe(
-      switchMap(_ => this.tasksService.hasTasks())
-    ).subscribe(hasTasks => {
-      this.hasTasks = hasTasks;
-      this.generateCalendar();
-    });
-  }
-
-  reloadCalendar(): void {
-    this.ngOnInit();
-    this.generateCalendar();
   }
 
   generateCalendar(): void {
@@ -53,7 +42,6 @@ export class CalendarComponent implements OnInit {
     const month = this.dateService.month.value;
     const startDate = month.clone().startOf('month').startOf('week');
     const endDate = month.clone().endOf('month').endOf('week');
-    let hasTasksNext = null;
 
     this.weeks = [];
 
@@ -66,19 +54,11 @@ export class CalendarComponent implements OnInit {
           const selected = current.isSame(this.dateService.date.value, 'day');
           const disabled = !current.isSame(month, 'month');
           const weekend = current.day() === 0 || current.day() === 6;
-          const mark = this.hasTasks[current.format('YYYY-MM-DD')];
-
-          if (selected) {
-            hasTasksNext = mark;
-          }
-
-          return { date, active, selected, disabled, weekend, mark };
+          const statuses = this.dayStatusService.days.value[current.format('YYYY-MM')];
+          const status = statuses ? statuses[current.format('YYYY-MM-DD')] : null;
+          return { date, active, selected, disabled, weekend, status };
         })
       });
-    }
-
-    if (hasTasksNext !== this.dateService.hasTasks.value) {
-      this.dateService.hasTasks.next(hasTasksNext);
     }
   }
 

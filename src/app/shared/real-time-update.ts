@@ -4,12 +4,13 @@ import {Injectable, OnDestroy} from '@angular/core';
   providedIn: 'root'
 })
 export class RealTimeUpdate implements OnDestroy {
-  public key: any;
+  private key: any;
   private sub: any;
-  private readonly onKeyChange: any;
-  private readonly onValueChange: any;
+  private readonly onKeyChange: (key: any) => any;
+  private readonly onValueChange: (key: any, value: any) => any;
 
-  constructor(onKeyChange: any, onValueChange: any) {
+  constructor(onKeyChange: (key: any) => any,
+              onValueChange: (key: any, value: any) => any) {
     this.onKeyChange = onKeyChange;
     this.onValueChange = onValueChange;
   }
@@ -21,7 +22,9 @@ export class RealTimeUpdate implements OnDestroy {
         this.key = key;
         this.sub = this.onKeyChange(key);
         if (this.sub) {
-          this.sub = this.sub.subscribe(this.onValueChange);
+          this.sub = this.sub.subscribe( value => {
+            this.onValueChange(key, value);
+          });
         }
       }
     }

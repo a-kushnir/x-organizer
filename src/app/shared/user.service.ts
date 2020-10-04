@@ -16,12 +16,7 @@ export class UserService {
   private rtu: RealTimeUpdate;
 
   constructor(private firestore: AngularFirestore) {
-    this.rtu = new RealTimeUpdate((key) => {
-      return this.valueChanges(key);
-    }, (value) => {
-      value = {...value, id: this.rtu.key};
-      this.user.next(value);
-    });
+    this.rtu = new RealTimeUpdate(this.listenForUpdates.bind(this), this.handleUpdates.bind(this));
 
     this.user = new BehaviorSubject<User>(
       LocalStorage.getObject('user')
@@ -38,11 +33,16 @@ export class UserService {
       .collection('users', queryFn);
   }
 
-  private valueChanges(id: string): Observable<any> {
+  private listenForUpdates(id: string): Observable<any> {
     return this
       .collection()
       .doc(id)
       .valueChanges();
+  }
+
+  private handleUpdates(id: string, record: any): void {
+    record = {...record, id};
+    this.user.next(record);
   }
 
   findByEmail(email: string): Promise<User> {

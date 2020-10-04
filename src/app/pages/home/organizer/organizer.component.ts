@@ -5,6 +5,8 @@ import {DateService} from 'src/app/shared/date.service';
 import {TaskService} from 'src/app/shared/task.service';
 import {switchMap} from 'rxjs/operators';
 import {Task} from 'src/app/shared/models/task.model';
+import * as moment from 'moment';
+import {DayStatusService, Statuses} from '../../../shared/day-status.service';
 
 @Component({
   selector: 'app-organizer',
@@ -24,7 +26,8 @@ export class OrganizerComponent implements OnInit {
   editTask: Task = null;
 
   constructor(public dateService: DateService,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private dayStatusService: DayStatusService) {
   }
 
   ngOnInit(): void {
@@ -57,13 +60,9 @@ export class OrganizerComponent implements OnInit {
     };
 
     this.taskService.create(task).then(newTask => {
-      if (!this.hasTasks()) {
-        this.dateService.hasTasks.next(true);
-      }
-
       this.formNew.reset();
       this.tasks.push(newTask);
-      this.taskService.updateCalendar(task.date, this.tasks).then();
+      this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
   }
 
@@ -102,11 +101,7 @@ export class OrganizerComponent implements OnInit {
     event.stopPropagation();
     task.deleted = true;
     this.save(task);
-
-    if (!this.hasTasks()) {
-      this.dateService.hasTasks.next(false);
-    }
-    this.taskService.updateCalendar(task.date, this.tasks).then();
+    this.updateCalendar(task.date, this.tasks);
   }
 
   undo(event: Event, task: Task): void {
@@ -115,15 +110,21 @@ export class OrganizerComponent implements OnInit {
     this.save(task);
   }
 
-  private hasTasks(): boolean {
-    let result = false;
-    this.tasks.map(task => {
-      if (!task.deleted) {
-        result = true;
-        return true;
+  private updateCalendar(date: moment.Moment, tasks: Task[]): void {
+    let active = false;
+    let done = false;
+    tasks.forEach(task => {
+      if (task.deleted) {
+        // skip
+      } else if (task.done) {
+        done = true;
+      } else {
+        active = true;
       }
     });
-    return result;
+    const status = active ? Statuses.Active :
+                   done ? Statuses.Done : null;
+    this.dayStatusService.update(date, status);
   }
 
   private clean_deleted(tasks): Task[] {
@@ -137,13 +138,13 @@ export class OrganizerComponent implements OnInit {
 
   private remove_forever(task): void {
     this.taskService.remove(task).then(_ => {
-      this.taskService.updateCalendar(task.date, this.tasks).then();
+      this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
   }
 
   private save(task: Task): void {
     this.taskService.update(task).then(_ => {
-      this.taskService.updateCalendar(task.date, this.tasks).then();
+      this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
   }
 }

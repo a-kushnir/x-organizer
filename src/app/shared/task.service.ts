@@ -5,10 +5,6 @@ import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Task} from './models/task.model';
 
-export interface Day {
-  mark: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -52,41 +48,6 @@ export class TaskService {
     return this.tasks(task.date)
       .doc(task.id)
       .delete();
-  }
-
-  hasTasks(): Promise<object> {
-    return this.calendar()
-      .get()
-      .pipe(map(records => {
-        const result = {};
-        records.forEach(record => {
-          result[record.id] = record.data().mark;
-        });
-        return result;
-      }))
-      .toPromise();
-  }
-
-  updateCalendar(date: moment.Moment, tasks: Task[]): Promise<any> {
-    let active = false;
-    let done = false;
-    tasks.forEach(task => {
-      if (task.done) {
-        done = true;
-      } else {
-        active = true;
-      }
-    });
-    const day: Day = {mark: (active ? 'active' : (done ? 'done' : null))};
-    if (day.mark) {
-      return this.calendar()
-        .doc(this.to_db_date(date))
-        .set(day);
-    } else {
-      return this.calendar()
-        .doc(this.to_db_date(date))
-        .delete();
-    }
   }
 
   private calendar(): AngularFirestoreCollection<Task> {
