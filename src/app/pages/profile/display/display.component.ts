@@ -23,7 +23,7 @@ export class DisplayComponent implements OnInit {
       if (user) {
         this.form = new FormGroup({
           syncTheme: new FormControl(user.syncTheme, Validators.required),
-          theme: new FormControl(user.theme, Validators.required)
+          theme: new FormControl(this.profileService.theme, Validators.required)
         });
       } else {
         this.form = null;
