@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {faEdit, faTrash, faPlusCircle, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateService} from 'src/app/shared/date.service';
@@ -13,7 +13,7 @@ import {DayStatusService, Statuses} from '../../../shared/day-status.service';
   templateUrl: './organizer.component.html',
   styleUrls: ['./organizer.component.scss']
 })
-export class OrganizerComponent implements OnInit {
+export class OrganizerComponent implements OnInit, AfterViewChecked {
   readonly faEdit = faEdit;
   readonly faTrash = faTrash;
   readonly faPlusCircle = faPlusCircle;
@@ -24,6 +24,9 @@ export class OrganizerComponent implements OnInit {
   formEdit: FormGroup;
   tasks: Task[] = [];
   editTask: Task = null;
+
+  @ViewChild('newTask') newTaskField: ElementRef;
+  @ViewChild('editTask') editTaskField: ElementRef;
 
   constructor(public dateService: DateService,
               private taskService: TaskService,
@@ -45,6 +48,14 @@ export class OrganizerComponent implements OnInit {
     this.formEdit = new FormGroup({
       note: new FormControl('', Validators.required)
     });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.editTaskField) {
+      this.editTaskField.nativeElement.focus();
+    } else {
+      this.newTaskField.nativeElement.focus();
+    }
   }
 
   create(): void {
