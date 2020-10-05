@@ -38,8 +38,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.dateService.date.pipe(
       switchMap(value => this.taskService.all(value))
     ).subscribe(tasks => {
-      this.clean_deleted(this.tasks);
-      this.tasks = this.clean_deleted(tasks);
+      this.cleanDeleted(this.tasks);
+      this.tasks = this.cleanDeleted(tasks);
       this.editTask = null;
     });
 
@@ -143,16 +143,16 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.dayStatusService.update(date, status);
   }
 
-  private clean_deleted(tasks): Task[] {
+  private cleanDeleted(tasks): Task[] {
     tasks.map(task => {
       if (task.deleted) {
-        this.remove_forever(task);
+        this.removeForever(task);
       }
     });
     return tasks.filter(task => !task.deleted);
   }
 
-  private remove_forever(task): void {
+  private removeForever(task): void {
     this.taskService.remove(task).then(_ => {
       this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));

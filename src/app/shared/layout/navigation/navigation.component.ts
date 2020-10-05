@@ -33,7 +33,7 @@ export class NavigationComponent implements OnInit {
     this.pageService.page.next(page);
   }
 
-  sign_out(): void {
+  signOut(): void {
     this.userService.user.next(null);
     this.open(Pages.SignIn);
   }

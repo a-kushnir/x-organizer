@@ -60,11 +60,11 @@ export class TaskService {
 
   private tasks(date: moment.Moment): AngularFirestoreCollection<Task> {
     return this.calendar()
-      .doc(this.to_db_date(date))
+      .doc(this.toDbDate(date))
       .collection('tasks');
   }
 
-  to_db_date(date: moment.Moment): string {
+  toDbDate(date: moment.Moment): string {
     return date.format(TaskService.DB_DATE_FORMAT);
   }
 }
