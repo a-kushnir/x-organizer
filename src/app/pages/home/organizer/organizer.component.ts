@@ -24,9 +24,10 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   formEdit: FormGroup;
   tasks: Task[] = [];
   editTask: Task = null;
+  focus: boolean;
 
-  @ViewChild('newTask') newTaskField: ElementRef;
-  @ViewChild('editTask') editTaskField: ElementRef;
+  @ViewChild('newTask') private newTaskField: ElementRef;
+  @ViewChild('editTask') private editTaskField: ElementRef;
 
   constructor(public dateService: DateService,
               private taskService: TaskService,
@@ -51,10 +52,13 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.editTaskField) {
-      this.editTaskField.nativeElement.focus();
-    } else {
-      this.newTaskField.nativeElement.focus();
+    if (this.focus) {
+      if (this.editTaskField) {
+        this.editTaskField.nativeElement.focus();
+      } else {
+        this.newTaskField.nativeElement.focus();
+      }
+      this.focus = false;
     }
   }
 
@@ -83,6 +87,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.formEdit.reset();
     if (task) {
       this.formEdit.setValue({note: task.note});
+      this.focus = true;
     }
   }
 
