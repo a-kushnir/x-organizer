@@ -1,11 +1,5 @@
 /* https://www.cssscript.com/demo/animated-checkbox-radio-button-with-css3-and-font-awesome/ */
 
-::-moz-selection {
-  background: white;
-}
-
-::selection { background: white; }
-
 @-webkit-keyframes
 icon-beat {  0% {
   -webkit-transform: scale(2);

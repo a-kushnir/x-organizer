@@ -47,7 +47,6 @@ export class DisplayComponent implements OnInit {
 
       this.userService.user.next(user);
       this.profileService.theme = theme;
-      this.pageService.page.next(Pages.Home);
     }).catch(error => {
       this.submitted = false;
       console.error(error);
