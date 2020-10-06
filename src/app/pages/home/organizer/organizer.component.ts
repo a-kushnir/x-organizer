@@ -97,6 +97,14 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   toggleDone(task: Task): void {
     task.done = !task.done;
     this.save(task);
+    this.playAudio();
+  }
+
+  playAudio(): void {
+    const audio = new Audio();
+    audio.src = 'assets/audio/click.wav';
+    audio.load();
+    audio.play().then();
   }
 
   toggleSelect(task: Task): void {
