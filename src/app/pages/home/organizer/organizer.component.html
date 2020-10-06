@@ -8,8 +8,12 @@
     </div>
   </div>
   <ul class="list-group text-left">
-    <li class="list-group-item text-center" *ngIf="tasks.length == 0">
-      <i class="text-muted">No Tasks</i>
+    <li class="list-group-item new-item">
+      <form class="form-inline" (ngSubmit)="create()" [formGroup]="formNew">
+        <label class="sr-only" for="new-task">New Task</label>
+        <input #newTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task" autocomplete="off">
+        <a class="link link-add"><fa-icon [icon]="faPlusCircle" (click)="create()"></fa-icon></a>
+      </form>
     </li>
 
     <li class="list-group-item" [class.edit-item]="editTaskId === task.id" [class.selected-item]="task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)">
@@ -31,19 +35,11 @@
       <div *ngIf="editTaskId === task.id">
         <form class="form-inline" (ngSubmit)="update($event, task)" [formGroup]="formEdit">
           <label class="sr-only" for="edit-task">Edit Task</label>
-          <input #editTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="edit-task" placeholder="Edit Task">
+          <input #editTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="edit-task" placeholder="Edit Task" autocomplete="off">
           <a class="link link-cancel float-right" (click)="edit($event, null)"><fa-icon [icon]="faTimes"></fa-icon></a>
           <a class="link link-save float-right" (click)="update($event, task)"><fa-icon [icon]="faCheck"></fa-icon></a>
         </form>
       </div>
-    </li>
-
-    <li class="list-group-item new-item">
-      <form class="form-inline" (ngSubmit)="create()" [formGroup]="formNew">
-        <label class="sr-only" for="new-task">New Task</label>
-        <input #newTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task">
-        <a class="link link-add"><fa-icon [icon]="faPlusCircle" (click)="create()"></fa-icon></a>
-      </form>
     </li>
   </ul>
 </section>
