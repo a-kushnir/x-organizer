@@ -23,7 +23,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   formNew: FormGroup;
   formEdit: FormGroup;
   tasks: Task[] = [];
-  editTask: Task = null;
+  editTaskId: string = null;
   focus: boolean;
 
   @ViewChild('newTask') private newTaskField: ElementRef;
@@ -35,12 +35,15 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    this.dateService.date.pipe(
-      switchMap(value => this.taskService.all(value))
-    ).subscribe(tasks => {
+    this.taskService.tasks.subscribe(tasks => {
+      this.tasks = tasks;
+      if (this.editTaskId && !this.tasks.some(task => task.id === this.editTaskId)) {
+        this.editTaskId = null;
+      }
+    });
+    this.dateService.date.subscribe(_ => {
       this.cleanDeleted(this.tasks);
-      this.tasks = this.cleanDeleted(tasks);
-      this.editTask = null;
+      this.editTaskId = null;
     });
 
     this.formNew = new FormGroup({
@@ -76,14 +79,13 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
 
     this.taskService.create(task).then(newTask => {
       this.formNew.reset();
-      this.tasks.push(newTask);
       this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
   }
 
   edit(event: Event, task: Task): void {
     event.stopPropagation();
-    this.editTask = task;
+    this.editTaskId = task?.id;
     this.formEdit.reset();
     if (task) {
       this.formEdit.setValue({note: task.note});

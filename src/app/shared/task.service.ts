@@ -4,33 +4,76 @@ import * as moment from 'moment';
 import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Task} from './models/task.model';
+import {RealTimeUpdate} from './real-time-update';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {User} from './models/user.model';
+import {DateService} from './date.service';
+
+class RTUKey {
+  user: User;
+  date: moment.Moment;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   static DB_DATE_FORMAT = 'YYYY-MM-DD';
+  tasks: BehaviorSubject<Task[]>;
+  private rtu: RealTimeUpdate;
 
   constructor(private firestore: AngularFirestore,
+              private dateService: DateService,
               private userService: UserService) {
+
+    this.tasks = new BehaviorSubject<Task[]>([]);
+    this.rtu = new RealTimeUpdate(this.listenForUpdates.bind(this), this.handleUpdates.bind(this));
+
+    this.dateService.date.subscribe(date => {
+      const user = this.userService.user.value;
+      if (user) {
+        this.rtu.subscribe({user, date} as RTUKey);
+      }
+    });
+    this.userService.user.subscribe(user => {
+      if (!user) {
+        this.rtu.unsubscribe();
+      }
+    });
   }
 
-  all(date: moment.Moment): Promise<Task[]> {
-    return this.tasks(date)
-      .get()
-      .pipe(map(records => {
-        const result: Task[] = [];
-        records.forEach(record => {
-          result.push({...record.data(), id: record.id, date} as Task);
-        });
-        return result;
-      }))
-      .toPromise();
+  private calendarCollection(user?: User): AngularFirestoreCollection<Task> {
+    user = user ?? this.userService.user.value;
+    return this.firestore
+      .collection('users')
+      .doc(user.id)
+      .collection('calendar');
+  }
+
+  private tasksCollection(date: moment.Moment, user?: User): AngularFirestoreCollection<Task> {
+    return this.calendarCollection(user)
+      .doc(this.toDbDate(date))
+      .collection('tasks');
+  }
+
+  private listenForUpdates(key: RTUKey): Observable<any> {
+    const {user, date} = key;
+    return this
+      .tasksCollection(date, user)
+      .valueChanges({idField: 'id'});
+  }
+
+  private handleUpdates(key: RTUKey, records: any): void {
+    const {date} = key;
+    records.forEach(record => {
+      record.date = date;
+    });
+    this.tasks.next(records);
   }
 
   create(task: Task): Promise<Task> {
     const {date, ...attributes} = task;
-    return this.tasks(task.date)
+    return this.tasksCollection(task.date)
       .add(attributes)
       .then(record => {
         return {...task, id: record.id};
@@ -39,32 +82,18 @@ export class TaskService {
 
   update(task: Task): Promise<void> {
     const {id, date, selected, ...attributes} = task;
-    return this.tasks(task.date)
+    return this.tasksCollection(task.date)
       .doc(task.id)
       .set(attributes);
   }
 
   remove(task: Task): Promise<void> {
-    return this.tasks(task.date)
+    return this.tasksCollection(task.date)
       .doc(task.id)
       .delete();
   }
 
-  private calendar(): AngularFirestoreCollection<Task> {
-    const user = this.userService.user.value;
-    return this.firestore
-      .collection('users')
-      .doc(user.id)
-      .collection('calendar');
-  }
-
-  private tasks(date: moment.Moment): AngularFirestoreCollection<Task> {
-    return this.calendar()
-      .doc(this.toDbDate(date))
-      .collection('tasks');
-  }
-
-  toDbDate(date: moment.Moment): string {
+  private toDbDate(date: moment.Moment): string {
     return date.format(TaskService.DB_DATE_FORMAT);
   }
 }
