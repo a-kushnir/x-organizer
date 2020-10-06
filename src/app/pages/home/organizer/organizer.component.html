@@ -21,7 +21,7 @@
         <div *ngIf="!task.deleted" class="flex-fill">
           <label for="check{{task.id}}">
             <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.done === true ? 'checked' : null" (click)="toggleDone(task)" />
-            <i></i> <span [class]="task.done === true ? 'done' : null">{{ task.note }}</span>
+            <i></i> <span [class]="task.done === true ? 'done' : null" [innerHTML]="task.note | linkify"></span>
           </label>
         </div>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">
