@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../../shared/user.service';
-import {Pages, PageService} from '../../../shared/page.service';
+import {UserService} from 'src/app/shared/user.service';
+import {Pages, PageService} from 'src/app/shared/page.service';
+import {invalid} from 'src/app/shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'app-profile-account',
@@ -11,6 +12,7 @@ import {Pages, PageService} from '../../../shared/page.service';
 export class AccountComponent implements OnInit {
   form: FormGroup;
   submitted = false;
+  invalid = invalid;
 
   constructor(private userService: UserService,
               private pageService: PageService) {
@@ -20,8 +22,8 @@ export class AccountComponent implements OnInit {
     this.userService.user.subscribe(user => {
       if (user) {
         this.form = new FormGroup({
-          name: new FormControl(user.name, Validators.required),
-          email: new FormControl(user.email, Validators.required)
+          name: new FormControl(user.name, [Validators.required, Validators.maxLength(50)]),
+          email: new FormControl(user.email, [Validators.required, Validators.maxLength(255), Validators.email])
         });
       } else {
         this.form = null;
@@ -36,6 +38,11 @@ export class AccountComponent implements OnInit {
   }
 
   submit(): void {
+    this.form.markAllAsTouched();
+    if (!this.form.valid) {
+      return;
+    }
+
     const {name, email} = this.form.value;
     const user = {...this.userService.user.value, name, email};
 

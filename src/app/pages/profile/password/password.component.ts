@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../../shared/user.service';
-import {Pages, PageService} from '../../../shared/page.service';
-import {PasswordService} from '../../../shared/password.service';
+import {UserService} from 'src/app/shared/user.service';
+import {Pages, PageService} from 'src/app/shared/page.service';
+import {PasswordService} from 'src/app/shared/password.service';
+import {invalid} from 'src/app/shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'app-profile-password',
@@ -12,6 +13,7 @@ import {PasswordService} from '../../../shared/password.service';
 export class PasswordComponent implements OnInit {
   form: FormGroup;
   submitted = false;
+  invalid = invalid;
 
   constructor(private userService: UserService,
               private pageService: PageService) {
@@ -22,7 +24,7 @@ export class PasswordComponent implements OnInit {
       if (user) {
         this.form = new FormGroup({
           old_password: new FormControl('', Validators.required),
-          password: new FormControl('', Validators.required),
+          password: new FormControl('', [Validators.required, Validators.minLength(8)]),
           confirmation: new FormControl('', Validators.required)
         });
       } else {
@@ -38,6 +40,10 @@ export class PasswordComponent implements OnInit {
   }
 
   submit(): void {
+    this.form.markAllAsTouched();
+    if (!this.form.valid) {
+      return;
+    }
     const password = this.password();
     const user = {...this.userService.user.value, password};
 

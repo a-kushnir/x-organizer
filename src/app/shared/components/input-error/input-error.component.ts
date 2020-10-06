@@ -1,6 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {AbstractControl} from '@angular/forms';
 
+export function invalid(fieldControl: AbstractControl): boolean {
+  return fieldControl.invalid && (fieldControl.dirty || fieldControl.touched);
+}
+
 @Component({
   selector: 'app-input-error',
   templateUrl: './input-error.component.html',
@@ -12,12 +16,8 @@ export class InputErrorComponent {
 
   constructor() { }
 
-  static fieldValid(fieldControl: AbstractControl): boolean {
-    return !fieldControl.invalid || !(fieldControl.dirty || fieldControl.touched);
-  }
-
   get fieldError(): string {
-    if (InputErrorComponent.fieldValid(this.fieldControl)) {
+    if (!invalid(this.fieldControl)) {
       return null;
     }
 

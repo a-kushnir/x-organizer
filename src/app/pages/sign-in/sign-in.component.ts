@@ -4,7 +4,8 @@ import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
 import {User} from 'src/app/shared/models/user.model';
-import {DateService} from '../../shared/date.service';
+import {DateService} from 'src/app/shared/date.service';
+import {invalid} from 'src/app/shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,6 +15,7 @@ import {DateService} from '../../shared/date.service';
 export class SignInComponent implements OnInit {
   form: FormGroup;
   submitted = false;
+  invalid = invalid;
 
   constructor(private userService: UserService,
               private pageService: PageService,

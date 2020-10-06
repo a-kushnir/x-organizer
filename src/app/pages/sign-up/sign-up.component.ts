@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../shared/user.service';
 import {PasswordService} from '../../shared/password.service';
 import {ProfileService} from '../../shared/profile.service';
 import {Pages, PageService} from '../../shared/page.service';
 import { User } from 'src/app/shared/models/user.model';
-import {retry} from 'rxjs/operators';
-import {InputErrorComponent} from '../../shared/components/input-error/input-error.component';
+import {invalid} from 'src/app/shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,6 +15,7 @@ import {InputErrorComponent} from '../../shared/components/input-error/input-err
 export class SignUpComponent implements OnInit {
   form: FormGroup;
   submitted = false;
+  invalid = invalid;
 
   constructor(private userService: UserService,
               private pageService: PageService,
@@ -31,24 +31,14 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  fieldValid(fieldControl: AbstractControl): boolean {
-    return InputErrorComponent.fieldValid(fieldControl);
-  }
-
   enterSubmit(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       this.submit();
     }
   }
 
-  private markFormGroupTouched(form: FormGroup): void {
-    Object.values(form.controls).forEach(control => {
-      control.markAsTouched();
-    });
-  }
-
   submit(): void {
-    this.markFormGroupTouched(this.form);
+    this.form.markAllAsTouched();
     if (!this.form.valid) {
       return;
     }
