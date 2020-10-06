@@ -9,19 +9,27 @@
       </h2>
       <div class="form-group">
         <label for="sign-up-name">Name</label>
-        <input type="text" formControlName="name" class="form-control" id="sign-up-name">
+        <input type="text" formControlName="name" class="form-control" id="sign-up-name" maxlength="50"
+               [class.is-invalid]="!fieldValid(form.controls.name)">
+        <app-input-error fieldName="Name" [fieldControl]="form.controls.name"></app-input-error>
       </div>
       <div class="form-group">
         <label for="sign-up-email">Email</label>
-        <input type="text" formControlName="email" class="form-control" id="sign-up-email">
+        <input type="text" formControlName="email" class="form-control" id="sign-up-email" maxlength="255"
+               [class.is-invalid]="!fieldValid(form.controls.email)">
+        <app-input-error fieldName="Email" [fieldControl]="form.controls.email"></app-input-error>
       </div>
       <div class="form-group">
         <label for="sign-up-password">Password</label>
-        <input type="password" formControlName="password" class="form-control" id="sign-up-password">
+        <input type="password" formControlName="password" class="form-control" id="sign-up-password"
+               [class.is-invalid]="!fieldValid(form.controls.password)">
+        <app-input-error fieldName="Password" [fieldControl]="form.controls.password"></app-input-error>
       </div>
       <div class="form-group">
         <label for="sign-up-confirmation">Confirmation</label>
-        <input type="password" formControlName="confirmation" class="form-control" id="sign-up-confirmation">
+        <input type="password" formControlName="confirmation" class="form-control" id="sign-up-confirmation"
+               [class.is-invalid]="!fieldValid(form.controls.confirmation)">
+        <app-input-error fieldName="Confirmation" [fieldControl]="form.controls.confirmation"></app-input-error>
       </div>
       <button type="button" class="btn btn-primary" [disabled]="submitted" (click)="submit()">
         {{submitted ? 'Signing Up' : 'Sign Up'}}

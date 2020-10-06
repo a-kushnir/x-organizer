@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../shared/user.service';
 import {PasswordService} from '../../shared/password.service';
 import {ProfileService} from '../../shared/profile.service';
 import {Pages, PageService} from '../../shared/page.service';
 import { User } from 'src/app/shared/models/user.model';
+import {retry} from 'rxjs/operators';
+import {InputErrorComponent} from '../../shared/components/input-error/input-error.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,11 +24,15 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      name: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       confirmation: new FormControl('', Validators.required)
     });
+  }
+
+  fieldValid(fieldControl: AbstractControl): boolean {
+    return InputErrorComponent.fieldValid(fieldControl);
   }
 
   enterSubmit(event: KeyboardEvent): void {
@@ -35,7 +41,18 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  private markFormGroupTouched(form: FormGroup): void {
+    Object.values(form.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  }
+
   submit(): void {
+    this.markFormGroupTouched(this.form);
+    if (!this.form.valid) {
+      return;
+    }
+
     const {name, email, confirmation} = this.form.value;
     let {password} = this.form.value;
 
