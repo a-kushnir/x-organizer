@@ -153,9 +153,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   private removeForever(task): void {
-    this.taskService.remove(task).then(_ => {
-      this.updateCalendar(task.date, this.tasks);
-    }).catch(error => console.error(error));
+    this.taskService.remove(task)
+      .catch(error => console.error(error));
   }
 
   private save(task: Task): void {
