@@ -40,7 +40,11 @@ export class InputErrorComponent {
         `${this.fieldName} is too long (maximum is 1 character)` :
         `${this.fieldName} is too long (maximum is ${count} characters)`;
     }
-    else {
+    else if (errors.confirmation) {
+      const fieldName = errors.confirmation.fieldName;
+      return `${this.fieldName} doesn't match ${fieldName}`;
+
+    } else {
       return `${this.fieldName} is invalid`;
     }
   }

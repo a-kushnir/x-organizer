@@ -6,6 +6,7 @@ import {ProfileService} from 'src/app/shared/profile.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {User} from 'src/app/shared/models/user.model';
 import {FormComponent} from 'src/app/shared/components/form/form.component';
+import {MyValidators} from 'src/app/shared/validators/my-validators';
 
 @Component({
   selector: 'app-sign-up',
@@ -25,7 +26,7 @@ export class SignUpComponent extends FormComponent implements OnInit {
       name: new FormControl('', [Validators.required, Validators.maxLength(50)]),
       email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      confirmation: new FormControl('', Validators.required)
+      confirmation: new FormControl('', [Validators.required, MyValidators.confirmation('password', 'Password')])
     });
   }
 

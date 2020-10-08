@@ -4,6 +4,7 @@ import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
 import {FormComponent} from 'src/app/shared/components/form/form.component';
+import {MyValidators} from 'src/app/shared/validators/my-validators';
 
 @Component({
   selector: 'app-profile-password',
@@ -23,7 +24,7 @@ export class PasswordComponent extends FormComponent implements OnInit {
         this.form = new FormGroup({
           old_password: new FormControl('', Validators.required),
           password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-          confirmation: new FormControl('', Validators.required)
+          confirmation: new FormControl('', [Validators.required, MyValidators.confirmation('password', 'Password')])
         });
       } else {
         this.form = null;
