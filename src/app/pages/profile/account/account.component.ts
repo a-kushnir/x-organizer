@@ -2,20 +2,18 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
-import {invalid} from 'src/app/shared/components/input-error/input-error.component';
+import {FormComponent} from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-profile-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
-  form: FormGroup;
-  submitted = false;
-  invalid = invalid;
+export class AccountComponent extends FormComponent implements OnInit {
 
   constructor(private userService: UserService,
               private pageService: PageService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -31,22 +29,10 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  enterSubmit(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.submit();
-    }
-  }
-
-  submit(): void {
-    this.form.markAllAsTouched();
-    if (!this.form.valid) {
-      return;
-    }
-
+  onSubmit(): void {
     const {name, email} = this.form.value;
     const user = {...this.userService.user.value, name, email};
 
-    this.submitted = true;
     this.userService.update(user).then(_ => {
       this.submitted = false;
 

@@ -3,20 +3,18 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
-import {invalid} from 'src/app/shared/components/input-error/input-error.component';
+import {FormComponent} from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-profile-password',
   templateUrl: './password.component.html',
   styleUrls: ['./password.component.css']
 })
-export class PasswordComponent implements OnInit {
-  form: FormGroup;
-  submitted = false;
-  invalid = invalid;
+export class PasswordComponent extends FormComponent implements OnInit {
 
   constructor(private userService: UserService,
               private pageService: PageService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -33,21 +31,10 @@ export class PasswordComponent implements OnInit {
     });
   }
 
-  enterSubmit(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.submit();
-    }
-  }
-
-  submit(): void {
-    this.form.markAllAsTouched();
-    if (!this.form.valid) {
-      return;
-    }
+  onSubmit(): void {
     const password = this.password();
     const user = {...this.userService.user.value, password};
 
-    this.submitted = true;
     this.userService.update(user).then(_ => {
       this.submitted = false;
 

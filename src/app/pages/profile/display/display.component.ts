@@ -1,21 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../../shared/user.service';
-import {Pages, PageService} from '../../../shared/page.service';
-import {ProfileService} from '../../../shared/profile.service';
+import {UserService} from 'src/app/shared/user.service';
+import {PageService} from 'src/app/shared/page.service';
+import {ProfileService} from 'src/app/shared/profile.service';
+import {FormComponent} from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-profile-display',
   templateUrl: './display.component.html',
   styleUrls: ['./display.component.css']
 })
-export class DisplayComponent implements OnInit {
-  form: FormGroup;
-  submitted = false;
+export class DisplayComponent extends FormComponent implements OnInit {
 
   constructor(private userService: UserService,
               private pageService: PageService,
               private profileService: ProfileService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -31,17 +31,10 @@ export class DisplayComponent implements OnInit {
     });
   }
 
-  enterSubmit(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.submit();
-    }
-  }
-
-  submit(): void {
+  onSubmit(): void {
     const {syncTheme, theme} = this.form.value;
     const user = {...this.userService.user.value, theme, syncTheme};
 
-    this.submitted = true;
     this.userService.update(user).then(_ => {
       this.submitted = false;
 

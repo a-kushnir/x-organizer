@@ -1,25 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../shared/user.service';
-import {PasswordService} from '../../shared/password.service';
-import {ProfileService} from '../../shared/profile.service';
-import {Pages, PageService} from '../../shared/page.service';
-import { User } from 'src/app/shared/models/user.model';
-import {invalid} from 'src/app/shared/components/input-error/input-error.component';
+import {UserService} from 'src/app/shared/user.service';
+import {PasswordService} from 'src/app/shared/password.service';
+import {ProfileService} from 'src/app/shared/profile.service';
+import {Pages, PageService} from 'src/app/shared/page.service';
+import {User} from 'src/app/shared/models/user.model';
+import {FormComponent} from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
-  form: FormGroup;
-  submitted = false;
-  invalid = invalid;
+export class SignUpComponent extends FormComponent implements OnInit {
 
   constructor(private userService: UserService,
               private pageService: PageService,
               private profileService: ProfileService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -31,25 +29,13 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  enterSubmit(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.submit();
-    }
-  }
-
-  submit(): void {
-    this.form.markAllAsTouched();
-    if (!this.form.valid) {
-      return;
-    }
-
+  onSubmit(): void {
     const {name, email, confirmation} = this.form.value;
     let {password} = this.form.value;
 
     if (password === confirmation) {
       const theme = this.profileService.theme;
       password = new PasswordService().hash(password);
-      this.submitted = true;
 
       this.userService.findByEmail(email).then(existingUser => {
         if (!existingUser) {

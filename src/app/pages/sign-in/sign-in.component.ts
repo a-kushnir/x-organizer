@@ -3,23 +3,20 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
-import {User} from 'src/app/shared/models/user.model';
 import {DateService} from 'src/app/shared/date.service';
-import {invalid} from 'src/app/shared/components/input-error/input-error.component';
+import {FormComponent} from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
-export class SignInComponent implements OnInit {
-  form: FormGroup;
-  submitted = false;
-  invalid = invalid;
+export class SignInComponent extends FormComponent implements OnInit {
 
   constructor(private userService: UserService,
               private pageService: PageService,
               private dateService: DateService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -29,22 +26,14 @@ export class SignInComponent implements OnInit {
     });
   }
 
-  enterSubmit(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.submit();
-    }
-  }
-
-  submit(): void {
+  onSubmit(): void {
     const {email, password} = this.form.value;
-    this.submitted = true;
 
-    this.userService.findByEmail(email).then(newUser => {
+    this.userService.findByEmail(email).then(user => {
       this.submitted = false;
 
-      if (newUser && new PasswordService().compare(password, newUser.password)) {
-        this.updateProfile(newUser);
-        this.userService.user.next(newUser);
+      if (user && new PasswordService().compare(password, user.password)) {
+        this.userService.user.next(user);
         this.pageService.page.next(Pages.Home);
         this.dateService.reset();
         this.form.reset();
@@ -57,13 +46,5 @@ export class SignInComponent implements OnInit {
 
   switch(): void {
     this.pageService.page.next(Pages.SignUp);
-  }
-
-  private updateProfile(user: User): void {
-    if (!user.theme) {
-      user.theme = 'light';
-      this.userService.update(user).then(_ => {
-        }).catch(error => console.error(error));
-    }
   }
 }
