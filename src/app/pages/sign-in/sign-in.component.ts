@@ -12,6 +12,7 @@ import {FormComponent} from 'src/app/shared/components/form/form.component';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent extends FormComponent implements OnInit {
+  authError = false;
 
   constructor(private userService: UserService,
               private pageService: PageService,
@@ -23,6 +24,9 @@ export class SignInComponent extends FormComponent implements OnInit {
     this.form = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
+    });
+    this.form.statusChanges.subscribe(() => {
+      this.authError = false;
     });
   }
 
@@ -38,6 +42,10 @@ export class SignInComponent extends FormComponent implements OnInit {
         this.dateService.reset();
         this.form.reset();
       }
+      else {
+        this.authError = true;
+      }
+
     }).catch(error => {
       this.submitted = false;
       console.error(error);
