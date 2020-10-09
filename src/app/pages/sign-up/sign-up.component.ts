@@ -22,9 +22,10 @@ export class SignUpComponent extends FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const notExists = this.userService.notExistsByEmail.bind(this.userService);
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-      email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email], MyValidators.uniqueness(notExists)),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       confirmation: new FormControl('', [Validators.required, MyValidators.confirmation('password', 'Password')])
     });

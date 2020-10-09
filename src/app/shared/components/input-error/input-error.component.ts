@@ -43,8 +43,11 @@ export class InputErrorComponent {
     else if (errors.confirmation) {
       const fieldName = errors.confirmation.fieldName;
       return `${this.fieldName} doesn't match ${fieldName}`;
-
-    } else {
+    }
+    else if (errors.uniqueness) {
+      return `${this.fieldName} has already been taken`;
+    }
+    else {
       return `${this.fieldName} is invalid`;
     }
   }

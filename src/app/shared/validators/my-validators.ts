@@ -1,8 +1,7 @@
 import {ConfirmationValidator} from './confirmation';
+import {UniquenessValidator} from './uniqueness';
 
 export class MyValidators {
-  static confirmation = (field: string, name: string) => {
-    const validator = new ConfirmationValidator(field, name);
-    return validator.validate.bind(validator);
-  }
+  static confirmation = ConfirmationValidator.create;
+  static uniqueness = UniquenessValidator.create;
 }

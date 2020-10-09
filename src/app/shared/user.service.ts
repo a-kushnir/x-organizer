@@ -45,6 +45,17 @@ export class UserService {
     this.user.next(record);
   }
 
+  notExistsByEmail(email: string): Observable<boolean> {
+    return this
+      .collection(ref => ref
+        .where('email', '==', email)
+        .limit(1))
+      .get()
+      .pipe(map(records => {
+        return records.size === 0;
+      }));
+  }
+
   findByEmail(email: string): Promise<User> {
     return this
       .collection(ref => ref
@@ -52,7 +63,7 @@ export class UserService {
         .limit(1))
       .get()
       .pipe(map(records => {
-        if (records.size === 1) {
+        if (records.size > 0) {
           const record = records.docs[0];
           return {...record.data(), id: record.id} as User;
         }
