@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {FormComponent} from 'src/app/shared/components/form/form.component';
+import {MyValidators} from '../../../shared/validators/my-validators';
 
 @Component({
   selector: 'app-profile-account',
@@ -17,11 +18,12 @@ export class AccountComponent extends FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const emailUnique = MyValidators.uniqueness(this.userService.emailUnique.bind(this.userService));
     this.userService.user.subscribe(user => {
       if (user) {
         this.form = new FormGroup({
           name: new FormControl(user.name, [Validators.required, Validators.maxLength(50)]),
-          email: new FormControl(user.email, [Validators.required, Validators.maxLength(255), Validators.email])
+          email: new FormControl(user.email, [Validators.required, Validators.maxLength(255), Validators.email], emailUnique)
         });
       } else {
         this.form = null;

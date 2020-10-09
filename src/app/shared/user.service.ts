@@ -45,14 +45,18 @@ export class UserService {
     this.user.next(record);
   }
 
-  notExistsByEmail(email: string): Observable<boolean> {
+  emailUnique(email: string): Observable<boolean> {
     return this
       .collection(ref => ref
         .where('email', '==', email)
         .limit(1))
       .get()
       .pipe(map(records => {
-        return records.size === 0;
+        if (records.size === 0 || !this.user.value) {
+          return true;
+        } else {
+          return records.docs[0].id === this.user.value.id;
+        }
       }));
   }
 
