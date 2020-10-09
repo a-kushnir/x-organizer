@@ -1,11 +1,13 @@
-import {AbstractControl, ValidatorFn} from '@angular/forms';
+import {AbstractControl, ValidationErrors, Validator} from '@angular/forms';
 
-export function confirmationValidator(field: string, name: string): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: any} | null => {
+export class ConfirmationValidator implements Validator {
+  constructor(private field: string,
+              private name: string) {
+  }
 
+  validate(control: AbstractControl): ValidationErrors | null {
     const value1 = control.value;
-    const value2 = control.parent ? control.parent.get(field).value : null;
-
-    return value1 !== value2 ? {confirmation: {fieldName: name}} : null;
-  };
+    const value2 = control.parent ? control.parent.get(this.field).value : null;
+    return value1 === value2 ? null : {confirmation: {fieldName: this.name}};
+  }
 }
