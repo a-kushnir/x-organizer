@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
 import {FormComponent} from 'src/app/shared/components/form/form.component';
 import {MyValidators} from 'src/app/shared/validators/my-validators';
+import {User} from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-profile-password',
@@ -13,23 +15,27 @@ import {MyValidators} from 'src/app/shared/validators/my-validators';
 })
 export class PasswordComponent extends FormComponent implements OnInit {
 
+  private $user: Subscription;
+
   constructor(private userService: UserService,
               private pageService: PageService) {
     super();
   }
 
   ngOnInit(): void {
-    this.userService.user.subscribe(user => {
-      if (user) {
-        this.form = new FormGroup({
-          old_password: new FormControl('', Validators.required),
-          password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-          confirmation: new FormControl('', [Validators.required, MyValidators.confirmation('password', 'Password')])
-        });
-      } else {
-        this.form = null;
-      }
-    });
+    this.$user = this.userService.user.subscribe(this.onUserChange.bind(this));
+  }
+
+  onUserChange(user: User): void {
+    if (user) {
+      this.form = new FormGroup({
+        old_password: new FormControl('', Validators.required),
+        password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+        confirmation: new FormControl('', [Validators.required, MyValidators.confirmation('password', 'Password')])
+      });
+    } else {
+      this.form = null;
+    }
   }
 
   onSubmit(): void {

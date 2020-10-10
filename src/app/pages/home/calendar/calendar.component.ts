@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import {DateService} from '../../../shared/date.service';
-import {TaskService} from '../../../shared/task.service';
-import {DayStatusService} from '../../../shared/day-status.service';
+import {Subscription} from 'rxjs';
+import {DateService} from 'src/app/shared/date.service';
+import {TaskService} from 'src/app/shared/task.service';
+import {DayStatusService} from 'src/app/shared/day-status.service';
+import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 
 class Day {
   date: moment.Moment;
@@ -17,6 +19,7 @@ class Week {
   days: Day[];
 }
 
+@AutoUnsubscribe
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -26,15 +29,19 @@ export class CalendarComponent implements OnInit {
 
   weeks: Week[];
 
+  private $month: Subscription;
+  private $date: Subscription;
+  private $days: Subscription;
+
   constructor(private dateService: DateService,
               private tasksService: TaskService,
               private dayStatusService: DayStatusService) {
-    dateService.month.subscribe(this.generateCalendar.bind(this));
-    dateService.date.subscribe(this.generateCalendar.bind(this));
-    dayStatusService.days.subscribe(this.generateCalendar.bind(this));
   }
 
   ngOnInit(): void {
+    this.$month = this.dateService.month.subscribe(this.generateCalendar.bind(this));
+    this.$date = this.dateService.date.subscribe(this.generateCalendar.bind(this));
+    this.$days = this.dayStatusService.days.subscribe(this.generateCalendar.bind(this));
   }
 
   generateCalendar(): void {

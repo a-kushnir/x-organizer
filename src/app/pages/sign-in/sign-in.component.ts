@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {UserService} from 'src/app/shared/user.service';
 import {Pages, PageService} from 'src/app/shared/page.service';
 import {PasswordService} from 'src/app/shared/password.service';
 import {DateService} from 'src/app/shared/date.service';
 import {FormComponent} from 'src/app/shared/components/form/form.component';
+import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 
+@AutoUnsubscribe
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -13,6 +16,8 @@ import {FormComponent} from 'src/app/shared/components/form/form.component';
 })
 export class SignInComponent extends FormComponent implements OnInit {
   authError = false;
+
+  private $form: Subscription;
 
   constructor(private userService: UserService,
               private pageService: PageService,
@@ -25,7 +30,7 @@ export class SignInComponent extends FormComponent implements OnInit {
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
-    this.form.statusChanges.subscribe(() => {
+    this.$form = this.form.statusChanges.subscribe(() => {
       this.authError = false;
     });
   }

@@ -1,13 +1,15 @@
-import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {faEdit, faTrash, faPlusCircle, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import * as moment from 'moment';
+import {Subscription} from 'rxjs';
 import {DateService} from 'src/app/shared/date.service';
 import {TaskService} from 'src/app/shared/task.service';
-import {switchMap} from 'rxjs/operators';
 import {Task} from 'src/app/shared/models/task.model';
-import * as moment from 'moment';
-import {DayStatusService, Statuses} from '../../../shared/day-status.service';
+import {DayStatusService, Statuses} from 'src/app/shared/day-status.service';
+import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 
+@AutoUnsubscribe
 @Component({
   selector: 'app-organizer',
   templateUrl: './organizer.component.html',
@@ -26,6 +28,9 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   editTaskId: string = null;
   focus: boolean;
 
+  private $tasks: Subscription;
+  private $date: Subscription;
+
   @ViewChild('newTask') private newTaskField: ElementRef;
   @ViewChild('editTask') private editTaskField: ElementRef;
 
@@ -35,16 +40,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    this.taskService.tasks.subscribe(tasks => {
-      this.tasks = tasks;
-      if (this.editTaskId && !this.tasks.some(task => task.id === this.editTaskId)) {
-        this.editTaskId = null;
-      }
-    });
-    this.dateService.date.subscribe(_ => {
-      this.cleanDeleted(this.tasks);
-      this.editTaskId = null;
-    });
+    this.$tasks = this.taskService.tasks.subscribe(this.onTasksChange.bind(this));
+    this.$date = this.dateService.date.subscribe(this.onDateChange.bind(this));
 
     this.formNew = new FormGroup({
       note: new FormControl('', Validators.required)
@@ -62,6 +59,18 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
         this.newTaskField.nativeElement.focus();
       }
       this.focus = false;
+    }
+  }
+
+  onDateChange(_: moment.Moment): void {
+    this.cleanDeleted(this.tasks);
+    this.editTaskId = null;
+  }
+
+  onTasksChange(tasks: Task[]): void {
+    this.tasks = tasks;
+    if (this.editTaskId && !this.tasks.some(task => task.id === this.editTaskId)) {
+      this.editTaskId = null;
     }
   }
 
