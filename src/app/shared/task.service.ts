@@ -7,7 +7,7 @@ import {RealTimeUpdate} from './real-time-update';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {User} from './models/user.model';
 import {DateService} from './date.service';
-import {dbDate} from './date-format';
+import {dbDate, dbDateTime} from './date-format';
 import _ from 'lodash';
 
 class RTUKey {
@@ -43,6 +43,20 @@ export class TaskService {
     });
   }
 
+  static sort(tasks: Task[]): void {
+    tasks.sort((a, b) => {
+      if (a.completed_at && (!b.completed_at || a.completed_at < b.completed_at)) {
+        return 1;
+      } else if (b.completed_at && (!a.completed_at || b.completed_at < a.completed_at)) {
+        return -1;
+      } else if (a.created_at < b.created_at) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
+
   private calendarCollection(user?: User): AngularFirestoreCollection<Task> {
     user = user ?? this.userService.user.value;
     return this.firestore
@@ -68,7 +82,16 @@ export class TaskService {
     const {date} = key;
     records.forEach(record => {
       record.date = date;
+      // Conversion
+      if (!record.created_at) {
+        record.created_at = dbDateTime(moment().startOf('month'));
+      }
+      if (record.done && !record.completed_at) {
+        record.completed_at = dbDateTime(moment().startOf('day'));
+      }
+      delete record.done;
     });
+    TaskService.sort(records);
     if (!_.isEqual(this.tasks.value, records)) {
       this.tasks.next(records);
     }

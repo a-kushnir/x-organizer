@@ -16,12 +16,12 @@
       </form>
     </li>
 
-    <li class="list-group-item" [class.edit-item]="editTaskId === task.id" [class.selected-item]="false // task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)">
+    <li class="list-group-item" [class.edit-item]="editTaskId === task.id" [class.complete]="task.completed_at" [class.selected-item]="false // task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)">
       <div class="d-flex flex-row" *ngIf="editTaskId !== task.id">
         <div *ngIf="!task.deleted" class="flex-fill">
           <label for="check{{task.id}}">
-            <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.done === true ? 'checked' : null" (click)="toggleDone(task)" />
-            <i></i> <span [class]="task.done === true ? 'done' : null" [innerHTML]="task.note | linkify"></span>
+            <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.completed_at ? 'checked' : null" (click)="toggleComplete(task)" />
+            <i></i> <span [class.complete]="task.completed_at" [innerHTML]="task.note | linkify"></span>
           </label>
         </div>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">

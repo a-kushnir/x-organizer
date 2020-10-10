@@ -12,7 +12,7 @@
       disabled: day.disabled,
       weekend: day.weekend,
       tasks: day.status === 'Active',
-      done: day.status === 'Done'
+      complete: day.status === 'Done'
     }" (click)="selectDate(day)">
       <div>
         {{ day.date | date :'d' }}

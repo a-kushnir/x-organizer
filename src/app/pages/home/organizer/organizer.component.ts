@@ -87,9 +87,11 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
       note,
       created_at: dbDateTime()
     };
+    this.formNew.reset();
+    this.tasks.push(task);
+    TaskService.sort(this.tasks);
 
-    this.taskService.create(task).then(newTask => {
-      this.formNew.reset();
+    this.taskService.create(task).then(() => {
       this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
   }
@@ -104,13 +106,13 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  toggleDone(task: Task): void {
-    if (task.done) { // (task.completed_at) {
-      task.completed_at = null;
+  toggleComplete(task: Task): void {
+    if (task.completed_at) {
+      delete task.completed_at;
     } else {
       task.completed_at = dbDateTime();
     }
-    task.done = !task.done;
+    TaskService.sort(this.tasks);
     this.save(task);
     this.playAudio();
   }
@@ -158,7 +160,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     tasks.forEach(task => {
       if (task.deleted) {
         // skip
-      } else if (task.done) {
+      } else if (task.done || task.completed_at) {
         done = true;
       } else {
         active = true;

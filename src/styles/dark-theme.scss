@@ -33,11 +33,16 @@ app-calendar {
   .date.weekend div {
     background-color: rgba(#fff, .08);
   }
-  .done .dot {
+  .complete .dot {
     background-color: rgba(#fff, .2);
   }
 }
 
-ul li.selected-item {
-  background-color: rgba(#fff, .25);
+ul li.list-group-item {
+  &.selected-item {
+    background-color: rgba(#fff, .25);
+  }
+  &.complete {
+    color: #555555;
+  }
 }
