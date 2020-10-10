@@ -6,7 +6,7 @@ export class UniquenessValidator implements AsyncValidator {
   constructor(private method: (value: string) => Observable<boolean>) {
   }
 
-  static create(method: (value: string) => Observable<boolean>): () => Observable<ValidationErrors|null> {
+  static create(method: (value: string) => Observable<boolean>): (control: AbstractControl) => Observable<ValidationErrors|null> {
     const validator = new UniquenessValidator(method);
     return validator.validate.bind(validator);
   }

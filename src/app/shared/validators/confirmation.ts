@@ -5,7 +5,7 @@ export class ConfirmationValidator implements Validator {
               private name: string) {
   }
 
-  static create(field: string, name: string): () => ValidationErrors|null {
+  static create(field: string, name: string): (control: AbstractControl) => ValidationErrors|null {
     const validator = new ConfirmationValidator(field, name);
     return validator.validate.bind(validator);
   }

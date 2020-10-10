@@ -33,7 +33,13 @@ export class PasswordComponent extends FormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const password = this.password();
+    if (!this.validate()) {
+      this.submitted = false;
+      return;
+    }
+
+    let {password} = this.form.value;
+    password = new PasswordService().hash(password);
     const user = {...this.userService.user.value, password};
 
     this.userService.update(user).then(_ => {
@@ -47,15 +53,10 @@ export class PasswordComponent extends FormComponent implements OnInit {
     });
   }
 
-  private password(): string {
-    const user = this.userService.user.value;
-    const {old_password, password, confirmation} = this.form.value;
-
-    if (old_password.trim() !== '' && password.trim() !== '' && confirmation.trim() !== '') {
-      if (new PasswordService().compare(old_password, user.password)) {
-        return new PasswordService().hash(password);
-      }
-    }
-    return user.password;
+  private validate(): boolean {
+    const validator = MyValidators.password();
+    const field = this.form.controls.old_password;
+    field.setErrors(validator(field));
+    return this.form.valid;
   }
 }

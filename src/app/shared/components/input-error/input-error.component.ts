@@ -47,6 +47,9 @@ export class InputErrorComponent {
     else if (errors.uniqueness) {
       return `${this.fieldName} has already been taken`;
     }
+    else if (errors.password) {
+      return 'The password you entered is incorrect';
+    }
     else {
       return `${this.fieldName} is invalid`;
     }
