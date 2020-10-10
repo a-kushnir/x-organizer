@@ -8,6 +8,7 @@ import {TaskService} from 'src/app/shared/task.service';
 import {Task} from 'src/app/shared/models/task.model';
 import {DayStatusService, Statuses} from 'src/app/shared/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
+import {dbDateTime} from 'src/app/shared/date-format';
 
 @AutoUnsubscribe
 @Component({
@@ -83,7 +84,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
 
     const task: Task = {
       date: this.dateService.date.value,
-      note
+      note,
+      created_at: dbDateTime()
     };
 
     this.taskService.create(task).then(newTask => {
@@ -103,6 +105,11 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   toggleDone(task: Task): void {
+    if (task.done) { // (task.completed_at) {
+      task.completed_at = null;
+    } else {
+      task.completed_at = dbDateTime();
+    }
     task.done = !task.done;
     this.save(task);
     this.playAudio();

@@ -8,6 +8,7 @@ import FieldPath = firebase.firestore.FieldPath;
 import {RealTimeUpdate} from './real-time-update';
 import {DateService} from './date.service';
 import {User} from './models/user.model';
+import {dbDate, dbMonth} from './date-format';
 
 export enum Statuses {
   Active = 'Active',
@@ -23,8 +24,6 @@ class RTUKey {
   providedIn: 'root'
 })
 export class DayStatusService {
-  static DB_DATE_FORMAT = 'YYYY-MM-DD';
-  static DB_MONTH_FORMAT = 'YYYY-MM';
 
   days: BehaviorSubject<object>;
   private rtu: RealTimeUpdate;
@@ -52,9 +51,9 @@ export class DayStatusService {
   private listenForUpdates(key: RTUKey): any {
     const {user, month} = key;
     const months = [
-      month.clone().add(-1, 'month').format(DayStatusService.DB_MONTH_FORMAT),
-      month.format(DayStatusService.DB_MONTH_FORMAT),
-      month.clone().add(1, 'month').format(DayStatusService.DB_MONTH_FORMAT)
+      dbMonth(month.clone().add(-1, 'month')),
+      dbMonth(month),
+      dbMonth(month.clone().add(1, 'month'))
     ];
     return this.firestore
       .collection('users')
@@ -68,9 +67,9 @@ export class DayStatusService {
   private handleUpdates(key: RTUKey, records: any): void {
     const {month} = key;
     const months = [
-      month.clone().add(-1, 'month').format('YYYY-MM'),
-      month.format('YYYY-MM'),
-      month.clone().add(1, 'month').format('YYYY-MM')
+      dbMonth(month.clone().add(-1, 'month')),
+      dbMonth(month),
+      dbMonth(month.clone().add(1, 'month'))
     ];
     const days = {};
     months.forEach(mon => {
@@ -88,7 +87,7 @@ export class DayStatusService {
       .collection('users')
       .doc(this.userService.user.value.id)
       .collection('months')
-      .doc(date.format(DayStatusService.DB_MONTH_FORMAT));
+      .doc(dbMonth(date));
 
     doc.get().subscribe(record => {
         let data = {};
@@ -96,7 +95,7 @@ export class DayStatusService {
           data = record.data();
         }
 
-        const key = date.format(DayStatusService.DB_DATE_FORMAT);
+        const key = dbDate(date);
         if (status) {
           data[key] = status;
         } else {

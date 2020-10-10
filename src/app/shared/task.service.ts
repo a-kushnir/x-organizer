@@ -7,6 +7,7 @@ import {RealTimeUpdate} from './real-time-update';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {User} from './models/user.model';
 import {DateService} from './date.service';
+import {dbDate} from './date-format';
 import _ from 'lodash';
 
 class RTUKey {
@@ -18,7 +19,7 @@ class RTUKey {
   providedIn: 'root'
 })
 export class TaskService {
-  static DB_DATE_FORMAT = 'YYYY-MM-DD';
+
   tasks: BehaviorSubject<Task[]>;
   private rtu: RealTimeUpdate;
 
@@ -52,7 +53,7 @@ export class TaskService {
 
   private tasksCollection(date: moment.Moment, user?: User): AngularFirestoreCollection<Task> {
     return this.calendarCollection(user)
-      .doc(this.toDbDate(date))
+      .doc(dbDate(date))
       .collection('tasks');
   }
 
@@ -95,7 +96,4 @@ export class TaskService {
       .delete();
   }
 
-  private toDbDate(date: moment.Moment): string {
-    return date.format(TaskService.DB_DATE_FORMAT);
-  }
 }

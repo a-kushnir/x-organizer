@@ -6,6 +6,8 @@ import * as moment from 'moment';
 })
 export class LocalStorage {
 
+  static readonly DateFormat = 'YYYY-MM-DD';
+
   static getString(key: string): string {
     return localStorage.getItem(key);
   }
@@ -28,11 +30,11 @@ export class LocalStorage {
 
   static getDate(key: string): moment.Moment {
     const value = this.getString(key);
-    return value ? moment(value, 'YYYY-MM-DD') : null;
+    return value ? moment(value, this.DateFormat) : null;
   }
 
   static setDate(key: string, value: moment.Moment): void {
-    this.setString(key, value ? value.format('YYYY-MM-DD') : null);
+    this.setString(key, value ? value.format(this.DateFormat) : null);
   }
 
 }

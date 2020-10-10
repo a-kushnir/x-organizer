@@ -16,7 +16,7 @@ import {FooterComponent} from './shared/layout/footer/footer.component';
 import {CalendarComponent} from './pages/home/calendar/calendar.component';
 import {OrganizerComponent} from './pages/home/organizer/organizer.component';
 import {SelectorComponent} from './pages/home/selector/selector.component';
-import {MonthPipe} from './shared/month.pipe';
+import {MomentPipe} from './shared/moment.pipe';
 import {LinkifyPipe} from './shared/linkify.pipe';
 import {InputErrorComponent} from './shared/components/input-error/input-error.component';
 
@@ -37,7 +37,7 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     CalendarComponent,
     OrganizerComponent,
     SelectorComponent,
-    MonthPipe,
+    MomentPipe,
     LinkifyPipe,
     HomeComponent,
     ProfileComponent,

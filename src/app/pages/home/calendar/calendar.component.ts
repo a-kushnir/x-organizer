@@ -5,6 +5,7 @@ import {DateService} from 'src/app/shared/date.service';
 import {TaskService} from 'src/app/shared/task.service';
 import {DayStatusService} from 'src/app/shared/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
+import {dbDate, dbMonth} from 'src/app/shared/date-format';
 
 class Day {
   date: moment.Moment;
@@ -61,8 +62,8 @@ export class CalendarComponent implements OnInit {
           const selected = current.isSame(this.dateService.date.value, 'day');
           const disabled = !current.isSame(month, 'month');
           const weekend = current.day() === 0 || current.day() === 6;
-          const statuses = this.dayStatusService.days.value[current.format('YYYY-MM')];
-          const status = statuses ? statuses[current.format('YYYY-MM-DD')] : null;
+          const statuses = this.dayStatusService.days.value[dbMonth(current)];
+          const status = statuses ? statuses[dbDate(current)] : null;
           return { date, active, selected, disabled, weekend, status };
         })
       });
