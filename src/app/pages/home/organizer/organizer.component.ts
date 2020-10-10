@@ -44,7 +44,6 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.dateService.date.subscribe(_ => {
       this.cleanDeleted(this.tasks);
       this.editTaskId = null;
-      this.focus = true;
     });
 
     this.formNew = new FormGroup({
