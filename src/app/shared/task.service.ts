@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
@@ -8,6 +7,7 @@ import {RealTimeUpdate} from './real-time-update';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {User} from './models/user.model';
 import {DateService} from './date.service';
+import _ from 'lodash';
 
 class RTUKey {
   user: User;
@@ -68,7 +68,9 @@ export class TaskService {
     records.forEach(record => {
       record.date = date;
     });
-    this.tasks.next(records);
+    if (!_.isEqual(this.tasks.value, records)) {
+      this.tasks.next(records);
+    }
   }
 
   create(task: Task): Promise<Task> {
@@ -81,7 +83,7 @@ export class TaskService {
   }
 
   update(task: Task): Promise<void> {
-    const {id, date, selected, ...attributes} = task;
+    const {id, date, ...attributes} = task;
     return this.tasksCollection(task.date)
       .doc(task.id)
       .set(attributes);

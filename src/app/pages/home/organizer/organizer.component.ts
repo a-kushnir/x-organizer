@@ -108,7 +108,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   toggleSelect(task: Task): void {
-    task.selected = !task.selected;
+    // task.selected = !task.selected;
   }
 
   update(event: Event, task: Task): void {

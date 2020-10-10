@@ -6,5 +6,4 @@ export interface Task {
   note: string;
   deleted?: boolean;
   done?: boolean;
-  selected?: boolean;
 }
