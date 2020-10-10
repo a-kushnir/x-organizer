@@ -1,12 +1,11 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {Injector, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {HttpClientModule} from '@angular/common/http';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireModule} from '@angular/fire';
-export let AppInjector: Injector;
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -62,8 +61,4 @@ import {DisplayComponent} from './pages/profile/display/display.component';
   providers: [AngularFirestore],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(private injector: Injector) {
-    AppInjector = this.injector;
-  }
-}
+export class AppModule {}

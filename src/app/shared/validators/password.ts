@@ -1,17 +1,13 @@
 import {AbstractControl, ValidationErrors, Validator} from '@angular/forms';
 import {UserService} from '../user.service';
 import {PasswordService} from '../password.service';
-import {AppInjector} from '../../app.module';
 
 export class PasswordValidator implements Validator {
-  private userService: UserService;
-
-  constructor() {
-    this.userService = AppInjector.get(UserService);
+  constructor(private userService: UserService) {
   }
 
-  static create(): (control: AbstractControl) => ValidationErrors|null {
-    const validator = new PasswordValidator();
+  static create(userService: UserService): (control: AbstractControl) => ValidationErrors|null {
+    const validator = new PasswordValidator(userService);
     return validator.validate.bind(validator);
   }
 

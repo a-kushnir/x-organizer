@@ -60,7 +60,7 @@ export class PasswordComponent extends FormComponent implements OnInit {
   }
 
   private validate(): boolean {
-    const validator = MyValidators.password();
+    const validator = MyValidators.password(this.userService);
     const field = this.form.controls.old_password;
     field.setErrors(validator(field));
     return this.form.valid;
