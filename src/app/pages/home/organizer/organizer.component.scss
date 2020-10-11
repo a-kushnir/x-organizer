@@ -17,8 +17,11 @@ form {
 
 ul {
   width: 100%;
-  li {
+
+  li.list-group-item {
     padding-left: 12px;
+    cursor: pointer;
+
     input[type=checkbox] {
       margin-right: 4px;
     }
@@ -27,6 +30,10 @@ ul {
       padding-left: 21px;
       padding-top: 0;
       padding-bottom: 0;
+    }
+
+    span.complete {
+      text-decoration: line-through;
     }
   }
 }
@@ -61,8 +68,4 @@ ul {
 .link-undo {
   margin-left: 0;
   margin-right: 20px;
-}
-
-ul li span.complete {
-  text-decoration: line-through;
 }
