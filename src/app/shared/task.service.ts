@@ -45,11 +45,11 @@ export class TaskService {
 
   static sort(tasks: Task[]): void {
     tasks.sort((a, b) => {
-      if (a.completed_at && (!b.completed_at || a.completed_at < b.completed_at)) {
+      if (a.completedAt && (!b.completedAt || a.completedAt < b.completedAt)) {
         return 1;
-      } else if (b.completed_at && (!a.completed_at || b.completed_at < a.completed_at)) {
+      } else if (b.completedAt && (!a.completedAt || b.completedAt < a.completedAt)) {
         return -1;
-      } else if (a.created_at < b.created_at) {
+      } else if (a.createdAt < b.createdAt) {
         return 1;
       } else {
         return -1;

@@ -4,8 +4,9 @@ export interface Task {
   id?: string;
   date?: moment.Moment;
   note: string;
-  created_at: string;
-  completed_at?: string;
+  createdAt: string;
+  completedAt?: string;
   deleted?: boolean;
-  done?: boolean;
+  done?: boolean; // todo remove
+  sortOrder?: number;
 }

@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireModule} from '@angular/fire';
+import {SortablejsModule} from 'ngx-sortablejs';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -56,7 +57,8 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     ReactiveFormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    SortablejsModule.forRoot({}),
   ],
   providers: [AngularFirestore],
   bootstrap: [AppComponent]
