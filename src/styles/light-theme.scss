@@ -27,12 +27,12 @@ $input-disabled-bg: #e9ecef;
 @import "~bootstrap/scss/bootstrap";
 
 app-calendar {
-  .dow,
-  .date.active div {
-    background-color: #e8e9ea;
-  }
   .date.weekend div {
     background-color: rgba(#000, .05);
+  }
+  .dow,
+  .date.active div {
+    background-color: rgba(#000, .2);
   }
   .complete .dot {
     background-color: rgba(#000, .2);
