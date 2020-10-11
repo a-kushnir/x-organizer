@@ -49,10 +49,16 @@ export class TaskService {
         return 1;
       } else if (b.completedAt && (!a.completedAt || b.completedAt < a.completedAt)) {
         return -1;
-      } else if (a.createdAt < b.createdAt) {
+      } else if (a.sortOrder && b.sortOrder) {
+        return a.sortOrder > b.sortOrder ? 1 : -1;
+      } else if (a.sortOrder && !b.sortOrder) {
         return 1;
-      } else {
+      } else if (b.sortOrder && !a.sortOrder) {
         return -1;
+      } else if (a.createdAt && b.createdAt) {
+        return a.createdAt > b.createdAt ? 1 : -1;
+      } else {
+        return 0;
       }
     });
   }
@@ -83,11 +89,11 @@ export class TaskService {
     records.forEach(record => {
       record.date = date;
       // Conversion
-      if (!record.created_at) {
-        record.created_at = dbDateTime(moment().startOf('month'));
+      if (!record.createdAt) {
+        record.createdAt = dbDateTime(moment().startOf('month'));
       }
-      if (record.done && !record.completed_at) {
-        record.completed_at = dbDateTime(moment().startOf('day'));
+      if (record.done && !record.completedAt) {
+        record.completedAt = dbDateTime(moment().startOf('day'));
       }
       delete record.done;
     });
@@ -108,9 +114,21 @@ export class TaskService {
 
   update(task: Task): Promise<void> {
     const {id, date, ...attributes} = task;
-    return this.tasksCollection(task.date)
-      .doc(task.id)
+    return this.tasksCollection(date)
+      .doc(id)
       .set(attributes);
+  }
+
+  updateAll(tasks: Task[]): Promise<void> {
+    const batch = this.firestore.firestore.batch();
+
+    tasks.forEach(task => {
+      const {id, date, ...attributes} = task;
+      const ref = this.tasksCollection(date).doc(id).ref;
+      batch.set(ref, attributes as Task);
+    });
+
+    return batch.commit();
   }
 
   remove(task: Task): Promise<void> {

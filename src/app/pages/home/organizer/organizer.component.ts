@@ -9,6 +9,7 @@ import {Task} from 'src/app/shared/models/task.model';
 import {DayStatusService, Statuses} from 'src/app/shared/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 import {dbDateTime} from 'src/app/shared/date-format';
+import {Options} from 'sortablejs';
 
 @AutoUnsubscribe
 @Component({
@@ -28,6 +29,10 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   tasks: Task[] = [];
   editTaskId: string = null;
   focus: boolean;
+
+  sortableOptions: Options = {
+    onUpdate: () => this.onUpdate(),
+  };
 
   private $tasks: Subscription;
   private $date: Subscription;
@@ -76,6 +81,12 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   onUpdate(): void {
+    let sortOrder = 0;
+    this.tasks.forEach(task => {
+      task.sortOrder = sortOrder++;
+    });
+    this.taskService.updateAll(this.tasks).then(() => {
+    }).catch(error => console.error(error));
   }
 
   create(): void {
