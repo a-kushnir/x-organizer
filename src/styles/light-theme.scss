@@ -46,4 +46,7 @@ ul li.list-group-item {
   &.complete {
     color: #bbbbbb;
   }
+  &.sortable-chosen {
+    background-color: rgba(#000, .05);
+  }
 }

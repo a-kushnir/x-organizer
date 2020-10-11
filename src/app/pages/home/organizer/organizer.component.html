@@ -16,7 +16,7 @@
       </form>
     </li>
   </ul>
-  <ul class="list-group text-left" [sortablejs]="tasks" [sortablejsOptions]="sortableOptions">
+  <ul class="list-group text-left" [sortablejs]="tasks" [sortablejsOptions]="sortOptions">
     <li class="list-group-item" [class.edit-item]="editTaskId === task.id" [class.complete]="task.completedAt" [class.selected-item]="false // task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)">
       <div class="d-flex flex-row" *ngIf="editTaskId !== task.id">
         <div *ngIf="!task.deleted" class="flex-fill">

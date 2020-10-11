@@ -58,7 +58,7 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
-    SortablejsModule.forRoot({}),
+    SortablejsModule.forRoot({animation: 150}),
   ],
   providers: [AngularFirestore],
   bootstrap: [AppComponent]

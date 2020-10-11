@@ -30,8 +30,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   editTaskId: string = null;
   focus: boolean;
 
-  sortableOptions: Options = {
-    onUpdate: () => this.onUpdate(),
+  sortOptions: Options = {
+    onUpdate: () => this.onSortUpdate(),
   };
 
   private $tasks: Subscription;
@@ -80,7 +80,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  onUpdate(): void {
+  onSortUpdate(): void {
     let sortOrder = 0;
     this.tasks.forEach(task => {
       task.sortOrder = sortOrder++;
