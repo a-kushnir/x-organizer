@@ -25,15 +25,24 @@ ul {
     input[type=checkbox] {
       margin-right: 4px;
     }
-
     &.new-item, &.edit-item {
       padding-left: 21px;
       padding-top: 0;
       padding-bottom: 0;
     }
-
     span.complete {
       text-decoration: line-through;
+    }
+  }
+  &.with-tasks {
+    li.new-item {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom: 0;
+    }
+    &.existing-items li:first-child {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
     }
   }
 }
