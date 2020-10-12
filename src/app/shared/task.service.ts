@@ -56,7 +56,7 @@ export class TaskService {
       } else if (b.sortOrder && !a.sortOrder) {
         return -1;
       } else if (a.createdAt && b.createdAt) {
-        return a.createdAt > b.createdAt ? 1 : -1;
+        return a.createdAt > b.createdAt ? -1 : 1;
       } else {
         return 0;
       }
