@@ -72,6 +72,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
 
   onDateChange(_: moment.Moment): void {
     this.cleanDeleted(this.tasks);
+    this.tasks = [];
     this.editTaskId = null;
   }
 
