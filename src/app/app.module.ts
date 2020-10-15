@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {HttpClientModule} from '@angular/common/http';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireModule} from '@angular/fire';
@@ -55,7 +54,6 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     SortablejsModule.forRoot({animation: 150}),
