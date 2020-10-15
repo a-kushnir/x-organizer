@@ -13,12 +13,12 @@ import {environment} from '../environments/environment';
 import {HeaderComponent} from './shared/layout/header/header.component';
 import {NavigationComponent} from './shared/layout/navigation/navigation.component';
 import {FooterComponent} from './shared/layout/footer/footer.component';
+import {InputErrorComponent} from './shared/components/input-error/input-error.component';
 import {CalendarComponent} from './pages/home/calendar/calendar.component';
 import {OrganizerComponent} from './pages/home/organizer/organizer.component';
 import {SelectorComponent} from './pages/home/selector/selector.component';
 import {MomentPipe} from './shared/moment.pipe';
 import {LinkifyPipe} from './shared/linkify.pipe';
-import {InputErrorComponent} from './shared/components/input-error/input-error.component';
 
 import {HomeComponent} from './pages/home/home.component';
 import {ProfileComponent} from './pages/profile/profile.component';
@@ -34,6 +34,7 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     HeaderComponent,
     NavigationComponent,
     FooterComponent,
+    InputErrorComponent,
     CalendarComponent,
     OrganizerComponent,
     SelectorComponent,
@@ -45,8 +46,7 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     SignUpComponent,
     AccountComponent,
     PasswordComponent,
-    DisplayComponent,
-    InputErrorComponent
+    DisplayComponent
   ],
   imports: [
     BrowserModule,

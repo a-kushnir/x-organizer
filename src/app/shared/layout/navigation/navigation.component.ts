@@ -6,7 +6,7 @@ import {User} from '../../models/user.model';
 @Component({
   selector: 'app-layout-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css']
+  styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
   user: User;

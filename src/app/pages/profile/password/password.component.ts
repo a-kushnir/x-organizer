@@ -11,7 +11,7 @@ import {User} from 'src/app/shared/models/user.model';
 @Component({
   selector: 'app-profile-password',
   templateUrl: './password.component.html',
-  styleUrls: ['./password.component.css']
+  styleUrls: ['./password.component.scss']
 })
 export class PasswordComponent extends FormComponent implements OnInit {
 

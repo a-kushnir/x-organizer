@@ -12,7 +12,7 @@ import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 @Component({
   selector: 'app-profile-account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  styleUrls: ['./account.component.scss']
 })
 export class AccountComponent extends FormComponent implements OnInit {
 

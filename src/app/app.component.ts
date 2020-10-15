@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from './shared/user.service';
-import {DateService} from './shared/date.service';
-import {ProfileService} from './shared/profile.service';
 import {Pages, PageService} from './shared/page.service';
 import {User} from './shared/models/user.model';
 
@@ -16,9 +14,7 @@ export class AppComponent implements OnInit {
   pages = Pages;
 
   constructor(private userService: UserService,
-              private pageService: PageService,
-              private dateService: DateService,
-              private profileService: ProfileService) {
+              private pageService: PageService) {
   }
 
   ngOnInit(): void {

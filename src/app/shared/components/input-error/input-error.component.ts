@@ -8,7 +8,7 @@ export function invalid(fieldControl: AbstractControl): boolean {
 @Component({
   selector: 'app-input-error',
   templateUrl: './input-error.component.html',
-  styleUrls: ['./input-error.component.css']
+  styleUrls: ['./input-error.component.scss']
 })
 export class InputErrorComponent {
   @Input() fieldName: string;
