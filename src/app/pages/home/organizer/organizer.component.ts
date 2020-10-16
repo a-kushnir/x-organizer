@@ -191,14 +191,14 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   private cleanDeleted(tasks): Task[] {
     tasks.map(task => {
       if (task.deleted) {
-        this.removeForever(task);
+        this.deleteForever(task);
       }
     });
     return tasks.filter(task => !task.deleted);
   }
 
-  private removeForever(task): void {
-    this.taskService.remove(task)
+  private deleteForever(task): void {
+    this.taskService.delete(task)
       .catch(error => console.error(error));
   }
 

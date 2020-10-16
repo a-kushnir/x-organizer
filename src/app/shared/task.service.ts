@@ -131,7 +131,7 @@ export class TaskService {
     return batch.commit();
   }
 
-  remove(task: Task): Promise<void> {
+  delete(task: Task): Promise<void> {
     return this.tasksCollection(task.date)
       .doc(task.id)
       .delete();
