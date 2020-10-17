@@ -57,7 +57,7 @@ ul {
   margin-left: 38px;
 }
 .link-add, .link-save {
-  color: #3D82F8;
+  color: #007bff;
   &:hover {
     color: #053a95;
   }
@@ -77,4 +77,18 @@ ul {
 .link-undo {
   margin-left: 0;
   margin-right: 20px;
+}
+.task-time {
+  padding-bottom: 1px;
+  position: relative;
+  top: 7px;
+  margin-right: 4px;
+  &.active {
+    color: #007bff;
+  }
+}
+#new-time,
+#edit-time {
+  width: 45px;
+  flex-grow: 0.2;
 }

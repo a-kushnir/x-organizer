@@ -8,7 +8,7 @@ import {TaskService} from 'src/app/shared/task.service';
 import {Task} from 'src/app/shared/models/task.model';
 import {DayStatusService, Statuses} from 'src/app/shared/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
-import {dbDateTime} from 'src/app/shared/date-format';
+import {dbDateTime, dbTime, toTime} from 'src/app/shared/date-format';
 import {Options} from 'sortablejs';
 
 @AutoUnsubscribe
@@ -23,6 +23,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   readonly faPlusCircle = faPlusCircle;
   readonly faCheck = faCheck;
   readonly faTimes = faTimes;
+  readonly toTime = toTime;
 
   formNew: FormGroup;
   formEdit: FormGroup;
@@ -47,15 +48,22 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
               private dayStatusService: DayStatusService) {
   }
 
+  private static getTime(value: string): string {
+    const parsed = moment(value, 'h:mm a');
+    return (parsed.isValid() ? dbTime(parsed) : null);
+  }
+
   ngOnInit(): void {
     this.$tasks = this.taskService.tasks.subscribe(this.onTasksChange.bind(this));
     this.$date = this.dateService.date.subscribe(this.onDateChange.bind(this));
 
     this.formNew = new FormGroup({
-      note: new FormControl('', Validators.required)
+      note: new FormControl('', Validators.required),
+      time: new FormControl('')
     });
     this.formEdit = new FormGroup({
-      note: new FormControl('', Validators.required)
+      note: new FormControl('', Validators.required),
+      time: new FormControl('')
     });
   }
 
@@ -93,7 +101,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   create(): void {
-    const {note} = this.formNew.value;
+    const {note, time} = this.formNew.value;
 
     if (!note || note.trim() === '') {
       return;
@@ -102,6 +110,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     const task: Task = {
       date: this.dateService.date.value,
       note,
+      time: OrganizerComponent.getTime(time),
       createdAt: dbDateTime()
     };
     this.formNew.reset();
@@ -118,7 +127,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.editTaskId = task?.id;
     this.formEdit.reset();
     if (task) {
-      this.formEdit.setValue({note: task.note});
+      const time = task.time ? toTime(task.time).format('h:mm a') : '';
+      this.formEdit.setValue({note: task.note, time});
       this.focus = true;
     }
   }
@@ -147,13 +157,14 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
 
   update(event: Event, task: Task): void {
     event.stopPropagation();
-    const {note} = this.formEdit.value;
+    const {note, time} = this.formEdit.value;
 
     if (!note || note.trim() === '') {
       return;
     }
 
     task.note = note;
+    task.time = OrganizerComponent.getTime(time);
     this.save(task);
     this.edit(event, null);
   }

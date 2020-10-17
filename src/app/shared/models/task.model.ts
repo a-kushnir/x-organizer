@@ -3,6 +3,7 @@ import * as moment from 'moment';
 export interface Task {
   id?: string;
   date?: moment.Moment;
+  time?: string;
   note: string;
   createdAt: string;
   completedAt?: string;
