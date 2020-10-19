@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFirestore} from '@angular/fire/firestore';
@@ -52,7 +52,6 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
-    FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
