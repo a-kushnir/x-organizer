@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-12">
+    <div class="mx-auto max-width-limit">
+      <form class="mx-auto form-inline" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-group">
+          <label for="minutes">Time:&nbsp;</label>
+          <input type="text" formControlName="minutes" class="form-control text-center" id="minutes" maxlength="2" style="width: 50px;" [disabled]="ticking"
+                 [class.is-invalid]="invalid(form.controls.minutes)">&nbsp;:&nbsp;
+          <app-input-error fieldName="Minutes" [fieldControl]="form.controls.minutes"></app-input-error>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="seconds">Seconds</label>
+          <input type="text" formControlName="seconds" class="form-control text-center" id="seconds" maxlength="2" style="width: 50px;" [disabled]="ticking"
+                 [class.is-invalid]="invalid(form.controls.seconds)">
+          <app-input-error fieldName="Seconds" [fieldControl]="form.controls.seconds"></app-input-error>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="submitted" (click)="submit()" *ngIf="!ticking && !alerting"><fa-icon [icon]="faPlay"></fa-icon></button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="submitted" (click)="pause()" *ngIf="ticking || alerting"><fa-icon [icon]="faStop"></fa-icon></button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="submitted" (click)="submit()" *ngIf="ticking"><fa-icon [icon]="faPause"></fa-icon></button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="submitted" (click)="restart()" *ngIf="ticking || alerting"><fa-icon [icon]="faUndo"></fa-icon></button>
+      </form>
+
+      <div class="ratio-16-9">
+        <iframe *ngIf="ticking" [src]="src | safe:'resourceUrl'" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; modestbranding; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>

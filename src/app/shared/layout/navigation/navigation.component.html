@@ -13,6 +13,9 @@
       <li class="nav-item" [class.active]="page === pages.Home" *ngIf="user">
         <a class="nav-link" (click)="open(pages.Home)" href="#">Home</a>
       </li>
+      <li class="nav-item" [class.active]="page === pages.Timer" *ngIf="user">
+        <a class="nav-link" (click)="open(pages.Timer)" href="#">Timer</a>
+      </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" [class.active]="page === pages.SignIn" *ngIf="!user">

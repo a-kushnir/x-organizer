@@ -4,6 +4,7 @@
   <app-sign-in *ngIf="!user && page === pages.SignIn"></app-sign-in>
   <app-sign-up *ngIf="!user && page === pages.SignUp"></app-sign-up>
   <app-home *ngIf="user && page === pages.Home"></app-home>
+  <app-timer *ngIf="user && page === pages.Timer"></app-timer>
   <app-profile *ngIf="user && page === pages.Profile"></app-profile>
 </div>
 <app-layout-footer></app-layout-footer>

@@ -8,6 +8,7 @@ export enum Pages {
   Profile = 'Profile',
   SignIn = 'SignIn',
   SignUp = 'SignUp',
+  Timer = 'Timer'
 }
 
 @Injectable({

@@ -19,6 +19,7 @@ import {OrganizerComponent} from './pages/home/organizer/organizer.component';
 import {SelectorComponent} from './pages/home/selector/selector.component';
 import {MomentPipe} from './shared/moment.pipe';
 import {LinkifyPipe} from './shared/linkify.pipe';
+import {SafePipe} from './shared/pipes/safe.pipe';
 
 import {HomeComponent} from './pages/home/home.component';
 import {ProfileComponent} from './pages/profile/profile.component';
@@ -27,6 +28,7 @@ import {SignUpComponent} from './pages/sign-up/sign-up.component';
 import {AccountComponent} from './pages/profile/account/account.component';
 import {PasswordComponent} from './pages/profile/password/password.component';
 import {DisplayComponent} from './pages/profile/display/display.component';
+import {TimerComponent} from './pages/timer/timer.component';
 
 @NgModule({
   declarations: [
@@ -40,13 +42,15 @@ import {DisplayComponent} from './pages/profile/display/display.component';
     SelectorComponent,
     MomentPipe,
     LinkifyPipe,
+    SafePipe,
     HomeComponent,
     ProfileComponent,
     SignInComponent,
     SignUpComponent,
     AccountComponent,
     PasswordComponent,
-    DisplayComponent
+    DisplayComponent,
+    TimerComponent
   ],
   imports: [
     BrowserModule,
