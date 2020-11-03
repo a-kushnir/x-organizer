@@ -3,7 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import * as moment from 'moment';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {UserService} from './user.service';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import FieldPath = firebase.firestore.FieldPath;
 import {RealTimeUpdate} from './real-time-update';
 import {DateService} from './date.service';
