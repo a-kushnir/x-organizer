@@ -11,7 +11,7 @@
     <li class="list-group-item new-item">
       <form class="form-inline" (ngSubmit)="create()" [formGroup]="formNew">
         <label class="sr-only" for="new-task">New Task</label>
-        <input #newTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task" autocomplete="off" (keyup.enter)="create()">
+        <textarea #newTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task" autocomplete="off" (keyup.enter)="create()"></textarea>
         <label class="sr-only" for="new-time">Time</label>
         <input type="text" formControlName="time" class="form-control mb-2 mr-sm-2 text-center" id="new-time" placeholder="Time" autocomplete="off" (keyup.enter)="create()">
         <a class="link link-add"><fa-icon [icon]="faPlusCircle" (click)="create()"></fa-icon></a>
