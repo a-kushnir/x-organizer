@@ -27,8 +27,8 @@
               {{toTime(task.time) | date:'h:mm a'}}
             </span>
             <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.completedAt ? 'checked' : null" (click)="toggleComplete(task)" />
-            <i></i>
-            <span [class.complete]="task.completedAt" [innerHTML]="task.note | linkify | multiline"></span>
+            <i class="checkbox"></i>
+            <span class="inline-block" [class.complete]="task.completedAt" [innerHTML]="task.note | linkify | multiline"></span>
           </label>
         </div>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">
