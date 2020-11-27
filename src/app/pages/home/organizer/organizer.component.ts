@@ -76,6 +76,9 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
       }
       this.focus = false;
     }
+    if (this.editTaskField) {
+      this.autoGrowTextZone({target: this.editTaskField.nativeElement});
+    }
   }
 
   onDateChange(_: moment.Moment): void {
@@ -217,5 +220,10 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.taskService.update(task).then(_ => {
       this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
+  }
+
+  autoGrowTextZone(e): void {
+    e.target.style.height = '0px';
+    e.target.style.height = (e.target.scrollHeight + 2) + 'px';
   }
 }
