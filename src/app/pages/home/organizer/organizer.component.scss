@@ -15,6 +15,7 @@ form {
 
 i.checkbox {
   vertical-align: top;
+  top: 0;
 }
 .inline-block {
   display: inline-block;
@@ -37,6 +38,9 @@ ul {
     }
     span.complete {
       text-decoration: line-through;
+    }
+    label {
+      margin-bottom: 0;
     }
   }
   &.with-tasks {
@@ -86,7 +90,7 @@ ul {
 .task-time {
   padding-bottom: 1px;
   position: relative;
-  top: 7px;
+  top: 3px;
   margin-right: 4px;
   &.active {
     color: #007bff;
