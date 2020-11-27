@@ -3,10 +3,10 @@ import {faEdit, faTrash, faPlusCircle, faCheck, faTimes} from '@fortawesome/free
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import {Subscription} from 'rxjs';
-import {DateService} from 'src/app/shared/date.service';
-import {TaskService} from 'src/app/shared/task.service';
+import {DateService} from 'src/app/shared/services/date.service';
+import {TaskService} from 'src/app/shared/services/task.service';
 import {Task} from 'src/app/shared/models/task.model';
-import {DayStatusService, Statuses} from 'src/app/shared/day-status.service';
+import {DayStatusService, Statuses} from 'src/app/shared/services/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 import {dbDateTime, dbTime, toTime} from 'src/app/shared/date-format';
 import {Options} from 'sortablejs';

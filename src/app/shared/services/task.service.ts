@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import * as moment from 'moment';
 import {UserService} from './user.service';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {Task} from './models/task.model';
-import {RealTimeUpdate} from './real-time-update';
+import {Task} from '../models/task.model';
+import {RealTimeUpdate} from '../real-time-update';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from './models/user.model';
+import {User} from '../models/user.model';
 import {DateService} from './date.service';
-import {dbDate, dbDateTime} from './date-format';
+import {dbDate, dbDateTime} from '../date-format';
 import _ from 'lodash';
 
 class RTUKey {

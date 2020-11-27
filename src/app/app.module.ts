@@ -17,9 +17,10 @@ import {InputErrorComponent} from './shared/components/input-error/input-error.c
 import {CalendarComponent} from './pages/home/calendar/calendar.component';
 import {OrganizerComponent} from './pages/home/organizer/organizer.component';
 import {SelectorComponent} from './pages/home/selector/selector.component';
-import {MomentPipe} from './shared/moment.pipe';
-import {LinkifyPipe} from './shared/linkify.pipe';
+import {MomentPipe} from './shared/pipes/moment.pipe';
+import {LinkifyPipe} from './shared/pipes/linkify.pipe';
 import {SafePipe} from './shared/pipes/safe.pipe';
+import {MultilinePipe} from './shared/pipes/multiline.pipe';
 
 import {HomeComponent} from './pages/home/home.component';
 import {ProfileComponent} from './pages/profile/profile.component';
@@ -43,6 +44,7 @@ import {TimerComponent} from './pages/timer/timer.component';
     MomentPipe,
     LinkifyPipe,
     SafePipe,
+    MultilinePipe,
     HomeComponent,
     ProfileComponent,
     SignInComponent,

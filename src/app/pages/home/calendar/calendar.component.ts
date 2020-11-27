@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {Subscription} from 'rxjs';
-import {DateService} from 'src/app/shared/date.service';
-import {TaskService} from 'src/app/shared/task.service';
-import {DayStatusService} from 'src/app/shared/day-status.service';
+import {DateService} from 'src/app/shared/services/date.service';
+import {TaskService} from 'src/app/shared/services/task.service';
+import {DayStatusService} from 'src/app/shared/services/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 import {dbDate, dbMonth} from 'src/app/shared/date-format';
 

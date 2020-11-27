@@ -5,10 +5,10 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {UserService} from './user.service';
 import * as firebase from 'firebase/app';
 import FieldPath = firebase.firestore.FieldPath;
-import {RealTimeUpdate} from './real-time-update';
+import {RealTimeUpdate} from '../real-time-update';
 import {DateService} from './date.service';
-import {User} from './models/user.model';
-import {dbDate, dbMonth} from './date-format';
+import {User} from '../models/user.model';
+import {dbDate, dbMonth} from '../date-format';
 
 export enum Statuses {
   Active = 'Active',

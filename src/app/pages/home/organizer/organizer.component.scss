@@ -7,11 +7,9 @@ form {
   width: 100%;
   flex-wrap: nowrap;
 
-  input {
+  input, textarea {
     margin-top: 8px;
     flex-grow: 1;
-  }
-  button {
   }
 }
 
