@@ -28,7 +28,7 @@
             <span class="inline-block" [class.complete]="task.completedAt" [innerHTML]="task.note | linkify | multiline"></span>
           </label>
         </div>
-        <span *ngIf="task.time || true" class="task-time text-monospace small flex-end text-nowrap" [class.active]="!task.completedAt">
+        <span *ngIf="task.time && !task.deleted" class="task-time text-monospace small flex-end text-nowrap" [class.active]="!task.completedAt">
               {{toTime(task.time) | date:'h:mm a'}}
           </span>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">
