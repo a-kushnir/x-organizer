@@ -22,15 +22,15 @@
     <li class="list-group-item" [class.edit-item]="editTaskId === task.id" [class.complete]="task.completedAt" [class.selected-item]="false // task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)">
       <div class="d-flex flex-row" *ngIf="editTaskId !== task.id">
         <div *ngIf="!task.deleted" class="flex-fill">
-          <label for="check{{task.id}}" style="width: 100%">
-            <span *ngIf="task.time || true" class="task-time text-monospace small float-right" [class.active]="!task.completedAt">
-              {{toTime(task.time) | date:'h:mm a'}}
-            </span>
+          <label for="check{{task.id}}" style="width: 100%; margin-top: 3px;" class="d-flex flex-row">
             <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.completedAt ? 'checked' : null" (click)="toggleComplete(task)" />
             <i class="checkbox"></i>
             <span class="inline-block" [class.complete]="task.completedAt" [innerHTML]="task.note | linkify | multiline"></span>
           </label>
         </div>
+        <span *ngIf="task.time || true" class="task-time text-monospace small flex-end text-nowrap" [class.active]="!task.completedAt">
+              {{toTime(task.time) | date:'h:mm a'}}
+          </span>
         <div *ngIf="!task.deleted" class="flex-end text-nowrap">
           <a class="link link-edit" (click)="edit($event, task)"><fa-icon [icon]="faEdit"></fa-icon></a>
           <a class="link link-delete" (click)="remove($event, task)"><fa-icon [icon]="faTrash"></fa-icon></a>
