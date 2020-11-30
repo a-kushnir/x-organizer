@@ -76,6 +76,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
       }
       this.focus = false;
     }
+    this.autoGrowTextZone({target: this.newTaskField.nativeElement});
     if (this.editTaskField) {
       this.autoGrowTextZone({target: this.editTaskField.nativeElement});
     }
@@ -220,6 +221,12 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     this.taskService.update(task).then(_ => {
       this.updateCalendar(task.date, this.tasks);
     }).catch(error => console.error(error));
+  }
+
+  onTaskKeyDown(e): void {
+    if (e.key === 'Enter' && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+      e.preventDefault();
+    }
   }
 
   autoGrowTextZone(e): void {

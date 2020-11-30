@@ -11,7 +11,7 @@
     <li class="list-group-item new-item">
       <form class="form-inline" (ngSubmit)="create()" [formGroup]="formNew">
         <label class="sr-only" for="new-task">New Task</label>
-        <textarea #newTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task" autocomplete="off" (keyup)="autoGrowTextZone($event)" (keyup.enter)="create()"></textarea>
+        <textarea #newTask type="text" formControlName="note" class="form-control mb-2 mr-sm-2" id="new-task" placeholder="New Task" autocomplete="off" (keydown)="onTaskKeyDown($event)" (keyup)="autoGrowTextZone($event)" (keyup.enter)="create()"></textarea>
         <label class="sr-only" for="new-time">Time</label>
         <input type="text" formControlName="time" class="form-control mb-2 mr-sm-2 text-center" id="new-time" placeholder="Time" autocomplete="off" (keyup.enter)="create()">
         <a class="link link-add"><fa-icon [icon]="faPlusCircle" (click)="create()"></fa-icon></a>
@@ -42,7 +42,7 @@
       <div *ngIf="editTaskId === task.id">
         <form class="form-inline" (ngSubmit)="update($event, task)" [formGroup]="formEdit">
           <label class="sr-only" for="edit-task">Edit Task</label>
-          <textarea #editTask formControlName="note" class="form-control mb-2 mr-sm-2" id="edit-task" placeholder="Edit Task" autocomplete="off" (keyup)="autoGrowTextZone($event)" (keyup.enter)="update($event, task)"></textarea>
+          <textarea #editTask formControlName="note" class="form-control mb-2 mr-sm-2" id="edit-task" placeholder="Edit Task" autocomplete="off" (keydown)="onTaskKeyDown($event)" (keyup)="autoGrowTextZone($event)" (keyup.enter)="update($event, task)"></textarea>
           <label class="sr-only" for="edit-time">Time</label>
           <input type="text" formControlName="time" class="form-control mb-2 mr-sm-2 text-center" id="edit-time" placeholder="Time" autocomplete="off" (keyup.enter)="update($event, task)">
           <a class="link link-cancel float-right" (click)="edit($event, null)"><fa-icon [icon]="faTimes"></fa-icon></a>
