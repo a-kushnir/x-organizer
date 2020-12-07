@@ -20,10 +20,13 @@
         <button type="button" class="btn btn-secondary btn-sm" [disabled]="submitted" (click)="restart()" *ngIf="ticking || alerting"><fa-icon [icon]="faUndo"></fa-icon></button>
       </form>
 
-      <div class="ratio-16-9">
-        <iframe *ngIf="ticking" [src]="src | safe:'resourceUrl'" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; modestbranding; gyroscope; picture-in-picture" allowfullscreen>
-        </iframe>
+      <div class="countdown-container row mx-auto" *ngIf="ticking">
+        <div class="col-6">
+          <img class="countdown-animation mx-auto d-block" src="/assets/timer.gif" alt="" />
+        </div>
+        <div class="col-6">
+          <div class="countdown-label text-center" #countdown>{{ formatTime(this.timeLeft) }}</div>
+        </div>
       </div>
     </div>
   </div>

@@ -8,15 +8,15 @@ form {
 button {
   margin-left: 5px;
 }
-.ratio-16-9 {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 56.25%;
-  iframe {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0; top: 0;
+.countdown-container {
+  width: 450px;
+  .countdown-animation {
+    height: 300px;
+  }
+  .countdown-label {
+    font-family: 'Pacifico', cursive;
+    font-weight: bold;
+    font-size: 64px;
+    margin-top: 70px;
   }
 }

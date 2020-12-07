@@ -1,7 +1,8 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormComponent} from '../../shared/components/form/form.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {faPlay, faStop, faPause, faUndo} from '@fortawesome/free-solid-svg-icons';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-timer',
@@ -9,6 +10,10 @@ import {faPlay, faStop, faPause, faUndo} from '@fortawesome/free-solid-svg-icons
   styleUrls: ['./timer.component.scss']
 })
 export class TimerComponent extends FormComponent implements OnInit {
+
+  constructor(private zone: NgZone) {
+    super();
+  }
   private handle: number;
   private timeLeft: number;
 
@@ -16,16 +21,15 @@ export class TimerComponent extends FormComponent implements OnInit {
   seconds = 0;
   ticking = false;
   alerting = false;
-  audio = new Audio();
+  audioAlert = new Audio();
+  audioTimer = new Audio();
 
   faPlay = faPlay;
   faStop = faStop;
   faPause = faPause;
   faUndo = faUndo;
 
-  constructor(private zone: NgZone) {
-    super();
-  }
+  @ViewChild('countdown') private countdown: ElementRef;
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -33,14 +37,13 @@ export class TimerComponent extends FormComponent implements OnInit {
       seconds: new FormControl(this.seconds, [Validators.required, Validators.max(59), Validators.min(0)])
     });
 
-    this.audio.src = 'assets/audio/alert.wav';
-    this.audio.loop = true;
-    this.audio.load();
-  }
+    this.audioAlert.src = 'assets/audio/alert.wav';
+    this.audioAlert.loop = true;
+    this.audioAlert.load();
 
-  get src(): string {
-    const ts =  30 * 60 - this.timeLeft;
-    return `https://www.youtube.com/embed/jpVa0ATXIq0?start=${ts}&autoplay=1&controls=0&loop=0&rel=0`;
+    this.audioTimer.src = 'assets/audio/timer.mp3';
+    this.audioTimer.loop = true;
+    this.audioTimer.load();
   }
 
   onSubmit(): void {
@@ -79,20 +82,30 @@ export class TimerComponent extends FormComponent implements OnInit {
 
   playAlert(): void {
     this.alerting = true;
-    this.audio.currentTime = 0;
-    this.audio.play().then();
+    this.audioTimer.pause();
+    this.audioAlert.currentTime = 0;
+    this.audioAlert.play().then();
   }
 
   stopAlert(): void {
     this.alerting = false;
-    this.audio.pause();
+    this.audioAlert.pause();
+  }
+
+  formatTime(seconds: number): string {
+    const format = seconds > 3600 ? 'H:mm:ss' : 'mm:ss';
+    return moment('2001-01-01').startOf('day').seconds(seconds).format(format);
   }
 
   private startTimer(): void {
     this.zone.runOutsideAngular(() => {
+      this.audioTimer.currentTime = 0;
+      this.audioTimer.play().then();
+
       this.handle = setInterval(() => {
         if (this.timeLeft > 0) {
           this.timeLeft--;
+          this.countdown.nativeElement.innerHTML = this.formatTime(this.timeLeft);
         } else {
           this.ticking = false;
           clearInterval(this.handle);
@@ -103,6 +116,7 @@ export class TimerComponent extends FormComponent implements OnInit {
   }
 
   private stopTimer(): void {
+    this.audioTimer.pause();
     this.zone.runOutsideAngular(() => {
       clearInterval(this.handle);
     });
