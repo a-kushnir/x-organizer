@@ -44,6 +44,15 @@ export class TimerComponent extends FormComponent implements OnInit {
     this.audioTimer.src = 'assets/audio/timer.mp3';
     this.audioTimer.loop = true;
     this.audioTimer.load();
+
+    // Seamless loop workaround
+    this.audioTimer.addEventListener('timeupdate', function(): void {
+      const buffer = .15;
+      if (this.currentTime > this.duration - buffer) {
+        this.currentTime = 0;
+        this.play();
+      }
+    });
   }
 
   onSubmit(): void {
