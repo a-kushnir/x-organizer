@@ -32,7 +32,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   focus: boolean;
 
   sortOptions: Options = {
-    filter: 'input',
+    filter: 'input, textarea',
     preventOnFilter: false,
     onUpdate: () => this.onSortUpdate(),
   };
