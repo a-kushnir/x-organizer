@@ -1,7 +1,14 @@
 <section class="mx-auto">
-  <div class="row">
+  <div class="row date-bar">
     <div class="col-6 text-left">
-      <strong>{{ this.dateService.date | async | date:'longDate' }}</strong>
+      <span class="current-month">
+        <strong>
+          {{ dateService.month | async | moment:'MMMM d' }},
+        </strong>
+      </span>
+      <span class="current-year">
+        {{ dateService.month | async | moment:'YYYY' }}
+      </span>
     </div>
     <div class="col-6 text-right">
       <strong>{{ this.dateService.date | async | date:'EEEE' }}</strong>

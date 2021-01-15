@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { DateService } from '../../../shared/services/date.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-selector',
@@ -18,5 +19,9 @@ export class SelectorComponent implements OnInit {
 
   addMonths(amount: number): void {
     this.dateService.addMonths(amount);
+  }
+
+  reset(): void {
+    this.dateService.reset();
   }
 }

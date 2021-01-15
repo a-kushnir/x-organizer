@@ -1,7 +1,23 @@
-<p class="text-center">
-  <fa-icon [icon]="faCaretLeft" (click)="addMonths(-1)"></fa-icon>
-  <span>
-    {{ dateService.month | async | moment:'MMMM YYYY' }}
-  </span>
-  <fa-icon [icon]="faCaretRight" (click)="addMonths(1)"></fa-icon>
-</p>
+<div class="row date-bar">
+  <div class="col-6 text-left">
+    <span class="current-month">
+      <strong>
+        {{ dateService.month | async | moment:'MMMM' }}
+      </strong>
+    </span>
+    <span class="current-year">
+      {{ dateService.month | async | moment:'YYYY' }}
+    </span>
+  </div>
+  <div class="col-6 text-right">
+    <button type="button" class="btn btn-sm btn-light" (click)="addMonths(-1)">
+      <fa-icon [icon]="faCaretLeft"></fa-icon>
+    </button>
+    <button type="button" class="btn btn-sm btn-light" (click)="reset()">
+      <strong>Today</strong>
+    </button>
+    <button type="button" class="btn btn-sm btn-light" (click)="addMonths(1)">
+      <fa-icon [icon]="faCaretRight" ></fa-icon>
+    </button>
+  </div>
+</div>

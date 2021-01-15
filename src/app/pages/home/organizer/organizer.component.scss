@@ -1,6 +1,10 @@
-strong {
-  display: inline-block;
-  padding: 0 7px 16px 7px;
+.date-bar {
+  font-size: 1.2rem;
+  height: 38px;
+
+  .current-month {
+    padding-right: 3px;
+  }
 }
 
 form {

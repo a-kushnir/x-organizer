@@ -1,11 +1,13 @@
-fa-icon {
-  display: inline-block;
-  width: 64px;
-  cursor: pointer;
-}
+.date-bar {
+  font-size: 1.2rem;
+  height: 38px;
 
-span {
-  display: inline-block;
-  width: 200px;
-  font-weight: bold;
+  .current-month {
+    padding-right: 3px;
+  }
+  button {
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: -4px;
+  }
 }
