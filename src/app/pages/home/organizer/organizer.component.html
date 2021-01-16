@@ -3,15 +3,15 @@
     <div class="col-6 text-left">
       <span class="current-month">
         <strong>
-          {{ dateService.month | async | moment:'MMMM d' }},
+          {{ dateService.date | async | moment:'MMMM d' }},
         </strong>
       </span>
       <span class="current-year">
-        {{ dateService.month | async | moment:'YYYY' }}
+        {{ dateService.date | async | moment:'YYYY' }}
       </span>
     </div>
     <div class="col-6 text-right">
-      <strong>{{ this.dateService.date | async | date:'EEEE' }}</strong>
+      <strong>{{ dateService.date | async | date:'EEEE' }}</strong>
     </div>
   </div>
   <ul class="list-group text-left" [class.with-tasks]="tasks.length > 0">
