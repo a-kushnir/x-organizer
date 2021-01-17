@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {faEdit, faTrash, faPlusCircle, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
@@ -11,6 +11,7 @@ import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 import {dbDateTime, dbTime, toTime} from 'src/app/shared/date-format';
 import {Options} from 'sortablejs';
 import * as $ from 'jquery';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @AutoUnsubscribe
 @Component({
@@ -29,7 +30,6 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   formNew: FormGroup;
   formEdit: FormGroup;
   tasks: Task[] = [];
-  tasksById: {};
   editTaskId: string = null;
   focus: boolean;
 
@@ -53,7 +53,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
 
   constructor(public dateService: DateService,
               private taskService: TaskService,
-              private dayStatusService: DayStatusService) {
+              private dayStatusService: DayStatusService,
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   private static getTime(value: string): string {
@@ -97,13 +98,7 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   onTasksChange(tasks: Task[]): void {
-    this.tasks = tasks;
-
-    this.tasksById = {};
-    tasks.forEach((task) => {
-      this.tasksById[task.id] = task;
-    });
-
+    this.tasks = cloneDeep(tasks);
     if (this.editTaskId && !this.tasks.some(task => task.id === this.editTaskId)) {
       this.editTaskId = null;
     }
@@ -140,7 +135,8 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     if ($(target).is('.calendar-table td')) {
       const date = moment($(target).data('date'));
       const taskId = $(event.item).data('task-id');
-      this.moveTaskTo(this.tasksById[taskId], date);
+      const task = this.taskService.tasks.value.find(t => t.id === taskId);
+      this.moveTaskTo(task, date);
     }
   }
 
@@ -264,15 +260,23 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   private moveTaskTo(task: Task, date: moment.Moment): void {
-    this.taskService.delete(task).then(() => {
-      this.updateCalendar(task.date, this.tasks);
-      task.date = date;
-      this.taskService.create(task).then(() => {
-        this.taskService.findByDate(date).then((tasks) => {
-          this.updateCalendar(task.date, tasks);
+    if (task.date.isSame(date)) {
+      // Restore tasks
+      this.taskService.tasks.next(this.taskService.tasks.value);
+      this.changeDetectorRef.detectChanges();
+    } else {
+      // Move tasks
+      this.taskService.delete(task).then(() => {
+        this.updateCalendar(task.date, this.tasks);
+        task.date = date;
+        task.sortOrder = 0;
+        this.taskService.create(task).then(() => {
+          this.taskService.findByDate(date).then((tasks) => {
+            this.updateCalendar(task.date, tasks);
+          }).catch(error => console.error(error));
         }).catch(error => console.error(error));
       }).catch(error => console.error(error));
-    }).catch(error => console.error(error));
+    }
   }
 
   onTaskKeyDown(e): void {
