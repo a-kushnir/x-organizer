@@ -10,6 +10,7 @@ import {DayStatusService, Statuses} from 'src/app/shared/services/day-status.ser
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 import {dbDateTime, dbTime, toTime} from 'src/app/shared/date-format';
 import {Options} from 'sortablejs';
+import * as $ from 'jquery';
 
 @AutoUnsubscribe
 @Component({
@@ -28,13 +29,20 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   formNew: FormGroup;
   formEdit: FormGroup;
   tasks: Task[] = [];
+  tasksById: {};
   editTaskId: string = null;
   focus: boolean;
 
   sortOptions: Options = {
+    group: {
+      name: 'tasks',
+      put: ['tasks'],
+    },
     filter: 'input, textarea',
     preventOnFilter: false,
     onUpdate: () => this.onSortUpdate(),
+    onMove: (event) => this.onSortMove(event),
+    onEnd: (event) => this.onSortEnd(event),
   };
 
   private $tasks: Subscription;
@@ -90,6 +98,12 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
 
   onTasksChange(tasks: Task[]): void {
     this.tasks = tasks;
+
+    this.tasksById = {};
+    tasks.forEach((task) => {
+      this.tasksById[task.id] = task;
+    });
+
     if (this.editTaskId && !this.tasks.some(task => task.id === this.editTaskId)) {
       this.editTaskId = null;
     }
@@ -102,6 +116,32 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     });
     this.taskService.updateAll(this.tasks).then(() => {
     }).catch(error => console.error(error));
+  }
+
+  onSortMove(event): any {
+    const target = event.to;
+    const item = event.dragged;
+
+    $('.calendar-table td').removeClass('sortable-target');
+    if ($(target).is('.calendar-table td')) {
+      item.hidden = true;
+      $(target).addClass('sortable-target');
+      return 1;
+    }
+    else {
+      item.hidden = false;
+    }
+  }
+
+  onSortEnd(event): void {
+    $('.calendar-table td').removeClass('sortable-target');
+
+    const target = event.to;
+    if ($(target).is('.calendar-table td')) {
+      const date = moment($(target).data('date'));
+      const taskId = $(event.item).data('task-id');
+      this.moveTaskTo(this.tasksById[taskId], date);
+    }
   }
 
   create(): void {
@@ -218,8 +258,20 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
   }
 
   private save(task: Task): void {
-    this.taskService.update(task).then(_ => {
+    this.taskService.update(task).then(() => {
       this.updateCalendar(task.date, this.tasks);
+    }).catch(error => console.error(error));
+  }
+
+  private moveTaskTo(task: Task, date: moment.Moment): void {
+    this.taskService.delete(task).then(() => {
+      this.updateCalendar(task.date, this.tasks);
+      task.date = date;
+      this.taskService.create(task).then(() => {
+        this.taskService.findByDate(date).then((tasks) => {
+          this.updateCalendar(task.date, tasks);
+        }).catch(error => console.error(error));
+      }).catch(error => console.error(error));
     }).catch(error => console.error(error));
   }
 

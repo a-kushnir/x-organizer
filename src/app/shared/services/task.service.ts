@@ -9,6 +9,7 @@ import {User} from '../models/user.model';
 import {DateService} from './date.service';
 import {dbDate, dbDateTime} from '../date-format';
 import _ from 'lodash';
+import {map} from 'rxjs/operators';
 
 class RTUKey {
   user: User;
@@ -101,6 +102,16 @@ export class TaskService {
     if (!_.isEqual(this.tasks.value, records)) {
       this.tasks.next(records);
     }
+  }
+
+  findByDate(date: moment.Moment): Promise<Task[]> {
+    return this.tasksCollection(date)
+      .get()
+      .pipe(map(records => {
+        return records.docs.map((record) => {
+          return {...record.data(), id: record.id} as Task;
+        });
+      })).toPromise();
   }
 
   create(task: Task): Promise<Task> {

@@ -1,4 +1,4 @@
-<table class="table table-bordered mx-auto text-center">
+<table class="table table-bordered mx-auto text-center calendar-table">
   <tr>
     <td *ngFor="let day of weeks[0].days" class="dow">
       {{ day.date | date :'EEE' }}
@@ -13,7 +13,7 @@
       weekend: day.weekend,
       tasks: day.status === 'Active',
       complete: day.status === 'Done'
-    }" (click)="selectDate(day)">
+    }" (click)="selectDate(day)" [sortablejs]="tasks" [sortablejsOptions]="sortOptions" [attr.data-date]="day.date">
       <div>
         {{ day.date | date :'d' }}
         <span class="dot"></span>

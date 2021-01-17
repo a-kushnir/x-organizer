@@ -34,3 +34,11 @@ td {
 .tasks .dot {
   background-color: #DB462E;
 }
+
+td.sortable-target {
+  padding: 1px !important;
+  div {
+    border-style: dashed;
+    border-width: 2px;
+  }
+}

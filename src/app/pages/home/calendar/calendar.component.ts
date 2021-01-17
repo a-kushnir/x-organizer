@@ -6,6 +6,8 @@ import {TaskService} from 'src/app/shared/services/task.service';
 import {DayStatusService} from 'src/app/shared/services/day-status.service';
 import {AutoUnsubscribe} from 'src/app/shared/auto-unsubscribe';
 import {dbDate, dbMonth} from 'src/app/shared/date-format';
+import {Options} from 'sortablejs';
+import {Task} from 'src/app/shared/models/task.model';
 
 class Day {
   date: moment.Moment;
@@ -33,6 +35,17 @@ export class CalendarComponent implements OnInit {
   private $month: Subscription;
   private $date: Subscription;
   private $days: Subscription;
+
+  tasks: Task[] = [];
+
+  sortOptions: Options = {
+    group: {
+      name: 'days',
+      put: ['tasks'],
+    },
+    handle: '.sort-handle',
+    animation: 0,
+  };
 
   constructor(private dateService: DateService,
               private tasksService: TaskService,
