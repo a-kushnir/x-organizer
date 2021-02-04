@@ -49,6 +49,15 @@ ul {
     label {
       margin-bottom: 0;
     }
+
+    .task-container {
+      min-width: 40%; // Auto-width for long words
+
+      span {
+        min-width: 40%; // Auto-width for long words
+        word-wrap: break-word;
+      }
+    }
   }
   &.with-tasks {
     li.new-item {
