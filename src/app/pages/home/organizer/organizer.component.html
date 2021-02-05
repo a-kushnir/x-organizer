@@ -29,11 +29,20 @@
     <li class="list-group-item" [class.edit-item]="editTaskId === task.id" [class.complete]="task.completedAt" [class.selected-item]="false // task.selected" *ngFor="let task of tasks" (click)="toggleSelect(task)" [attr.data-task-id]="task.id">
       <div class="d-flex flex-row" *ngIf="editTaskId !== task.id">
         <div *ngIf="!task.deleted" class="flex-fill task-container">
-          <label for="check{{task.id}}" style="width: 100%; margin-top: 3px;" class="d-flex flex-row">
+          <label for="check{{task.id}}" class="d-flex flex-row">
             <input type="checkbox" id="check{{task.id}}" value="checked" [checked]="task.completedAt ? 'checked' : null" (click)="toggleComplete(task)" />
             <i class="checkbox"></i>
             <span [class.complete]="task.completedAt" [innerHTML]="task.note | linkify | multiline"></span>
           </label>
+          <ul class="sub-tasks">
+            <li *ngFor="let subTask of task.subTasks; let i = index" [class.complete]="subTask.completedAt">
+              <label for="check{{task.id}}_{{i}}">
+                <input type="checkbox" id="check{{task.id}}_{{i}}" value="checked" [checked]="subTask.completedAt ? 'checked' : null" (click)="toggleComplete(task, i)" />
+                <i class="checkbox"></i>
+                <span [class.complete]="subTask.completedAt" [innerHTML]="subTask.note | linkify | multiline"></span>
+              </label>
+            </li>
+          </ul>
         </div>
         <span *ngIf="task.time && !task.deleted" class="task-time text-monospace small flex-end text-nowrap" [class.active]="!task.completedAt">
               {{toTime(task.time) | date:'h:mm a'}}

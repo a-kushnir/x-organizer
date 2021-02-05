@@ -173,12 +173,15 @@ export class OrganizerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  toggleComplete(task: Task): void {
-    if (task.completedAt) {
-      delete task.completedAt;
+  toggleComplete(task: Task, subTask?: number): void {
+    const obj = subTask != null ? task.subTasks[subTask] : task;
+
+    if (obj.completedAt) {
+      delete obj.completedAt;
     } else {
-      task.completedAt = dbDateTime();
+      obj.completedAt = dbDateTime();
     }
+
     TaskService.sort(this.tasks);
     this.save(task);
     this.playAudio();

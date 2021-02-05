@@ -53,9 +53,20 @@ ul {
     .task-container {
       min-width: 40%; // Auto-width for long words
 
-      span {
-        min-width: 40%; // Auto-width for long words
-        word-wrap: break-word;
+      label {
+        width: 100%;
+        margin-top: 3px;
+
+        span {
+          min-width: 40%; // Auto-width for long words
+          word-wrap: break-word;
+        }
+      }
+
+      ul.sub-tasks {
+        list-style: none;
+        padding-left: 25px;
+        padding-top: 2px;
       }
     }
   }

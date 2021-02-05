@@ -1,5 +1,10 @@
 import * as moment from 'moment';
 
+export interface SubTask {
+  note: string;
+  completedAt?: string;
+}
+
 export interface Task {
   id?: string;
   date?: moment.Moment;
@@ -10,4 +15,5 @@ export interface Task {
   deleted?: boolean;
   done?: boolean; // todo remove
   sortOrder?: number;
+  subTasks?: SubTask[];
 }

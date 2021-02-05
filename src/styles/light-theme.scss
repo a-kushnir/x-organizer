@@ -43,7 +43,7 @@ ul li.list-group-item {
   &.selected-item {
     background-color: rgba(#000, .05);
   }
-  &.complete {
+  &.complete, li.complete {
     color: #bbbbbb;
   }
   &.sortable-chosen {

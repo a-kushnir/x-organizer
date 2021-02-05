@@ -42,7 +42,7 @@ ul li.list-group-item {
   &.selected-item {
     background-color: rgba(#fff, .25);
   }
-  &.complete {
+  &.complete, li.complete {
     color: #555555;
   }
   &.sortable-chosen {
